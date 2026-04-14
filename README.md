@@ -10,6 +10,8 @@
 
 An MCP server providing access to Swiss direct democracy data, covering all federal popular votes since 1848 and elections since 1900.
 
+![Demo: Claude using democracy_search_votes, democracy_get_cantonal_results and democracy_get_party_positions](docs/assets/demo.svg)
+
 ---
 
 ## Demo Query
@@ -140,6 +142,17 @@ Combine with other servers in the Swiss Public Data MCP portfolio:
 Example multi-server query:  
 *«Vergleiche die Abstimmungsresultate zur AHV-Reform mit der Altersstruktur der Kantone»*  
 → `swiss-democracy-mcp` + `swiss-statistics-mcp`
+
+---
+
+## Safety & Limits
+
+- **Read-only:** All tools perform HTTP GET requests only — no data is written, modified, or deleted upstream.
+- **No personal data:** Swissvotes, BFS and SRGSSR Polis expose aggregate democratic data (vote results, party positions, cantonal/municipality tallies). No personally identifiable information (PII) is processed or stored by this server.
+- **Rate limits:** Swissvotes is a single CSV downloaded once per 24h and cached in memory. BFS / opendata.swiss and SRGSSR Polis are public APIs without documented rate limits — keep `limit` and date ranges conservative. The server enforces a 30s timeout per request.
+- **Data freshness:** Real-time BFS results reflect the upstream feed at query time (no local caching). Swissvotes is refreshed every 24h from the Uni Bern mirror.
+- **Terms of service:** Data is subject to the ToS of each source — [swissvotes.ch](https://swissvotes.ch) (CC BY 4.0, Uni Bern), [opendata.swiss](https://opendata.swiss) (mostly CC-BY / Open by Default), [SRGSSR Polis](https://developer.srgssr.ch) (free tier, non-commercial use only). Always cite the upstream source in downstream products.
+- **No guarantees:** This server is a community project, not affiliated with the University of Bern, the Federal Statistical Office, or SRG SSR. Availability depends on upstream APIs.
 
 ---
 

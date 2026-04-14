@@ -8,6 +8,8 @@
 
 Ein MCP-Server für Daten zur direkten Demokratie der Schweiz: alle eidgenössischen Volksabstimmungen seit 1848 und Wahlen seit 1900.
 
+![Demo: Claude nutzt democracy_search_votes, democracy_get_cantonal_results und democracy_get_party_positions](docs/assets/demo.svg)
+
 ---
 
 ## Demo-Abfrage
@@ -101,6 +103,17 @@ Kombinierbar mit anderen Servern aus dem Swiss Public Data MCP Portfolio:
 - **[zurich-opendata-mcp](https://github.com/malkreide/zurich-opendata-mcp)** — Zürcher Stadtstatistiken ergänzen
 - **[swiss-statistics-mcp](https://github.com/malkreide/swiss-statistics-mcp)** — BFS-Bevölkerungsdaten nach Kanton
 - **[srgssr-mcp](https://github.com/malkreide/srgssr-mcp)** — SRF-Nachrichtenarchiv zu Abstimmungsdaten verknüpfen
+
+---
+
+## Sicherheit & Limits
+
+- **Nur lesend:** Alle Tools führen ausschliesslich HTTP-GET-Anfragen aus — keine Daten werden upstream geschrieben, verändert oder gelöscht.
+- **Keine personenbezogenen Daten:** Swissvotes, BFS und SRGSSR Polis liefern aggregierte demokratische Daten (Abstimmungsresultate, Parteiparolen, kantonale/kommunale Auszählungen). Es werden keine Personendaten (PII) verarbeitet oder gespeichert.
+- **Rate Limits:** Swissvotes wird als CSV einmal pro 24h geladen und im Arbeitsspeicher gecacht. BFS / opendata.swiss und SRGSSR Polis sind öffentliche APIs ohne dokumentierte Rate Limits — `limit`- und Datumsbereiche bitte zurückhaltend setzen. Der Server erzwingt einen 30-Sekunden-Timeout pro Anfrage.
+- **Datenaktualität:** Echtzeit-BFS-Resultate spiegeln den Upstream-Feed zum Abfragezeitpunkt (kein lokaler Cache). Swissvotes wird alle 24h vom Uni-Bern-Mirror aktualisiert.
+- **Nutzungsbedingungen:** Die Daten unterliegen den ToS der jeweiligen Quelle — [swissvotes.ch](https://swissvotes.ch) (CC BY 4.0, Uni Bern), [opendata.swiss](https://opendata.swiss) (meist CC-BY / Open by Default), [SRGSSR Polis](https://developer.srgssr.ch) (Free Tier, nur nicht-kommerzielle Nutzung). Quelle in abgeleiteten Produkten bitte zitieren.
+- **Keine Garantien:** Dieser Server ist ein Community-Projekt und nicht mit der Universität Bern, dem Bundesamt für Statistik oder der SRG SSR affiliiert. Die Verfügbarkeit hängt von den Upstream-APIs ab.
 
 ---
 

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="330" viewBox="0 0 640 330">
+  <rect width="640" height="330" fill="#0d1117"/>
+
+  <!-- Gap lines -->
+  <rect x="0" y="100" width="640" height="1" fill="#30363d"/>
+  <rect x="0" y="215" width="640" height="1" fill="#30363d"/>
+
+  <!-- Panel 1: User (y=0, h=100) -->
+  <rect x="0" y="0" width="3" height="100" fill="#58a6ff"/>
+  <rect x="3" y="0" width="637" height="100" fill="#161b22"/>
+  <text x="16" y="20" font-family="monospace" font-size="13" fill="#58a6ff" font-weight="bold">&#x1F4AC; You</text>
+  <text x="16" y="44" font-family="monospace" font-size="13" fill="#c9d1d9">Wie hat der Kanton Z&#xFC;rich bei der AHV 21 (2022) abgestimmt,</text>
+  <text x="16" y="62" font-family="monospace" font-size="13" fill="#c9d1d9">und welche Parteien unterst&#xFC;tzten die Vorlage?</text>
+
+  <!-- Panel 2: Tool Call (y=101, h=114) -->
+  <rect x="0" y="101" width="3" height="114" fill="#e3b341"/>
+  <rect x="3" y="101" width="637" height="114" fill="#161b22"/>
+  <text x="16" y="121" font-family="monospace" font-size="13" fill="#e3b341" font-weight="bold">&#x1F527; Tool Calls</text>
+  <text x="16" y="145" font-family="monospace" font-size="13" fill="#e3b341">democracy_search_votes(keyword=&quot;AHV 21&quot;, year_from=2022)</text>
+  <text x="16" y="163" font-family="monospace" font-size="13" fill="#e3b341">democracy_get_cantonal_results(vote_number=&quot;651&quot;)</text>
+  <text x="16" y="181" font-family="monospace" font-size="13" fill="#e3b341">democracy_get_party_positions(vote_number=&quot;651&quot;)</text>
+
+  <!-- Panel 3: Claude response (y=216, h=114) -->
+  <rect x="0" y="216" width="3" height="114" fill="#3fb950"/>
+  <rect x="3" y="216" width="637" height="114" fill="#161b22"/>
+  <text x="16" y="236" font-family="monospace" font-size="13" fill="#3fb950" font-weight="bold">&#x1F916; Claude</text>
+  <text x="16" y="260" font-family="monospace" font-size="13" fill="#c9d1d9">ZH nahm die AHV 21 an (national 50.6% Ja, angenommen).</text>
+  <text x="16" y="278" font-family="monospace" font-size="13" fill="#c9d1d9">Pro: FDP, SVP, Die Mitte, GLP &#x2014; Contra: SP, Gr&#xFC;ne.</text>
+  <text x="16" y="296" font-family="monospace" font-size="13" fill="#8b949e">Quelle: Swissvotes (Uni Bern) &#xB7; BFS opendata.swiss</text>
+</svg>
