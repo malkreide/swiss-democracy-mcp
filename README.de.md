@@ -22,6 +22,7 @@ Ein MCP-Server für Daten zur direkten Demokratie der Schweiz: alle eidgenössis
 → `democracy_search_votes(keyword="AHV 21", year_from=2022)`  
 → `democracy_get_cantonal_results(vote_number="551")`  
 → `democracy_get_party_positions(vote_number="551")`
+[→ Weitere Anwendungsbeispiele nach Zielgruppe →](EXAMPLES.md)
 
 ---
 

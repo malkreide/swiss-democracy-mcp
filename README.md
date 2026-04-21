@@ -24,6 +24,7 @@ An MCP server providing access to Swiss direct democracy data, covering all fede
 → `democracy_search_votes(keyword="AHV 21", year_from=2022)`  
 → `democracy_get_cantonal_results(vote_number="551")`  
 → `democracy_get_party_positions(vote_number="551")`
+[→ More use cases by audience →](EXAMPLES.md)
 
 ---
 
