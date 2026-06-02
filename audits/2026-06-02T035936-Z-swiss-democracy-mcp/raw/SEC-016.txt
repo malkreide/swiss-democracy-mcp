@@ -1,0 +1,4 @@
+# SEC-016 — re-audit (PASS)
+
+## Evidence
+- MCP_HOST-Default `127.0.0.1`; Warnung bei 0.0.0.0; README/docs erklären lokal/Container

@@ -1,0 +1,4 @@
+# OPS-002 — re-audit (PASS)
+
+## Evidence
+- README mit Configuration-Sektion, Architektur-Diagramm, Limits, License; CHANGELOG; README.de parallel; docs/

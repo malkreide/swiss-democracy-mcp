@@ -1,0 +1,145 @@
+{
+  "audit_meta": {
+    "server_name": "swiss-democracy-mcp",
+    "run_id": "2026-06-02T035936-Z-swiss-democracy-mcp",
+    "started_at": "2026-06-02T03:59:36.149659+00:00",
+    "timezone_offset": "Z",
+    "skill_version": "1.0.0",
+    "output_dir": "audits/2026-06-02T035936-Z-swiss-democracy-mcp",
+    "catalog_hash": "091f446b27965044ce658a1d5f4b2cabe2b0ab5661dcc1a53b6be8f1f2e093c0",
+    "catalog_dir": "/tmp/mcp-audit-skill/checks",
+    "audit_date": "2026-06-02",
+    "catalog_version": "v1.0.0 (hash 091f446b2796)"
+  },
+  "totals": {
+    "checks_evaluated": 36,
+    "applicable": 36,
+    "by_status": {
+      "pass": 29,
+      "fail": 0,
+      "partial": 7,
+      "todo": 0,
+      "n/a": 0
+    },
+    "by_severity_among_findings": {
+      "critical": 1,
+      "high": 4,
+      "medium": 2,
+      "low": 0
+    },
+    "by_category": {
+      "ARCH": {
+        "pass": 10,
+        "fail": 0,
+        "partial": 1,
+        "todo": 0,
+        "n/a": 0
+      },
+      "CH": {
+        "pass": 1,
+        "fail": 0,
+        "partial": 0,
+        "todo": 0,
+        "n/a": 0
+      },
+      "OBS": {
+        "pass": 3,
+        "fail": 0,
+        "partial": 1,
+        "todo": 0,
+        "n/a": 0
+      },
+      "OPS": {
+        "pass": 2,
+        "fail": 0,
+        "partial": 1,
+        "todo": 0,
+        "n/a": 0
+      },
+      "SCALE": {
+        "pass": 0,
+        "fail": 0,
+        "partial": 1,
+        "todo": 0,
+        "n/a": 0
+      },
+      "SDK": {
+        "pass": 3,
+        "fail": 0,
+        "partial": 1,
+        "todo": 0,
+        "n/a": 0
+      },
+      "SEC": {
+        "pass": 10,
+        "fail": 0,
+        "partial": 2,
+        "todo": 0,
+        "n/a": 0
+      }
+    }
+  },
+  "findings": {
+    "policy": "fail-or-partial",
+    "policy_statuses": [
+      "fail",
+      "partial"
+    ],
+    "expected_count": 7,
+    "expected_ids": [
+      "ARCH-012",
+      "OBS-002",
+      "OPS-001",
+      "SCALE-002",
+      "SDK-002",
+      "SEC-005",
+      "SEC-009"
+    ],
+    "details": [
+      {
+        "check_id": "ARCH-012",
+        "category": "ARCH",
+        "severity": "medium",
+        "status": "partial"
+      },
+      {
+        "check_id": "OBS-002",
+        "category": "OBS",
+        "severity": "high",
+        "status": "partial"
+      },
+      {
+        "check_id": "OPS-001",
+        "category": "OPS",
+        "severity": "high",
+        "status": "partial"
+      },
+      {
+        "check_id": "SCALE-002",
+        "category": "SCALE",
+        "severity": "high",
+        "status": "partial"
+      },
+      {
+        "check_id": "SDK-002",
+        "category": "SDK",
+        "severity": "medium",
+        "status": "partial"
+      },
+      {
+        "check_id": "SEC-005",
+        "category": "SEC",
+        "severity": "high",
+        "status": "partial"
+      },
+      {
+        "check_id": "SEC-009",
+        "category": "SEC",
+        "severity": "critical",
+        "status": "partial"
+      }
+    ]
+  },
+  "production_ready": true,
+  "blocking_findings": []
+}

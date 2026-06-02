@@ -1,0 +1,7 @@
+# SDK-002 — re-audit (PARTIAL)
+
+## Evidence
+- `Literal`-Typen für level/lang; einheitlicher Envelope mit `source`/count via `_emit()`; Pydantic ≥2 Inputs
+
+## Gaps
+- Tool-Returns weiterhin JSON-`str` statt typisierter BaseModel/TypedDict-Returns (bewusst, Contract-Stabilität)

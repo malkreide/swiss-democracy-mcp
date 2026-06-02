@@ -1,0 +1,4 @@
+# SEC-008 — re-audit (PASS)
+
+## Evidence
+- Keine install-Hooks; transparenter Install; PyPI Trusted Publisher (publish.yml)

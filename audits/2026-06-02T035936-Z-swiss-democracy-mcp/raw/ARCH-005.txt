@@ -1,0 +1,5 @@
+# ARCH-005 — re-audit (PASS)
+
+## Evidence
+- Keine Hardcoded Secrets; SRGSSR-Creds als `SecretStr`
+- .gitignore + .env.example vorhanden; Gitleaks-Secret-Scan in CI (.github/workflows/ci.yml)

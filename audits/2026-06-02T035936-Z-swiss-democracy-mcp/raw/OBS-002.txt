@@ -1,0 +1,8 @@
+# OBS-002 — re-audit (PARTIAL)
+
+## Evidence
+- `_friendly_error` maskiert Details (keine Stacktraces); Original nur via stderr-Log
+- ToolError-Message ist user-friendly
+
+## Gaps
+- `mask_error_details=True` nicht gesetzt — Parameter existiert in der genutzten mcp-SDK-Version nicht

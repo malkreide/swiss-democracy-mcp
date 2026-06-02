@@ -1,0 +1,13 @@
+{
+  "audit_meta": {
+    "server_name": "swiss-democracy-mcp",
+    "run_id": "2026-06-02T035936-Z-swiss-democracy-mcp",
+    "started_at": "2026-06-02T03:59:36.149659+00:00",
+    "timezone_offset": "Z",
+    "skill_version": "1.0.0",
+    "output_dir": "audits/2026-06-02T035936-Z-swiss-democracy-mcp",
+    "catalog_hash": "091f446b27965044ce658a1d5f4b2cabe2b0ab5661dcc1a53b6be8f1f2e093c0",
+    "catalog_dir": "/tmp/mcp-audit-skill/checks"
+  },
+  "agent_runs": []
+}

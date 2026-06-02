@@ -1,0 +1,4 @@
+# SEC-006 — re-audit (PASS)
+
+## Evidence
+- Default-Transport stdio; HTTP nur via MCP_TRANSPORT; README dokumentiert

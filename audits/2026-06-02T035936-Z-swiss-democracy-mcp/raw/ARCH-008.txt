@@ -1,0 +1,4 @@
+# ARCH-008 — re-audit (PASS)
+
+## Evidence
+- README/README.de «MCP-Primitive»-Sektion begründet Tools-only (Phase-1-Wrapper)

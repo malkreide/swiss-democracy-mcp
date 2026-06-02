@@ -1,0 +1,5 @@
+# ARCH-004 — re-audit (PASS)
+
+## Evidence
+- Zentrale `Settings(BaseSettings)` statt Modul-Globals (server.py)
+- Geteilter Lifespan (@asynccontextmanager); Handler transport-agnostisch; Dual-Transport

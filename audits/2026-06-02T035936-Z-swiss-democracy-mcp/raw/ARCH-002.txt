@@ -1,0 +1,5 @@
+# ARCH-002 — re-audit (PASS)
+
+## Evidence
+- <use_case>-Tags in allen 10 Tool-Docstrings ergänzt (server.py)
+- Descriptions >100 Zeichen, differenziert

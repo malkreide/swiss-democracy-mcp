@@ -1,0 +1,7 @@
+# SCALE-002 — re-audit (PARTIAL)
+
+## Evidence
+- Tools zustandslos; Single-Instance-Annahme + Sticky-Session-Empfehlung in docs/roadmap.md dokumentiert
+
+## Gaps
+- Sticky-Sessions / Shared-State-Session-Manager nicht implementiert (nur dokumentiert)

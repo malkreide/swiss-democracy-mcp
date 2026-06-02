@@ -1,0 +1,4 @@
+# OPS-003 — re-audit (PASS)
+
+## Evidence
+- docs/roadmap.md mit Phasenmodell + Übergangskriterien + Single-Instance-/Scaling-Hinweis

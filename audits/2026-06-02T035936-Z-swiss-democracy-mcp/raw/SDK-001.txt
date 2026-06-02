@@ -1,0 +1,4 @@
+# SDK-001 — re-audit (PASS)
+
+## Evidence
+- Geteilter, gepoolter `httpx.AsyncClient` via @asynccontextmanager-Lifespan; Cleanup im finally

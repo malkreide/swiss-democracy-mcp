@@ -1,0 +1,4 @@
+# SDK-003 — re-audit (PASS)
+
+## Evidence
+- `ctx: Context | None` in allen Tools; CSV-Initialload meldet ctx.report_progress() + ctx.info()

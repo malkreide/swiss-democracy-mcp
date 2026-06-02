@@ -1,0 +1,4 @@
+# SEC-013 — re-audit (PASS)
+
+## Evidence
+- SRGSSR-Creds als `SecretStr`; docs/secret-management.md begründet Stufe 1 (Public Open Data) + Hardening-Pfad

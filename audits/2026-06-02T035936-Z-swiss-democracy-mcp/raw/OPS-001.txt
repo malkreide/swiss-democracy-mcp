@@ -1,0 +1,8 @@
+# OPS-001 — re-audit (PARTIAL)
+
+## Evidence
+- respx-Mocking, @pytest.mark.live, CI `-m "not live"`
+- Neu: Unit-Tests für BFS-list/results und Polis (no-creds + gemockter Token/Endpoint); 29 Tests
+
+## Gaps
+- Richtwert ≥5 Unit + ≥1 Live pro Tool noch nicht überall erreicht; kein separater nightly Live-Workflow

@@ -1,0 +1,8 @@
+# ARCH-012 — re-audit (PARTIAL)
+
+## Evidence
+- CHANGELOG.md + Dependabot (.github/dependabot.yml) + README «MCP Protocol Version»-Sektion
+- Dependabot bereits aktiv (PR #5 gemergt)
+
+## Gaps
+- `protocolVersion` nicht hart im Code gepinnt — Version wird vom mcp-SDK ausgehandelt und im README/CHANGELOG dokumentiert

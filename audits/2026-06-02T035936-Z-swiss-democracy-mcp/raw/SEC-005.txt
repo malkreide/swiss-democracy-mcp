@@ -1,0 +1,8 @@
+# SEC-005 — re-audit (PARTIAL)
+
+## Evidence
+- Einmalige getaddrinfo-Resolution + IP-Blocklist-Check für caller-supplied URLs
+- Fixe Host-Allow-List eliminiert den Rebinding-Vektor für vertrauenswürdige Hosts
+
+## Gaps
+- Kein literales TLS-IP-Pinning (gepinnte IP in TCP-Connection bei erhaltenem SNI) — httpx löst beim Request selbst auf

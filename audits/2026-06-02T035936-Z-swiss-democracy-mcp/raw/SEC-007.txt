@@ -1,0 +1,4 @@
+# SEC-007 — re-audit (PASS)
+
+## Evidence
+- Gehärtetes Dockerfile: non-root USER 10001, Multi-Stage; read-only-ready (CMD-Hinweis --read-only/--cap-drop)

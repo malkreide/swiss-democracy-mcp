@@ -1,0 +1,4 @@
+# OBS-004 — re-audit (PASS)
+
+## Evidence
+- Kein print() in src/; stdout bleibt fürs Protocol frei; Logging auf stderr
