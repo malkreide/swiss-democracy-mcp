@@ -1,0 +1,10 @@
+# SEC-004 — verification (FAIL)
+
+## Evidence
+- `democracy_bfs_get_vote_results(result_url)` reicht einen beliebigen User/LLM-URL direkt an `_bfs_get` → `httpx.get(url)` weiter (server.py:837-853,210-215)
+- `result_url` hat nur min/max_length (10/500), KEINE Scheme-/Host-Validierung (server.py:809-817)
+- Kein HTTPS-Enforcement, keine IP-Blocklist, kein Egress-Proxy
+
+## Gaps
+- Cloud-Metadata-IP 169.254.169.254 nicht blockiert
+- Private/Loopback-Ranges nicht blockiert

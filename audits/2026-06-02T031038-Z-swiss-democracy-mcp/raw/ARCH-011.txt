@@ -1,0 +1,8 @@
+# ARCH-011 — verification (PARTIAL)
+
+## Evidence
+- README.md, README.de.md, LICENSE, pyproject.toml vorhanden
+- src/-Layout korrekt, tests/, .github/workflows/ (ci.yml + publish.yml) vorhanden
+
+## Gaps
+- `CHANGELOG.md` fehlt

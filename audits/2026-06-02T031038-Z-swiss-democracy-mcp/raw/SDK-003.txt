@@ -1,0 +1,9 @@
+# SDK-003 — verification (PARTIAL)
+
+## Evidence
+- Tools sind grösstenteils schnell (Swissvotes-CSV gecacht 24h)
+
+## Gaps
+- Kein `ctx: Context`-Parameter in irgendeinem Tool
+- Kein `ctx.report_progress()` bei potenziell langsamen Calls (CSV-Initial-Download mehrere MB)
+- Fehler werden nicht via `ctx.warning/error` gemeldet

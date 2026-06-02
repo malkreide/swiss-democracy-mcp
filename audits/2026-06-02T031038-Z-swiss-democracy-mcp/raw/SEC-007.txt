@@ -1,0 +1,8 @@
+# SEC-007 — verification (PARTIAL)
+
+## Evidence
+- Server ist als PyPI-Paket via uvx/pip lauffähig
+
+## Gaps
+- Kein Dockerfile / keine Container-Hardening (USER non-root, readOnlyRootFilesystem, cap drop)
+- Kein seccomp/SecurityContext

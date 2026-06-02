@@ -1,0 +1,10 @@
+# SEC-021 — verification (FAIL)
+
+## Evidence
+- Externe Requests an feste Hosts (swissvotes.ch, opendata.swiss, api.srgssr.ch) — aber nicht erzwungen
+- `result_url` (BFS) erlaubt beliebige Hosts (server.py:853)
+
+## Gaps
+- Keine Code-Layer-Allow-List (`frozenset` erlaubter Hosts) / kein `assert_host_allowed`
+- Keine Network-Layer-Egress-Kontrolle dokumentiert
+- Kein `docs/network-egress.md`

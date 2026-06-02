@@ -1,0 +1,9 @@
+# ARCH-004 — verification (PARTIAL)
+
+## Evidence
+- Tool-Handler greifen nicht auf Transport-Internals (`request.`/headers) zu — voll transport-agnostisch
+- Dual-Transport via `MCP_TRANSPORT` stdio|streamable_http unterstützt (server.py:1118-1125)
+
+## Gaps
+- Konfiguration über Modul-globale Vars + `os.environ`, kein Pydantic-Settings-Objekt
+- Kein Lifespan/Dependency-Injection; `httpx.AsyncClient` wird pro Call erzeugt (siehe SDK-001)

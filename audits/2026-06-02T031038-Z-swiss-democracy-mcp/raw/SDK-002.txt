@@ -1,0 +1,9 @@
+# SDK-002 — verification (PARTIAL)
+
+## Evidence
+- Pydantic ≥2 für alle Input-Modelle; Field-Defaults via `Field(default=...)`
+
+## Gaps
+- Tool-Returns sind `-> str` (json.dumps), keine BaseModel/TypedDict-Return-Typen
+- Kein konsistenter Envelope mit `source`/`provenance`
+- Keine `Literal`-Typen für enumerable Felder (level, lang)

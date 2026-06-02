@@ -1,0 +1,9 @@
+# OBS-004 — verification (PASS)
+
+## Evidence
+- KEINE `print()`-Statements in src/ (grep clean)
+- Kein Logging auf stdout → stdout bleibt für JSON-RPC-Protocol reserviert
+- Dual-Transport ohne transport-abhängigen Logging-Switch
+
+## Gaps
+- Logging insgesamt fehlt (als OBS-003 erfasst, nicht hier blockierend)

@@ -1,0 +1,8 @@
+# ARCH-003 — verification (PARTIAL)
+
+## Evidence
+- `democracy_search_votes` liefert strukturiertes Envelope mit total/count/has_more auch bei 0 Treffern (server.py:452-459)
+
+## Gaps
+- Kein `match_type`-Feld, kein Fuzzy-/Suggestion-Mechanismus
+- Detail-/Party-/Cantonal-Tools geben bei Nicht-Treffer nur `{"error": "...nicht gefunden"}` zurück (server.py:512,597,665)

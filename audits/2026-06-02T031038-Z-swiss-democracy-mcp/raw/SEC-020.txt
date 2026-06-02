@@ -1,0 +1,5 @@
+# SEC-020 — verification (PASS)
+
+## Evidence
+- Keine `os.system`/`subprocess`/`shell=True`/`eval`/`exec`/`os.popen` (grep clean)
+- Reiner Library-First-Code (httpx, csv, json)

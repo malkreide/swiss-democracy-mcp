@@ -1,0 +1,9 @@
+# OBS-001 — verification (PARTIAL)
+
+## Evidence
+- Tool-Handler fangen Exceptions ab und crashen nicht (`_handle_error`, server.py:236-249)
+- Test deckt Not-Found-Pfad ab (test_get_vote_detail_not_found)
+
+## Gaps
+- Fehler werden als normaler String/JSON zurückgegeben, NICHT als `isError`-Tool-Result markiert
+- Keine standardisierten Protocol-Error-Codes; kein Test für Protocol-Error-Pfad

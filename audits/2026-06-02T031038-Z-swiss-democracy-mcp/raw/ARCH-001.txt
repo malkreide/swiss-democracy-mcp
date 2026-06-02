@@ -1,0 +1,6 @@
+# ARCH-001 — verification (PASS)
+
+## Evidence
+- 10 Tools, alle snake_case mit Präfix `democracy_*` (server.py:341-1071)
+- Keine Spaces/Punkte/Sonderzeichen; konsistente Convention im ganzen Repo
+- Ausführliche Docstrings mit Args/Returns pro Tool

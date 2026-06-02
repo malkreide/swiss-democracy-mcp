@@ -1,0 +1,9 @@
+# ARCH-009 — verification (PASS)
+
+## Evidence
+- ALLE 10 Tools haben explizite Annotations: readOnlyHint/destructiveHint/idempotentHint/openWorldHint (server.py:342-348 u.a.)
+- readOnlyHint=True konsistent mit Read-only-Verhalten
+- openWorldHint=True für alle externen Datenquellen
+
+## Gaps
+- Keine Annotations-Übersicht im README (minor)

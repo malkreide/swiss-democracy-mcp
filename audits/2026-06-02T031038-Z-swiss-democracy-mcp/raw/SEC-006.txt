@@ -1,0 +1,6 @@
+# SEC-006 — verification (PASS)
+
+## Evidence
+- Default-Transport ohne ENV-Var ist `stdio` (server.py:1119)
+- HTTP/SSE nur via expliziter `MCP_TRANSPORT=streamable_http`
+- README dokumentiert stdio/Claude Desktop primär + Cloud separat

@@ -1,0 +1,10 @@
+# OPS-002 — verification (PARTIAL)
+
+## Evidence
+- README mit Demo, Installation, Tools, Architektur (ASCII-Diagramm), Safety&Limits, Known Limitations, License
+- README.de.md parallel mit gleichen Top-Level-Sektionen
+- CONTRIBUTING.md vorhanden
+
+## Gaps
+- `CHANGELOG.md` fehlt
+- Keine dedizierte Configuration-Sektion (Env-Vars nur in Installation gestreut)

@@ -1,0 +1,9 @@
+# SEC-019 — verification (PARTIAL)
+
+## Evidence
+- Nur 2 der 3 Trifecta-Fähigkeiten: liest (öffentliche) Daten + externe Requests; KEIN Write/Send
+- Alle Tools read-only (GET)
+
+## Gaps
+- Trifecta-Bewertung nicht im README/docs dokumentiert
+- SSRF (SEC-004) schafft de-facto einen Forge-/Exfil-Kanal — verschärft die Bewertung bis SEC-004 gefixt ist

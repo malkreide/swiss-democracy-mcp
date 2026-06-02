@@ -1,0 +1,8 @@
+# SDK-004 — verification (PARTIAL)
+
+## Evidence
+- HTTP-Transport (streamable_http) wird unterstützt
+
+## Gaps
+- Keine CORS-Middleware konfiguriert (kein `expose_headers`/`allow_headers`)
+- `Mcp-Session-Id` nicht explizit für Browser-Clients exponiert

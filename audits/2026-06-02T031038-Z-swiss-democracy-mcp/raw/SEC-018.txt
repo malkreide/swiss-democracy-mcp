@@ -1,0 +1,10 @@
+# SEC-018 — verification (PASS)
+
+## Evidence
+- Alle Tool-Args über Pydantic-Modelle mit `extra="forbid"` (server.py:293ff)
+- Numerische Constraints `ge/le` (year 1848–2100, limit 1–100), String `max_length`
+- Cross-Field-Validator (year_to ≥ year_from, server.py:331-337)
+
+## Gaps
+- `strict=True` nicht gesetzt (durch extra=forbid + Constraints weitgehend kompensiert)
+- `result_url` ohne Host-Pattern (im SSRF-Finding SEC-004 adressiert)

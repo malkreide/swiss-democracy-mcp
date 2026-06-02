@@ -1,0 +1,8 @@
+# OBS-003 — verification (FAIL)
+
+## Evidence
+- Kein Logging-Code vorhanden
+
+## Gaps
+- Kein Structured Logger (structlog/loguru) in dependencies
+- Keine Severity-Stufen, kein bound context pro Tool-Call

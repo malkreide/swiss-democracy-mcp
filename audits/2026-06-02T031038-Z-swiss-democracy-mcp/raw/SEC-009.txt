@@ -1,0 +1,9 @@
+# SEC-009 — verification (PARTIAL)
+
+## Evidence
+- Keine eigene Session-Verwaltung im Code; Tools sind zustandslos
+- `auth_model=none` → keine User-Identität, keine privilegierten Operationen pro Session
+
+## Gaps
+- Keine kryptografische Session-Generierung/Binding im Code (verlässt sich auf FastMCP-Defaults)
+- Kein explizites TTL / keine serverseitige Invalidierung
