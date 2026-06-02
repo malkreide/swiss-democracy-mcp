@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Execution errors now surface as `isError` tool results via `ToolError`,
+  instead of error strings in a successful result; the friendly message is
+  shown, the original is logged to stderr (audit OBS-001).
+- MCP `Context` injection: long-running tools report progress / log via
+  `ctx` (e.g. the initial Swissvotes CSV download) (audit SDK-003).
+- CORS middleware for the Streamable-HTTP transport, exposing/allowing the
+  `Mcp-Session-Id` header; origins configurable via `MCP_CORS_ORIGINS`
+  (audit SDK-004).
+- Unit-test coverage for the BFS and Polis tools incl. the no-credentials hint
+  (audit OPS-001).
 - Egress allow-list + HTTPS enforcement + IP blocklist for all outbound
   requests; DNS resolution + private/metadata-IP rejection for caller-supplied
   URLs (audit SEC-004 / SEC-005 / SEC-021).
