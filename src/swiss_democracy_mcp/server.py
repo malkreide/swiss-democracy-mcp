@@ -23,13 +23,19 @@ Demo query:
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import csv
 import io
+import ipaddress
 import json
 import os
+import socket
+import sys
 import time
+from contextlib import asynccontextmanager
 from typing import Any
+from urllib.parse import urlparse
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -54,6 +60,120 @@ POLIS_BASE = f"{SRGSSR_BASE}/polis/v1"
 
 TIMEOUT = 30.0
 USER_AGENT = "swiss-democracy-mcp/1.0.0 (github.com/malkreide/swiss-democracy-mcp)"
+
+# ---------------------------------------------------------------------------
+# Egress allow-list & SSRF prevention (audit findings SEC-004 / SEC-005 / SEC-021)
+# ---------------------------------------------------------------------------
+# Outbound HTTP is restricted to this fixed set of trusted Swiss open-data hosts.
+# A subdomain of an allowed host (e.g. *.bfs.admin.ch) is also permitted. This is
+# the primary defence against SSRF: even an attacker-controlled tool argument
+# (e.g. BFS `result_url`) can only ever reach a known-good host.
+ALLOWED_HOSTS = frozenset(
+    {
+        "swissvotes.ch",
+        "opendata.swiss",
+        "bfs.admin.ch",
+        "api.srgssr.ch",
+    }
+)
+
+# Resolved IPs in these ranges are rejected — blocks cloud-metadata endpoints,
+# loopback and private/link-local networks (defence-in-depth + DNS-rebinding).
+BLOCKED_NETWORKS = [
+    ipaddress.ip_network(n)
+    for n in (
+        "0.0.0.0/8",
+        "10.0.0.0/8",
+        "100.64.0.0/10",
+        "127.0.0.0/8",
+        "169.254.0.0/16",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "::1/128",
+        "fc00::/7",
+        "fe80::/10",
+    )
+]
+
+
+def _host_allowed(host: str | None) -> bool:
+    """True iff `host` is an allow-listed host or a subdomain of one."""
+    if not host:
+        return False
+    host = host.lower()
+    return any(host == h or host.endswith("." + h) for h in ALLOWED_HOSTS)
+
+
+async def _validate_outbound(url: str, *, resolve: bool = True) -> None:
+    """Gate every outbound request: HTTPS-only + host allow-list (+ IP blocklist).
+
+    Args:
+        url: the target URL.
+        resolve: if True, resolve DNS once and reject private/link-local/
+            metadata IPs. Used for caller-supplied URLs (SSRF vector). For
+            compile-time-constant trusted URLs `resolve=False` keeps the check
+            network-free.
+
+    Raises:
+        ValueError: if the URL is not HTTPS, the host is not allow-listed, or
+            it resolves into a blocked network range.
+    """
+    parsed = urlparse(url)
+    if parsed.scheme != "https":
+        raise ValueError(f"Nur HTTPS-URLs sind erlaubt (erhalten: '{parsed.scheme or '?'}').")
+    host = parsed.hostname
+    if not _host_allowed(host):
+        raise ValueError(
+            f"Host '{host}' steht nicht auf der Egress-Allow-List. "
+            f"Erlaubt sind: {', '.join(sorted(ALLOWED_HOSTS))}."
+        )
+    if not resolve:
+        return
+    loop = asyncio.get_event_loop()
+    try:
+        addrinfo = await loop.getaddrinfo(host, parsed.port or 443, type=socket.SOCK_STREAM)
+    except socket.gaierror as e:
+        raise ValueError(f"DNS-Auflösung für '{host}' fehlgeschlagen: {e}") from e
+    for *_, sockaddr in addrinfo:
+        ip = ipaddress.ip_address(sockaddr[0])
+        for blocked in BLOCKED_NETWORKS:
+            if ip in blocked:
+                raise ValueError(
+                    f"Aufgelöste IP {ip} liegt im gesperrten Bereich {blocked} "
+                    f"(SSRF-Schutz)."
+                )
+
+
+# ---------------------------------------------------------------------------
+# Shared HTTP client (audit finding SDK-001): one pooled AsyncClient for the
+# whole process instead of a fresh client per tool call. Created lazily and
+# closed by the server lifespan.
+# ---------------------------------------------------------------------------
+
+_http_client: httpx.AsyncClient | None = None
+
+
+def _client() -> httpx.AsyncClient:
+    global _http_client
+    if _http_client is None or _http_client.is_closed:
+        _http_client = httpx.AsyncClient(
+            timeout=TIMEOUT,
+            follow_redirects=False,
+            headers={"User-Agent": USER_AGENT},
+        )
+    return _http_client
+
+
+@asynccontextmanager
+async def _lifespan(_server: FastMCP):
+    """Shared lifecycle: dispose the pooled HTTP client on shutdown."""
+    try:
+        yield
+    finally:
+        global _http_client
+        if _http_client is not None and not _http_client.is_closed:
+            await _http_client.aclose()
+        _http_client = None
 
 # Rechtsform codes in Swissvotes
 RECHTSFORM_MAP = {
@@ -112,12 +232,10 @@ async def _load_swissvotes() -> list[dict[str, str]]:
     if _swissvotes_cache is not None and (now - _swissvotes_loaded_at) < CACHE_TTL:
         return _swissvotes_cache
 
-    async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
-        resp = await client.get(
-            SWISSVOTES_CSV_URL, headers={"User-Agent": USER_AGENT}
-        )
-        resp.raise_for_status()
-        content = resp.text
+    await _validate_outbound(SWISSVOTES_CSV_URL, resolve=False)
+    resp = await _client().get(SWISSVOTES_CSV_URL, timeout=60.0, follow_redirects=True)
+    resp.raise_for_status()
+    content = resp.text
 
     reader = csv.DictReader(io.StringIO(content), delimiter=";")
     rows = list(reader)
@@ -162,18 +280,17 @@ async def _get_polis_token() -> str | None:
     key, secret = creds
     credentials = base64.b64encode(f"{key}:{secret}".encode()).decode()
 
-    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-        resp = await client.post(
-            SRGSSR_TOKEN_URL,
-            params={"grant_type": "client_credentials"},
-            headers={
-                "Authorization": f"Basic {credentials}",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent": USER_AGENT,
-            },
-        )
-        resp.raise_for_status()
-        data = resp.json()
+    await _validate_outbound(SRGSSR_TOKEN_URL, resolve=False)
+    resp = await _client().post(
+        SRGSSR_TOKEN_URL,
+        params={"grant_type": "client_credentials"},
+        headers={
+            "Authorization": f"Basic {credentials}",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+    )
+    resp.raise_for_status()
+    data = resp.json()
 
     _token_cache["access_token"] = data["access_token"]
     _token_cache["expires_at"] = now + int(data.get("expires_in", 3600))
@@ -193,26 +310,30 @@ async def _polis_get(path: str, params: dict | None = None) -> dict:
     if token is None:
         raise ValueError(_NO_POLIS_CREDS)
 
-    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-        resp = await client.get(
-            f"{POLIS_BASE}{path}",
-            params=params,
-            headers={
-                "Authorization": f"Bearer {token}",
-                "Accept": "application/json",
-                "User-Agent": USER_AGENT,
-            },
-        )
-        resp.raise_for_status()
-        return resp.json()
+    full_url = f"{POLIS_BASE}{path}"
+    await _validate_outbound(full_url, resolve=False)
+    resp = await _client().get(
+        full_url,
+        params=params,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+        },
+    )
+    resp.raise_for_status()
+    return resp.json()
 
 
-async def _bfs_get(url: str, params: dict | None = None) -> dict:
-    """Unauthenticated GET for BFS/opendata.swiss endpoints."""
-    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-        resp = await client.get(url, params=params, headers={"User-Agent": USER_AGENT})
-        resp.raise_for_status()
-        return resp.json()
+async def _bfs_get(url: str, params: dict | None = None, *, resolve: bool = False) -> dict:
+    """Unauthenticated GET for BFS/opendata.swiss endpoints.
+
+    `resolve=True` is used for caller-supplied URLs (the BFS `result_url` tool
+    argument) so the resolved IP is checked against the SSRF blocklist.
+    """
+    await _validate_outbound(url, resolve=resolve)
+    resp = await _client().get(url, params=params)
+    resp.raise_for_status()
+    return resp.json()
 
 
 # ---------------------------------------------------------------------------
@@ -274,6 +395,7 @@ def _row_to_vote_summary(row: dict[str, str]) -> dict:
 
 mcp = FastMCP(
     "swiss_democracy_mcp",
+    lifespan=_lifespan,
     instructions=(
         "Dieser Server bietet Zugang zu Schweizer Demokratie-Daten: "
         "alle eidgenössischen Volksabstimmungen seit 1848 (Swissvotes), "
@@ -850,7 +972,7 @@ async def democracy_bfs_get_vote_results(params: BfsVoteResultInput) -> str:
         str: JSON mit Abstimmungsresultaten pro Vorlage
     """
     try:
-        data = await _bfs_get(params.result_url)
+        data = await _bfs_get(params.result_url, resolve=True)
     except Exception as e:
         return _handle_error(e)
 
@@ -1118,8 +1240,17 @@ async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
 if __name__ == "__main__":
     transport = os.environ.get("MCP_TRANSPORT", "stdio")
     if transport == "streamable_http":
-        host = os.environ.get("MCP_HOST", "0.0.0.0")
+        # Bind to loopback by default (audit finding SEC-016: NeighborJack).
+        # Set MCP_HOST=0.0.0.0 explicitly only inside a container/cloud deploy.
+        host = os.environ.get("MCP_HOST", "127.0.0.1")
         port = int(os.environ.get("MCP_PORT", "8000"))
+        if host == "0.0.0.0":  # noqa: S104 — opt-in, container-only
+            print(
+                "WARNUNG: Server bindet an 0.0.0.0 (alle Interfaces). "
+                "Nur in einer abgesicherten Container-/Cloud-Umgebung verwenden, "
+                "nicht auf einem lokalen Entwicklungsrechner.",
+                file=sys.stderr,
+            )
         mcp.run(transport="streamable_http", host=host, port=port)
     else:
         mcp.run()

@@ -94,8 +94,13 @@ Add to `claude_desktop_config.json`:
 
 ```bash
 pip install swiss-democracy-mcp
-MCP_TRANSPORT=streamable_http MCP_PORT=8000 python -m swiss_democracy_mcp.server
+# Bind to all interfaces ONLY inside a container/cloud environment:
+MCP_TRANSPORT=streamable_http MCP_HOST=0.0.0.0 MCP_PORT=8000 python -m swiss_democracy_mcp.server
 ```
+
+`MCP_HOST` defaults to `127.0.0.1` (loopback). Set `MCP_HOST=0.0.0.0` **only**
+inside a sandboxed container/cloud deployment — never on a local machine, where
+it would expose the server to your whole network.
 
 ---
 
@@ -149,6 +154,7 @@ Example multi-server query:
 ## Safety & Limits
 
 - **Read-only:** All tools perform HTTP GET requests only — no data is written, modified, or deleted upstream.
+- **Egress allow-list (SSRF protection):** Outbound requests are restricted to a fixed allow-list of trusted hosts (`swissvotes.ch`, `opendata.swiss`, `*.bfs.admin.ch`, `api.srgssr.ch`), HTTPS only. Caller-supplied URLs (the BFS `result_url`) are additionally resolved and rejected if they point at private, loopback or cloud-metadata IP ranges.
 - **No personal data:** Swissvotes, BFS and SRGSSR Polis expose aggregate democratic data (vote results, party positions, cantonal/municipality tallies). No personally identifiable information (PII) is processed or stored by this server.
 - **Rate limits:** Swissvotes is a single CSV downloaded once per 24h and cached in memory. BFS / opendata.swiss and SRGSSR Polis are public APIs without documented rate limits — keep `limit` and date ranges conservative. The server enforces a 30s timeout per request.
 - **Data freshness:** Real-time BFS results reflect the upstream feed at query time (no local caching). Swissvotes is refreshed every 24h from the Uni Bern mirror.

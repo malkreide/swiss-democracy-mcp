@@ -12,9 +12,13 @@ import pytest
 import respx
 
 from swiss_democracy_mcp.server import (
+    BfsVoteResultInput,
     ListDatesInput,
     VoteDetailInput,
     VoteSearchInput,
+    _host_allowed,
+    _validate_outbound,
+    democracy_bfs_get_vote_results,
     democracy_get_cantonal_results,
     democracy_get_party_positions,
     democracy_get_vote_detail,
@@ -334,3 +338,54 @@ async def test_live_cantonal_results_recent():
     data = json.loads(result)
     assert "cantons" in data
     assert len(data["cantons"]) == 26
+
+
+# ---------------------------------------------------------------------------
+# SSRF / Egress-Allow-List (audit findings SEC-004 / SEC-005 / SEC-021)
+# ---------------------------------------------------------------------------
+
+def test_host_allowed_accepts_known_hosts_and_subdomains():
+    assert _host_allowed("swissvotes.ch")
+    assert _host_allowed("opendata.swiss")
+    assert _host_allowed("www.bfs.admin.ch")  # subdomain of bfs.admin.ch
+    assert _host_allowed("api.srgssr.ch")
+
+
+def test_host_allowed_rejects_unknown_and_lookalike_hosts():
+    assert not _host_allowed("evil.com")
+    assert not _host_allowed("169.254.169.254")
+    assert not _host_allowed("bfs.admin.ch.evil.com")  # suffix trick
+    assert not _host_allowed("notswissvotes.ch")
+    assert not _host_allowed(None)
+
+
+@pytest.mark.asyncio
+async def test_validate_outbound_rejects_non_https():
+    with pytest.raises(ValueError, match="HTTPS"):
+        await _validate_outbound("http://opendata.swiss/data", resolve=False)
+
+
+@pytest.mark.asyncio
+async def test_validate_outbound_rejects_disallowed_host():
+    with pytest.raises(ValueError, match="Egress-Allow-List"):
+        await _validate_outbound("https://evil.example.com/x", resolve=False)
+
+
+@pytest.mark.asyncio
+async def test_bfs_get_vote_results_rejects_metadata_url():
+    """SSRF: a cloud-metadata URL must be refused before any request goes out."""
+    params = BfsVoteResultInput(
+        result_url="http://169.254.169.254/latest/meta-data/", level="national"
+    )
+    result = await democracy_bfs_get_vote_results(params)
+    # _handle_error returns the ValueError message as the tool result
+    assert "HTTPS" in result or "Allow-List" in result
+
+
+@pytest.mark.asyncio
+async def test_bfs_get_vote_results_rejects_offsite_host():
+    params = BfsVoteResultInput(
+        result_url="https://attacker.example.com/exfil", level="national"
+    )
+    result = await democracy_bfs_get_vote_results(params)
+    assert "Allow-List" in result
