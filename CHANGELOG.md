@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.2.0] — 2026-06-02
+
+### Audit verification
+- **Production-ready:** ✅ yes
+- **Audit run-id:** `2026-06-02T035936-Z-swiss-democracy-mcp`
+- **Skill version:** `1.0.0` · **Catalog hash:** `091f446b2796…`
+- **Check results:** 29 pass · 0 fail · 7 partial (non-blocking) · 0 todo
+
 ### Added
 - Execution errors now surface as `isError` tool results via `ToolError`,
   instead of error strings in a successful result; the friendly message is

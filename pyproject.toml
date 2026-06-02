@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "swiss-democracy-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for Swiss direct democracy data: Swissvotes (1848+), BFS opendata.swiss, SRGSSR Polis (1900+)"
 readme = "README.md"
 license = { file = "LICENSE" }
