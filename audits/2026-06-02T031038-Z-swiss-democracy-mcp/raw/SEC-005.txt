@@ -1,0 +1,8 @@
+# SEC-005 — verification (FAIL)
+
+## Evidence
+- Kein `getaddrinfo`/DNS-Pinning im Code; httpx-Default mit impliziter Doppel-Auflösung
+- Folgt direkt aus fehlender SSRF-Prevention (SEC-004)
+
+## Gaps
+- Kein gepinnter IP-Request, kein Host-Header-Erhalt für TLS-SNI

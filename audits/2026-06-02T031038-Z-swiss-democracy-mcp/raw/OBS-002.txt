@@ -1,0 +1,9 @@
+# OBS-002 — verification (PARTIAL)
+
+## Evidence
+- `_handle_error` liefert benutzerfreundliche, gemaskte Meldungen (keine Stacktraces)
+- Kein `traceback.format_exc()` im Code
+
+## Gaps
+- `mask_error_details=True` im FastMCP-Konstruktor nicht gesetzt (server.py:275)
+- Generischer Fallback `f"Fehler: {type(e).__name__}: {e}"` (server.py:249) kann Internals exponieren

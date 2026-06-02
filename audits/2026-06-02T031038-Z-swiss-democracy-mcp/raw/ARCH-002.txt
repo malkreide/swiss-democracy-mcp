@@ -1,0 +1,8 @@
+# ARCH-002 — verification (PARTIAL)
+
+## Evidence
+- Tool-Descriptions sind ausführlich (>100 Zeichen Median), mit Args/Returns
+- Differenzierung ähnlicher Tools (search vs detail vs cantonal) klar
+
+## Gaps
+- Keine strukturierten `<use_case>`/`<important_notes>`/`<example>`-Tags (0 Treffer in src/)

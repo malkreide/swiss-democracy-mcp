@@ -1,0 +1,9 @@
+# SEC-013 — verification (PARTIAL)
+
+## Evidence
+- SRGSSR-Credentials werden aus Env-Vars geladen (Stufe 1), keine Hardcoded Keys
+- Datenklasse Public Open Data → Stufe 1 grundsätzlich akzeptabel
+
+## Gaps
+- Kein Secret-Manager (Stufe 3) und keine dokumentierte Begründung für Stufe 1
+- Credentials als `str` statt `SecretStr`

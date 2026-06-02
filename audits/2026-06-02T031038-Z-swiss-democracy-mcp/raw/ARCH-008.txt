@@ -1,0 +1,8 @@
+# ARCH-008 — verification (FAIL)
+
+## Evidence
+- Nur `@mcp.tool` verwendet — keine `@mcp.resource`, keine `@mcp.prompt` (0 Treffer)
+
+## Gaps
+- Keine Begründung im README für Tools-only-Ansatz
+- Read-only-Lookups (vote_detail, cantonal) sind Resource-Kandidaten

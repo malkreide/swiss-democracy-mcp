@@ -1,0 +1,7 @@
+# SEC-008 — verification (PASS)
+
+## Evidence
+- Keine pre/postinstall-Hooks; hatchling-Build, sauberes pyproject
+- README zeigt vollen Installations-Befehl (uvx + claude_desktop_config)
+- publish.yml nutzt PyPI Trusted Publisher (`id-token: write`, `environment: pypi`, pypa/gh-action-pypi-publish) → Sigstore-Signatur
+- CONTRIBUTING.md erklärt Build-Prozess

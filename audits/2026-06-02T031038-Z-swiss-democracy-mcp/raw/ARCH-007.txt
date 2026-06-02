@@ -1,0 +1,8 @@
+# ARCH-007 — verification (PASS)
+
+## Evidence
+- Tools liefern gedanklich abgeschlossene Resultate (vote_detail komplett, cantonal alle 26 Kantone)
+- `search_votes` liefert vollständige Summaries (nicht nur IDs) → erste Antwort ohne Folge-Call möglich
+
+## Gaps
+- Natürliche Drill-down-Verkettung search→detail vorhanden (akzeptabel, da search selbst aussagekräftig)

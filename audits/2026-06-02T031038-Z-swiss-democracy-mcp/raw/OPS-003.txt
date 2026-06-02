@@ -1,0 +1,10 @@
+# OPS-003 — verification (PARTIAL)
+
+## Evidence
+- Phasen explizit im README deklariert (Phase 1/2/3 in Tools-Sektion)
+- Phasen konsistent mit Annotations (alle read-only = Phase 1)
+
+## Gaps
+- Kein Roadmap-File
+- Phasenübergangs-Voraussetzungen (Audit/ISDS/DSG) nicht dokumentiert
+- Kein CHANGELOG für Phasenübergänge

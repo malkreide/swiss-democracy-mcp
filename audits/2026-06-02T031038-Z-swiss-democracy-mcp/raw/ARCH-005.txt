@@ -1,0 +1,12 @@
+# ARCH-005 — verification (PARTIAL)
+
+## Evidence
+- Keine Hardcoded Secrets im Code (grep clean)
+- SRGSSR-Credentials werden aus `os.environ.get` geladen, ohne Real-Key-Defaults (server.py:145-146)
+- Keine Secrets in Logs (kein Logging vorhanden)
+
+## Gaps
+- Keine `.gitignore` im Repo → `.env` nicht ausgeschlossen
+- Keine `.env.example` mit Platzhaltern
+- Kein CI-Secret-Scan (gitleaks/trufflehog) in den Workflows
+- Credentials als `str`, nicht `SecretStr`

@@ -1,0 +1,6 @@
+# ARCH-006 — verification (PASS)
+
+## Evidence
+- 10 Tools (≤12-Heuristik erfüllt)
+- Use-Case-orientiert, kein 1:1-CRUD-API-Mapping
+- Anchor-Demo-Query mit 2–3 Tool-Calls beantwortbar (README Demo)

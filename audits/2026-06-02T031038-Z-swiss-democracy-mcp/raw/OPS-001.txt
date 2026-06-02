@@ -1,0 +1,11 @@
+# OPS-001 — verification (PARTIAL)
+
+## Evidence
+- respx-HTTP-Mocking in Unit-Tests (tests/test_server.py:12,155ff)
+- Live-Tests mit `@pytest.mark.live` markiert, Marker in pyproject registriert
+- CI läuft `pytest -m "not live"` (ci.yml)
+
+## Gaps
+- BFS- und Polis-Tools haben keine Unit-Tests (nur Swissvotes getestet)
+- Nur ~11 Unit-Tests / 2 Live-Tests — unter dem Richtwert ≥5 Unit + ≥1 Live pro Tool
+- Separater nightly Live-Test-Workflow fehlt

@@ -1,0 +1,10 @@
+# ARCH-012 — verification (FAIL)
+
+## Evidence
+- FastMCP-Default-Protocol genutzt
+
+## Gaps
+- `protocolVersion` nicht explizit gepinnt
+- Kein CHANGELOG.md
+- Keine README-Sektion «MCP Protocol Version»
+- Kein Dependabot/Renovate (.github/dependabot.yml fehlt)

@@ -1,0 +1,9 @@
+# SEC-016 — verification (FAIL)
+
+## Evidence
+- HTTP-Modus bindet per Default an `0.0.0.0`: `os.environ.get("MCP_HOST", "0.0.0.0")` (server.py:1121)
+
+## Gaps
+- Default sollte `127.0.0.1` sein; 0.0.0.0 nur explizit im Container
+- README erklärt die lokal/container-Differenzierung beim Binding nicht
+- Keine Warnung beim Start auf 0.0.0.0

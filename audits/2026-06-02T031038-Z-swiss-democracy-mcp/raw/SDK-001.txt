@@ -1,0 +1,8 @@
+# SDK-001 — verification (FAIL)
+
+## Evidence
+- Kein `lifespan`/`@asynccontextmanager`/`AsyncExitStack` (0 Treffer)
+- `httpx.AsyncClient(...)` wird in jedem Helper pro Tool-Call neu erzeugt (server.py:115,165,196,212)
+
+## Gaps
+- Kein geteilter Client/Connection-Pool über Lifespan

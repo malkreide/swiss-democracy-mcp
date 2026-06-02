@@ -1,0 +1,9 @@
+# SCALE-002 — verification (PARTIAL)
+
+## Evidence
+- Tools sind zustandslos (kein Mcp-Session-Id-abhängiger State); In-Memory-CSV-Cache ist reiner Cache
+- stdio-first; HTTP-Transport sekundär
+
+## Gaps
+- Keine Sticky-Sessions / kein Shared-State-Session-Manager (Redis o.ä.)
+- Kein Failover-/Multi-Instance-Konzept dokumentiert
