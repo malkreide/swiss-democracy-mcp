@@ -389,3 +389,58 @@ async def test_bfs_get_vote_results_rejects_offsite_host():
     )
     result = await democracy_bfs_get_vote_results(params)
     assert "Allow-List" in result
+
+
+# ---------------------------------------------------------------------------
+# Provenance / source field (audit finding CH-004)
+# ---------------------------------------------------------------------------
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_search_response_carries_source_and_license():
+    respx.get(SWISSVOTES_URL).mock(
+        return_value=httpx.Response(200, text=_build_sample_csv())
+    )
+    data = json.loads(await democracy_search_votes(VoteSearchInput(keyword="AHV")))
+    assert data["source"]["license"] == "CC BY 4.0"
+    assert "swissvotes.ch" in data["source"]["url"]
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_search_empty_sets_match_type_none(monkeypatch):
+    import swiss_democracy_mcp.server as srv
+
+    monkeypatch.setattr(srv, "_swissvotes_cache", None)
+    respx.get(SWISSVOTES_URL).mock(
+        return_value=httpx.Response(200, text=_build_sample_csv())
+    )
+    data = json.loads(
+        await democracy_search_votes(VoteSearchInput(keyword="zzz-nonexistent-xyz"))
+    )
+    assert data["total"] == 0
+    assert data["match_type"] == "none"
+    assert "note" in data
+
+
+# ---------------------------------------------------------------------------
+# Settings / SecretStr (audit findings ARCH-004 / SEC-013)
+# ---------------------------------------------------------------------------
+
+def test_settings_loads_srgssr_creds_as_secretstr(monkeypatch):
+    from swiss_democracy_mcp.server import Settings
+
+    monkeypatch.setenv("SRGSSR_CONSUMER_KEY", "topsecretkey")
+    monkeypatch.setenv("SRGSSR_CONSUMER_SECRET", "topsecretsecret")
+    s = Settings()
+    # SecretStr must not expose the value in its repr
+    assert "topsecretkey" not in repr(s.srgssr_consumer_key)
+    assert s.srgssr_consumer_key.get_secret_value() == "topsecretkey"
+
+
+def test_settings_defaults_are_safe():
+    from swiss_democracy_mcp.server import Settings
+
+    s = Settings(_env_file=None)
+    assert s.mcp_host == "127.0.0.1"
+    assert s.mcp_transport == "stdio"

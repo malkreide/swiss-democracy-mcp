@@ -137,6 +137,38 @@ it would expose the server to your whole network.
 
 ---
 
+## Configuration
+
+All configuration is via environment variables (see [`.env.example`](.env.example)):
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `MCP_TRANSPORT` | `stdio` | `stdio` (local) or `streamable_http` (cloud) |
+| `MCP_HOST` | `127.0.0.1` | HTTP bind address — set `0.0.0.0` **only** in a container |
+| `MCP_PORT` | `8000` | HTTP port |
+| `LOG_LEVEL` | `INFO` | structured JSON logs go to **stderr** |
+| `SRGSSR_CONSUMER_KEY` / `SRGSSR_CONSUMER_SECRET` | — | optional, only for `democracy_polis_*` tools |
+
+Secrets are held as `SecretStr` and never logged. See
+[docs/secret-management.md](docs/secret-management.md) and
+[docs/security.md](docs/security.md).
+
+## MCP Primitives
+
+This server intentionally exposes **Tools only** (no Resources or Prompts). It is
+a Phase-1 read-only data wrapper (see [docs/roadmap.md](docs/roadmap.md)); the
+tool surface is small (10 use-case-oriented tools) and every response is
+self-contained with source provenance. Resources (e.g. `vote://{anr}`) are a
+candidate for a later phase once the URI scheme stabilises.
+
+## MCP Protocol Version
+
+The protocol version is the one negotiated by `mcp[cli]>=1.6.0` (FastMCP). SDK
+updates are tracked monthly via Dependabot; protocol bumps are recorded in
+[CHANGELOG.md](CHANGELOG.md).
+
+---
+
 ## Portfolio Synergy
 
 Combine with other servers in the Swiss Public Data MCP portfolio:

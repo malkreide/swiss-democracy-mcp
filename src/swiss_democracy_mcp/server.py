@@ -29,17 +29,18 @@ import csv
 import io
 import ipaddress
 import json
-import os
 import socket
 import sys
 import time
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import Any, Literal
 from urllib.parse import urlparse
 
 import httpx
+import structlog
 from mcp.server.fastmcp import FastMCP
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -60,6 +61,74 @@ POLIS_BASE = f"{SRGSSR_BASE}/polis/v1"
 
 TIMEOUT = 30.0
 USER_AGENT = "swiss-democracy-mcp/1.0.0 (github.com/malkreide/swiss-democracy-mcp)"
+
+# ---------------------------------------------------------------------------
+# Settings (audit findings ARCH-004 / SEC-013 / ARCH-005)
+# ---------------------------------------------------------------------------
+# Central, typed configuration loaded from the environment. Secrets are held as
+# pydantic SecretStr so they never leak through reprs or logs.
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    srgssr_consumer_key: SecretStr | None = None
+    srgssr_consumer_secret: SecretStr | None = None
+    mcp_transport: str = "stdio"
+    mcp_host: str = "127.0.0.1"
+    mcp_port: int = 8000
+    log_level: str = "INFO"
+
+
+settings = Settings()
+
+# ---------------------------------------------------------------------------
+# Structured logging to stderr (audit findings OBS-003 / OBS-004)
+# ---------------------------------------------------------------------------
+# JSON logs go to stderr — stdout stays reserved for the stdio JSON-RPC stream.
+
+structlog.configure(
+    processors=[
+        structlog.contextvars.merge_contextvars,
+        structlog.processors.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.JSONRenderer(),
+    ],
+    logger_factory=structlog.WriteLoggerFactory(file=sys.stderr),
+    wrapper_class=structlog.make_filtering_bound_logger(
+        getattr(__import__("logging"), settings.log_level.upper(), 20)
+    ),
+    cache_logger_on_first_use=True,
+)
+log = structlog.get_logger("swiss_democracy_mcp")
+
+# ---------------------------------------------------------------------------
+# Data-source provenance (audit finding CH-004 — OGD-CH licence attribution)
+# ---------------------------------------------------------------------------
+SOURCES: dict[str, dict[str, str]] = {
+    "swissvotes": {
+        "name": "Swissvotes — Université de Berne / Année Politique Suisse",
+        "license": "CC BY 4.0",
+        "url": "https://swissvotes.ch",
+    },
+    "bfs": {
+        "name": "Bundesamt für Statistik (BFS) / opendata.swiss",
+        "license": "opendata.swiss terms (mostly CC BY / Open by Default)",
+        "url": "https://opendata.swiss",
+    },
+    "polis": {
+        "name": "SRG SSR — Polis",
+        "license": "SRGSSR developer terms (free tier, non-commercial)",
+        "url": "https://developer.srgssr.ch",
+    },
+}
+
+
+def _emit(payload: dict, source_key: str) -> str:
+    """Attach source/licence provenance and serialise to JSON (CC BY 4.0 attribution)."""
+    payload["source"] = SOURCES[source_key]
+    return json.dumps(payload, indent=2, ensure_ascii=False)
+
 
 # ---------------------------------------------------------------------------
 # Egress allow-list & SSRF prevention (audit findings SEC-004 / SEC-005 / SEC-021)
@@ -233,6 +302,7 @@ async def _load_swissvotes() -> list[dict[str, str]]:
         return _swissvotes_cache
 
     await _validate_outbound(SWISSVOTES_CSV_URL, resolve=False)
+    log.info("swissvotes_csv_refresh", host=urlparse(SWISSVOTES_CSV_URL).hostname, source="swissvotes")
     resp = await _client().get(SWISSVOTES_CSV_URL, timeout=60.0, follow_redirects=True)
     resp.raise_for_status()
     content = resp.text
@@ -260,8 +330,10 @@ _token_cache: dict[str, Any] = {"access_token": None, "expires_at": 0.0}
 
 
 def _get_polis_credentials() -> tuple[str, str] | None:
-    key = os.environ.get("SRGSSR_CONSUMER_KEY", "")
-    secret = os.environ.get("SRGSSR_CONSUMER_SECRET", "")
+    if settings.srgssr_consumer_key is None or settings.srgssr_consumer_secret is None:
+        return None
+    key = settings.srgssr_consumer_key.get_secret_value()
+    secret = settings.srgssr_consumer_secret.get_secret_value()
     if not key or not secret:
         return None
     return key, secret
@@ -331,6 +403,7 @@ async def _bfs_get(url: str, params: dict | None = None, *, resolve: bool = Fals
     argument) so the resolved IP is checked against the SSRF blocklist.
     """
     await _validate_outbound(url, resolve=resolve)
+    log.info("outbound_request", host=urlparse(url).hostname, source="bfs")
     resp = await _client().get(url, params=params)
     resp.raise_for_status()
     return resp.json()
@@ -472,6 +545,8 @@ class VoteSearchInput(BaseModel):
 async def democracy_search_votes(params: VoteSearchInput) -> str:
     """Durchsucht alle eidgenössischen Volksabstimmungen seit 1848 (Swissvotes-Datenbank).
 
+    <use_case>Politische/journalistische Recherche: Vorlagen nach Thema, Zeitraum oder Ergebnis finden.</use_case>
+
     Filtert nach Stichwort, Zeitraum, Rechtsform, Ergebnis und Politikbereich.
     Gibt Titel, Datum, Rechtsform, Ja-Anteil, Beteiligung und Bundesratsempfehlung zurück.
 
@@ -571,14 +646,21 @@ async def democracy_search_votes(params: VoteSearchInput) -> str:
     page = filtered[params.offset : params.offset + params.limit]
 
     result_list = [_row_to_vote_summary(r) for r in page]
-    response = {
+    response: dict[str, Any] = {
         "total": total,
         "count": len(result_list),
         "offset": params.offset,
         "has_more": total > params.offset + len(result_list),
+        "match_type": "exact" if total else "none",
         "votes": result_list,
     }
-    return json.dumps(response, indent=2, ensure_ascii=False)
+    if total == 0:
+        response["note"] = (
+            "Keine Treffer für diese Filter. Tipp: Suchbegriff kürzen oder anderssprachig "
+            "(de/en) probieren, Zeitraum erweitern, oder mit democracy_list_vote_dates "
+            "verfügbare Abstimmungsdaten prüfen."
+        )
+    return _emit(response, "swissvotes")
 
 
 class VoteDetailInput(BaseModel):
@@ -605,6 +687,8 @@ class VoteDetailInput(BaseModel):
 )
 async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
     """Gibt vollständige Details zu einer eidgenössischen Volksabstimmung zurück.
+
+    <use_case>Vertiefung zu einer konkreten Vorlage (Parlamentsempfehlungen, Resultat, Beteiligung).</use_case>
 
     Inkl. offiziellem Titel, Rechtsform, Parlamentsempfehlungen (NR, SR, Bundesrat),
     Abstimmungsresultat (national und kantonal), Beteiligung, Finanzierungsdaten
@@ -677,7 +761,7 @@ async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
         "federal_council_info_en": row.get("info_br-en", ""),
         "signatures_valid": _parse_int(row.get("unter_g", "")),
     }
-    return json.dumps(detail, indent=2, ensure_ascii=False)
+    return _emit(detail, "swissvotes")
 
 
 @mcp.tool(
@@ -692,6 +776,8 @@ async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
 )
 async def democracy_get_party_positions(params: VoteDetailInput) -> str:
     """Gibt die Parteiparolen der grossen Schweizer Parteien zu einer Volksabstimmung zurück.
+
+    <use_case>Analyse von Parteilinien und Kampagnen-Finanzierung zu einer Vorlage.</use_case>
 
     Dekodiert die numerischen Parolen-Codes aus Swissvotes in lesbare Labels:
     1=Ja, 2=Nein, 3=Stimmfreigabe, 4=Nein zum Gegenentwurf, 5=Ja zum Gegenentwurf,
@@ -745,7 +831,7 @@ async def democracy_get_party_positions(params: VoteDetailInput) -> str:
         "finance_yes_total": _parse_int(row.get("finanz-ja-tot", "")),
         "finance_no_total": _parse_int(row.get("finanz-nein-tot", "")),
     }
-    return json.dumps(result, indent=2, ensure_ascii=False)
+    return _emit(result, "swissvotes")
 
 
 @mcp.tool(
@@ -760,6 +846,8 @@ async def democracy_get_party_positions(params: VoteDetailInput) -> str:
 )
 async def democracy_get_cantonal_results(params: VoteDetailInput) -> str:
     """Gibt die Abstimmungsresultate aller 26 Kantone für eine eidgenössische Volksabstimmung zurück.
+
+    <use_case>Kantonsvergleich und Ständemehr-Analyse zu einer Vorlage.</use_case>
 
     Inkl. Stimmberechtigte, abgegebene Stimmen, gültige Stimmen, Ja- und Nein-Stimmen,
     Ja-Prozent und ob der Kanton angenommen hat (für Ständemehr-Zählung).
@@ -814,7 +902,7 @@ async def democracy_get_cantonal_results(params: VoteDetailInput) -> str:
         },
         "cantons": cantonal,
     }
-    return json.dumps(result, indent=2, ensure_ascii=False)
+    return _emit(result, "swissvotes")
 
 
 class ListDatesInput(BaseModel):
@@ -836,6 +924,8 @@ class ListDatesInput(BaseModel):
 )
 async def democracy_list_vote_dates(params: ListDatesInput) -> str:
     """Listet alle eidgenössischen Abstimmungsdaten auf, an denen Vorlagen zur Abstimmung kamen.
+
+    <use_case>Orientierung/Navigation vor einer Detailabfrage.</use_case>
 
     Gibt für jedes Datum die Anzahl Vorlagen zurück. Nützlich zur Orientierung
     vor einer Detailabfrage.
@@ -868,10 +958,9 @@ async def democracy_list_vote_dates(params: ListDatesInput) -> str:
         dates[datum] = dates.get(datum, 0) + 1
 
     sorted_dates = sorted(dates.items(), reverse=True)[: params.limit]
-    return json.dumps(
+    return _emit(
         {"total_dates": len(dates), "dates": [{"date": d, "vote_count": c} for d, c in sorted_dates]},
-        indent=2,
-        ensure_ascii=False,
+        "swissvotes",
     )
 
 
@@ -892,6 +981,8 @@ async def democracy_list_vote_dates(params: ListDatesInput) -> str:
 )
 async def democracy_bfs_list_vote_dates() -> str:
     """Listet alle verfügbaren eidgenössischen Abstimmungsdaten im BFS-Echtzeit-Webservice auf.
+
+    <use_case>Einstieg in BFS-Echtzeit-/Archivdaten; liefert die Ressourcen-URLs für democracy_bfs_get_vote_results.</use_case>
 
     Die Daten werden am Abstimmungssonntag ab 12:00 Uhr laufend aktualisiert.
     Das Archiv enthält eidgenössische Abstimmungen seit 1981.
@@ -920,10 +1011,7 @@ async def democracy_bfs_list_vote_dates() -> str:
         })
 
     dates_info.sort(key=lambda x: x.get("date", ""), reverse=True)
-    return json.dumps(
-        {"total": len(dates_info), "vote_dates": dates_info[:50]},
-        indent=2, ensure_ascii=False,
-    )
+    return _emit({"total": len(dates_info), "vote_dates": dates_info[:50]}, "bfs")
 
 
 class BfsVoteResultInput(BaseModel):
@@ -937,7 +1025,7 @@ class BfsVoteResultInput(BaseModel):
         min_length=10,
         max_length=500,
     )
-    level: str = Field(
+    level: Literal["national", "cantonal", "municipality"] = Field(
         default="national",
         description=(
             "Aggregationsebene: 'national' (Schweiz gesamt), "
@@ -958,6 +1046,8 @@ class BfsVoteResultInput(BaseModel):
 )
 async def democracy_bfs_get_vote_results(params: BfsVoteResultInput) -> str:
     """Ruft Echtzeit- oder Archiv-Abstimmungsresultate vom BFS ab.
+
+    <use_case>Resultate auf Gemeinde-/Kantons-/Bundesebene, v.a. am Abstimmungssonntag.</use_case>
 
     Nutzt die direkte JSON-URL eines Abstimmungsdatums (aus democracy_bfs_list_vote_dates).
     Gibt Resultate pro Vorlage auf nationaler, kantonaler oder Gemeindeebene zurück.
@@ -1036,9 +1126,9 @@ async def democracy_bfs_get_vote_results(params: BfsVoteResultInput) -> str:
 
         results.append(entry)
 
-    return json.dumps(
+    return _emit(
         {"level": level, "total_vorlagen": len(results), "results": results},
-        indent=2, ensure_ascii=False,
+        "bfs",
     )
 
 
@@ -1055,7 +1145,7 @@ class PolisListInput(BaseModel):
     year_to: int | None = Field(
         default=None, description="Endjahr (z.B. 2024)", ge=1900, le=2100
     )
-    lang: str = Field(
+    lang: Literal["de", "fr", "it", "rm", "en"] = Field(
         default="de",
         description="Sprache der Resultate: 'de', 'fr', 'it', 'rm', 'en'",
     )
@@ -1075,6 +1165,8 @@ class PolisListInput(BaseModel):
 )
 async def democracy_polis_list_votations(params: PolisListInput) -> str:
     """Ruft historische Volksabstimmungen aus dem SRGSSR Polis-System ab (seit 1900).
+
+    <use_case>Historische Analysen mit Gemeinde-Granularität.</use_case>
 
     Polis enthält Resultate auf Gemeinde-Ebene, was für historische Analysen
     besonders wertvoll ist. Benötigt SRGSSR_CONSUMER_KEY und SRGSSR_CONSUMER_SECRET.
@@ -1126,7 +1218,9 @@ class PolisVotationDetailInput(BaseModel):
         min_length=1,
         max_length=50,
     )
-    lang: str = Field(default="de", description="Sprache: 'de', 'fr', 'it', 'rm', 'en'")
+    lang: Literal["de", "fr", "it", "rm", "en"] = Field(
+        default="de", description="Sprache: 'de', 'fr', 'it', 'rm', 'en'"
+    )
     include_municipalities: bool = Field(
         default=False,
         description="Wenn True: Gemeinde-Resultate einschliessen (grössere Antwort)",
@@ -1145,6 +1239,8 @@ class PolisVotationDetailInput(BaseModel):
 )
 async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput) -> str:
     """Gibt detaillierte Polis-Daten zu einer Volksabstimmung zurück.
+
+    <use_case>Gemeindescharfe Detailanalyse einer historischen Abstimmung.</use_case>
 
     Optional mit Gemeinde-Resultaten – ideal für Fragen wie
     «Wie hat die Stadt Zürich bei der AHV-Reform abgestimmt?».
@@ -1169,14 +1265,14 @@ async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput) 
         for canton in data.get("cantons", []):
             canton.pop("municipalities", None)
 
-    return json.dumps(data, indent=2, ensure_ascii=False)
+    return _emit(data, "polis")
 
 
 class PolisElectionInput(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
     year_from: int | None = Field(default=None, ge=1900, le=2100)
     year_to: int | None = Field(default=None, ge=1900, le=2100)
-    lang: str = Field(default="de")
+    lang: Literal["de", "fr", "it", "rm", "en"] = Field(default="de")
     limit: int = Field(default=20, ge=1, le=100)
 
 
@@ -1192,6 +1288,8 @@ class PolisElectionInput(BaseModel):
 )
 async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
     """Ruft historische Wahlen (National-/Ständerat, Regierungsrat) aus Polis ab.
+
+    <use_case>Wahlanalysen (Kandidierende, Parteistimmen) seit 1900.</use_case>
 
     Polis enthält Wahlresultate seit 1900, inkl. Kandidatinnen- und Parteistimmen.
     Benötigt SRGSSR_CONSUMER_KEY und SRGSSR_CONSUMER_SECRET.
@@ -1238,18 +1336,17 @@ async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
 # ===========================================================================
 
 if __name__ == "__main__":
-    transport = os.environ.get("MCP_TRANSPORT", "stdio")
-    if transport == "streamable_http":
+    if settings.mcp_transport == "streamable_http":
         # Bind to loopback by default (audit finding SEC-016: NeighborJack).
         # Set MCP_HOST=0.0.0.0 explicitly only inside a container/cloud deploy.
-        host = os.environ.get("MCP_HOST", "127.0.0.1")
-        port = int(os.environ.get("MCP_PORT", "8000"))
+        host = settings.mcp_host
+        port = settings.mcp_port
         if host == "0.0.0.0":  # noqa: S104 — opt-in, container-only
-            print(
-                "WARNUNG: Server bindet an 0.0.0.0 (alle Interfaces). "
-                "Nur in einer abgesicherten Container-/Cloud-Umgebung verwenden, "
+            log.warning(
+                "binding_all_interfaces",
+                host=host,
+                hint="Nur in abgesicherter Container-/Cloud-Umgebung verwenden, "
                 "nicht auf einem lokalen Entwicklungsrechner.",
-                file=sys.stderr,
             )
         mcp.run(transport="streamable_http", host=host, port=port)
     else:
