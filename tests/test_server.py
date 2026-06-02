@@ -10,19 +10,27 @@ import json
 import httpx
 import pytest
 import respx
+from mcp.server.fastmcp.exceptions import ToolError
+from pydantic import SecretStr
 
 from swiss_democracy_mcp.server import (
+    BFS_NATIONAL_PACKAGE,
+    POLIS_BASE,
+    SRGSSR_TOKEN_URL,
     BfsVoteResultInput,
     ListDatesInput,
+    PolisListInput,
     VoteDetailInput,
     VoteSearchInput,
     _host_allowed,
     _validate_outbound,
     democracy_bfs_get_vote_results,
+    democracy_bfs_list_vote_dates,
     democracy_get_cantonal_results,
     democracy_get_party_positions,
     democracy_get_vote_detail,
     democracy_list_vote_dates,
+    democracy_polis_list_votations,
     democracy_search_votes,
 )
 
@@ -373,13 +381,13 @@ async def test_validate_outbound_rejects_disallowed_host():
 
 @pytest.mark.asyncio
 async def test_bfs_get_vote_results_rejects_metadata_url():
-    """SSRF: a cloud-metadata URL must be refused before any request goes out."""
+    """SSRF: a cloud-metadata URL must be refused as an isError (ToolError)."""
     params = BfsVoteResultInput(
         result_url="http://169.254.169.254/latest/meta-data/", level="national"
     )
-    result = await democracy_bfs_get_vote_results(params)
-    # _handle_error returns the ValueError message as the tool result
-    assert "HTTPS" in result or "Allow-List" in result
+    with pytest.raises(ToolError) as exc:
+        await democracy_bfs_get_vote_results(params)
+    assert "HTTPS" in str(exc.value) or "Allow-List" in str(exc.value)
 
 
 @pytest.mark.asyncio
@@ -387,8 +395,114 @@ async def test_bfs_get_vote_results_rejects_offsite_host():
     params = BfsVoteResultInput(
         result_url="https://attacker.example.com/exfil", level="national"
     )
-    result = await democracy_bfs_get_vote_results(params)
-    assert "Allow-List" in result
+    with pytest.raises(ToolError, match="Allow-List"):
+        await democracy_bfs_get_vote_results(params)
+
+
+# ---------------------------------------------------------------------------
+# Execution errors surface as isError / ToolError (audit finding OBS-001)
+# ---------------------------------------------------------------------------
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_http_error_raises_tool_error(monkeypatch):
+    import swiss_democracy_mcp.server as srv
+
+    monkeypatch.setattr(srv, "_swissvotes_cache", None)
+    respx.get(SWISSVOTES_URL).mock(return_value=httpx.Response(500))
+    with pytest.raises(ToolError):
+        await democracy_search_votes(VoteSearchInput(keyword="AHV"))
+
+
+# ---------------------------------------------------------------------------
+# BFS tool coverage (audit finding OPS-001)
+# ---------------------------------------------------------------------------
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_bfs_list_vote_dates_parses_resources():
+    package = {
+        "success": True,
+        "result": {
+            "resources": [
+                {
+                    "name": {"de": "Abstimmung 2024-03-03"},
+                    "issued": "2024-03-03",
+                    "download_url": "https://www.bfs.admin.ch/x/master",
+                    "format": "JSON",
+                }
+            ]
+        },
+    }
+    respx.get(BFS_NATIONAL_PACKAGE).mock(return_value=httpx.Response(200, json=package))
+    data = json.loads(await democracy_bfs_list_vote_dates())
+    assert data["total"] == 1
+    assert data["vote_dates"][0]["format"] == "JSON"
+    assert data["source"]["url"] == "https://opendata.swiss"
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_bfs_get_vote_results_national(monkeypatch):
+    import swiss_democracy_mcp.server as srv
+
+    # Isolate from the SSRF DNS gate (covered separately) — focus on parsing.
+    async def _noop(url, *, resolve=True):
+        return None
+
+    monkeypatch.setattr(srv, "_validate_outbound", _noop)
+    payload = {
+        "schweiz": {
+            "vorlagen": [
+                {
+                    "vorlagenId": "1",
+                    "vorlagenTitel": [{"langKey": "de", "text": "Testvorlage"}],
+                    "vorlageAngenommen": True,
+                    "schweiz": {"resultat": {"jaStimmenInProzent": 55.5}},
+                }
+            ]
+        }
+    }
+    url = "https://www.bfs.admin.ch/x/master"
+    respx.get(url).mock(return_value=httpx.Response(200, json=payload))
+    params = BfsVoteResultInput(result_url=url, level="national")
+    data = json.loads(await democracy_bfs_get_vote_results(params))
+    assert data["total_vorlagen"] == 1
+    assert data["results"][0]["title_de"] == "Testvorlage"
+    assert data["source"]["name"].startswith("Bundesamt")
+
+
+# ---------------------------------------------------------------------------
+# Polis tool coverage (audit finding OPS-001)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_polis_without_credentials_returns_hint():
+    """No SRGSSR creds → friendly registration hint as a NORMAL result (not isError)."""
+    result = await democracy_polis_list_votations(PolisListInput())
+    assert "developer.srgssr.ch" in result
+
+
+@respx.mock
+@pytest.mark.asyncio
+async def test_polis_list_votations_with_credentials(monkeypatch):
+    import swiss_democracy_mcp.server as srv
+
+    monkeypatch.setattr(srv.settings, "srgssr_consumer_key", SecretStr("k"))
+    monkeypatch.setattr(srv.settings, "srgssr_consumer_secret", SecretStr("s"))
+    monkeypatch.setattr(srv, "_token_cache", {"access_token": None, "expires_at": 0.0})
+    respx.post(SRGSSR_TOKEN_URL).mock(
+        return_value=httpx.Response(200, json={"access_token": "tok", "expires_in": 3600})
+    )
+    respx.get(f"{POLIS_BASE}/votations").mock(
+        return_value=httpx.Response(
+            200,
+            json={"total": 1, "votationList": [{"date": "2020-09-27", "title": "X", "accepted": True}]},
+        )
+    )
+    out = await democracy_polis_list_votations(PolisListInput(limit=1))
+    assert "Polis Volksabstimmungen" in out
+    assert "2020-09-27" in out
 
 
 # ---------------------------------------------------------------------------
@@ -444,3 +558,20 @@ def test_settings_defaults_are_safe():
     s = Settings(_env_file=None)
     assert s.mcp_host == "127.0.0.1"
     assert s.mcp_transport == "stdio"
+
+
+# ---------------------------------------------------------------------------
+# CORS for Streamable HTTP (audit finding SDK-004)
+# ---------------------------------------------------------------------------
+
+def test_http_app_exposes_mcp_session_id_via_cors():
+    from starlette.middleware.cors import CORSMiddleware
+
+    from swiss_democracy_mcp.server import _build_http_app
+
+    app = _build_http_app()
+    cors = [m for m in app.user_middleware if m.cls is CORSMiddleware]
+    assert cors, "CORSMiddleware must be configured for HTTP transport"
+    kwargs = cors[0].kwargs
+    assert "Mcp-Session-Id" in kwargs["expose_headers"]
+    assert "Mcp-Session-Id" in kwargs["allow_headers"]

@@ -33,12 +33,13 @@ import socket
 import sys
 import time
 from contextlib import asynccontextmanager
-from typing import Any, Literal
+from typing import Any, Literal, NoReturn
 from urllib.parse import urlparse
 
 import httpx
 import structlog
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import Context, FastMCP
+from mcp.server.fastmcp.exceptions import ToolError
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -78,6 +79,13 @@ class Settings(BaseSettings):
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8000
     log_level: str = "INFO"
+    # Comma-separated allowed CORS origins for HTTP transport. Default "*" is
+    # fine for local dev; set explicit origins in production (audit SDK-004).
+    mcp_cors_origins: str = "*"
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [o.strip() for o in self.mcp_cors_origins.split(",") if o.strip()]
 
 
 settings = Settings()
@@ -294,8 +302,12 @@ _swissvotes_loaded_at: float = 0.0
 CACHE_TTL = 86400.0  # 24 hours
 
 
-async def _load_swissvotes() -> list[dict[str, str]]:
-    """Downloads and caches the Swissvotes CSV dataset (semicolon-delimited)."""
+async def _load_swissvotes(ctx: Context | None = None) -> list[dict[str, str]]:
+    """Downloads and caches the Swissvotes CSV dataset (semicolon-delimited).
+
+    On a cache miss this fetches several MB and can take a few seconds; progress
+    is reported via the MCP Context when one is available (audit SDK-003).
+    """
     global _swissvotes_cache, _swissvotes_loaded_at
     now = time.time()
     if _swissvotes_cache is not None and (now - _swissvotes_loaded_at) < CACHE_TTL:
@@ -303,9 +315,14 @@ async def _load_swissvotes() -> list[dict[str, str]]:
 
     await _validate_outbound(SWISSVOTES_CSV_URL, resolve=False)
     log.info("swissvotes_csv_refresh", host=urlparse(SWISSVOTES_CSV_URL).hostname, source="swissvotes")
+    if ctx is not None:
+        await ctx.info("Lade Swissvotes-Datensatz (einmalig, danach 24h gecacht)…")
+        await ctx.report_progress(progress=0.0, total=1.0)
     resp = await _client().get(SWISSVOTES_CSV_URL, timeout=60.0, follow_redirects=True)
     resp.raise_for_status()
     content = resp.text
+    if ctx is not None:
+        await ctx.report_progress(progress=1.0, total=1.0)
 
     reader = csv.DictReader(io.StringIO(content), delimiter=";")
     rows = list(reader)
@@ -427,20 +444,36 @@ def _parse_int(val: str) -> int | None:
         return None
 
 
-def _handle_error(e: Exception) -> str:
+def _friendly_error(e: Exception) -> str:
+    """Map an exception to a safe, user-friendly message (no stack traces)."""
     if isinstance(e, httpx.HTTPStatusError):
         if e.response.status_code == 404:
-            return "Fehler: Ressource nicht gefunden. Bitte ID prüfen."
+            return "Ressource nicht gefunden. Bitte ID prüfen."
         elif e.response.status_code == 401:
-            return f"Fehler: Authentifizierung fehlgeschlagen. {_NO_POLIS_CREDS}"
+            return f"Authentifizierung fehlgeschlagen. {_NO_POLIS_CREDS}"
         elif e.response.status_code == 429:
-            return "Fehler: Rate-Limit erreicht. Bitte kurz warten."
-        return f"Fehler: API-Anfrage fehlgeschlagen (HTTP {e.response.status_code})."
+            return "Rate-Limit erreicht. Bitte kurz warten."
+        return f"API-Anfrage fehlgeschlagen (HTTP {e.response.status_code})."
     elif isinstance(e, httpx.TimeoutException):
-        return "Fehler: Anfrage-Timeout. Bitte erneut versuchen."
+        return "Anfrage-Timeout. Bitte erneut versuchen."
     elif isinstance(e, ValueError):
         return str(e)
-    return f"Fehler: {type(e).__name__}: {e}"
+    return f"{type(e).__name__}: {e}"
+
+
+async def _fail(e: Exception, ctx: Context | None = None) -> NoReturn:
+    """Signal an execution error to the client as an isError tool result.
+
+    Raising ToolError makes FastMCP return `isError: true` (audit OBS-001),
+    instead of a normal result that merely contains an error string. The
+    original exception is logged to stderr; only the friendly message is
+    surfaced to the model.
+    """
+    msg = _friendly_error(e)
+    log.warning("tool_execution_error", error=msg, exc_type=type(e).__name__)
+    if ctx is not None:
+        await ctx.error(msg)
+    raise ToolError(msg) from e
 
 
 def _row_to_vote_summary(row: dict[str, str]) -> dict:
@@ -542,7 +575,7 @@ class VoteSearchInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_search_votes(params: VoteSearchInput) -> str:
+async def democracy_search_votes(params: VoteSearchInput, ctx: Context | None = None) -> str:
     """Durchsucht alle eidgenössischen Volksabstimmungen seit 1848 (Swissvotes-Datenbank).
 
     <use_case>Politische/journalistische Recherche: Vorlagen nach Thema, Zeitraum oder Ergebnis finden.</use_case>
@@ -566,9 +599,9 @@ async def democracy_search_votes(params: VoteSearchInput) -> str:
              accepted, yes_percent, turnout_percent, federal_council_position)
     """
     try:
-        rows = await _load_swissvotes()
+        rows = await _load_swissvotes(ctx)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     filtered: list[dict] = []
 
@@ -685,7 +718,7 @@ class VoteDetailInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
+async def democracy_get_vote_detail(params: VoteDetailInput, ctx: Context | None = None) -> str:
     """Gibt vollständige Details zu einer eidgenössischen Volksabstimmung zurück.
 
     <use_case>Vertiefung zu einer konkreten Vorlage (Parlamentsempfehlungen, Resultat, Beteiligung).</use_case>
@@ -702,9 +735,9 @@ async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
         str: JSON mit vollständigen Vote-Details oder Fehlermeldung
     """
     try:
-        rows = await _load_swissvotes()
+        rows = await _load_swissvotes(ctx)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     target = params.vote_number.strip()
     row = None
@@ -774,7 +807,7 @@ async def democracy_get_vote_detail(params: VoteDetailInput) -> str:
         "openWorldHint": True,
     },
 )
-async def democracy_get_party_positions(params: VoteDetailInput) -> str:
+async def democracy_get_party_positions(params: VoteDetailInput, ctx: Context | None = None) -> str:
     """Gibt die Parteiparolen der grossen Schweizer Parteien zu einer Volksabstimmung zurück.
 
     <use_case>Analyse von Parteilinien und Kampagnen-Finanzierung zu einer Vorlage.</use_case>
@@ -791,9 +824,9 @@ async def democracy_get_party_positions(params: VoteDetailInput) -> str:
         str: JSON mit Parteiparolen und Links zu Ja-/Nein-Komitees
     """
     try:
-        rows = await _load_swissvotes()
+        rows = await _load_swissvotes(ctx)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     target = params.vote_number.strip()
     row = next(
@@ -844,7 +877,7 @@ async def democracy_get_party_positions(params: VoteDetailInput) -> str:
         "openWorldHint": True,
     },
 )
-async def democracy_get_cantonal_results(params: VoteDetailInput) -> str:
+async def democracy_get_cantonal_results(params: VoteDetailInput, ctx: Context | None = None) -> str:
     """Gibt die Abstimmungsresultate aller 26 Kantone für eine eidgenössische Volksabstimmung zurück.
 
     <use_case>Kantonsvergleich und Ständemehr-Analyse zu einer Vorlage.</use_case>
@@ -861,9 +894,9 @@ async def democracy_get_cantonal_results(params: VoteDetailInput) -> str:
              Stimmenmehr/Ständemehr-Übersicht
     """
     try:
-        rows = await _load_swissvotes()
+        rows = await _load_swissvotes(ctx)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     target = params.vote_number.strip()
     row = next(
@@ -922,7 +955,7 @@ class ListDatesInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_list_vote_dates(params: ListDatesInput) -> str:
+async def democracy_list_vote_dates(params: ListDatesInput, ctx: Context | None = None) -> str:
     """Listet alle eidgenössischen Abstimmungsdaten auf, an denen Vorlagen zur Abstimmung kamen.
 
     <use_case>Orientierung/Navigation vor einer Detailabfrage.</use_case>
@@ -937,9 +970,9 @@ async def democracy_list_vote_dates(params: ListDatesInput) -> str:
         str: JSON mit Liste von Abstimmungsdaten und Anzahl Vorlagen pro Datum
     """
     try:
-        rows = await _load_swissvotes()
+        rows = await _load_swissvotes(ctx)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     dates: dict[str, int] = {}
     for row in rows:
@@ -979,7 +1012,7 @@ async def democracy_list_vote_dates(params: ListDatesInput) -> str:
         "openWorldHint": True,
     },
 )
-async def democracy_bfs_list_vote_dates() -> str:
+async def democracy_bfs_list_vote_dates(ctx: Context | None = None) -> str:
     """Listet alle verfügbaren eidgenössischen Abstimmungsdaten im BFS-Echtzeit-Webservice auf.
 
     <use_case>Einstieg in BFS-Echtzeit-/Archivdaten; liefert die Ressourcen-URLs für democracy_bfs_get_vote_results.</use_case>
@@ -993,7 +1026,7 @@ async def democracy_bfs_list_vote_dates() -> str:
     try:
         data = await _bfs_get(BFS_NATIONAL_PACKAGE)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     if not data.get("success"):
         return json.dumps({"error": "BFS-Paket nicht abrufbar."}, ensure_ascii=False)
@@ -1044,7 +1077,7 @@ class BfsVoteResultInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_bfs_get_vote_results(params: BfsVoteResultInput) -> str:
+async def democracy_bfs_get_vote_results(params: BfsVoteResultInput, ctx: Context | None = None) -> str:
     """Ruft Echtzeit- oder Archiv-Abstimmungsresultate vom BFS ab.
 
     <use_case>Resultate auf Gemeinde-/Kantons-/Bundesebene, v.a. am Abstimmungssonntag.</use_case>
@@ -1064,7 +1097,7 @@ async def democracy_bfs_get_vote_results(params: BfsVoteResultInput) -> str:
     try:
         data = await _bfs_get(params.result_url, resolve=True)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     votes_raw = data if isinstance(data, list) else data.get("schweiz", {}).get("vorlagen", [])
     if not votes_raw and isinstance(data, dict):
@@ -1163,7 +1196,7 @@ class PolisListInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_polis_list_votations(params: PolisListInput) -> str:
+async def democracy_polis_list_votations(params: PolisListInput, ctx: Context | None = None) -> str:
     """Ruft historische Volksabstimmungen aus dem SRGSSR Polis-System ab (seit 1900).
 
     <use_case>Historische Analysen mit Gemeinde-Granularität.</use_case>
@@ -1180,6 +1213,9 @@ async def democracy_polis_list_votations(params: PolisListInput) -> str:
     Returns:
         str: JSON mit Polis-Abstimmungsliste oder Hinweis zur Registrierung
     """
+    if _get_polis_credentials() is None:
+        return _NO_POLIS_CREDS
+
     query_params: dict[str, Any] = {"lang": params.lang, "limit": params.limit}
     if params.year_from:
         query_params["yearFrom"] = params.year_from
@@ -1189,7 +1225,7 @@ async def democracy_polis_list_votations(params: PolisListInput) -> str:
     try:
         data = await _polis_get("/votations", params=query_params)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     votations = data.get("votationList", data.get("votations", []))
     total = data.get("total", len(votations))
@@ -1237,7 +1273,7 @@ class PolisVotationDetailInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput) -> str:
+async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput, ctx: Context | None = None) -> str:
     """Gibt detaillierte Polis-Daten zu einer Volksabstimmung zurück.
 
     <use_case>Gemeindescharfe Detailanalyse einer historischen Abstimmung.</use_case>
@@ -1255,10 +1291,13 @@ async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput) 
     Returns:
         str: JSON mit Polis-Abstimmungsdetails, kantonalen und optionalen Gemeindedaten
     """
+    if _get_polis_credentials() is None:
+        return _NO_POLIS_CREDS
+
     try:
         data = await _polis_get(f"/votations/{params.votation_id}", params={"lang": params.lang})
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     if not params.include_municipalities:
         # Remove municipality details to keep response manageable
@@ -1286,7 +1325,7 @@ class PolisElectionInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
+async def democracy_polis_list_elections(params: PolisElectionInput, ctx: Context | None = None) -> str:
     """Ruft historische Wahlen (National-/Ständerat, Regierungsrat) aus Polis ab.
 
     <use_case>Wahlanalysen (Kandidierende, Parteistimmen) seit 1900.</use_case>
@@ -1303,6 +1342,9 @@ async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
     Returns:
         str: JSON mit Wahlliste oder Hinweis zur Registrierung
     """
+    if _get_polis_credentials() is None:
+        return _NO_POLIS_CREDS
+
     query_params: dict[str, Any] = {"lang": params.lang, "limit": params.limit}
     if params.year_from:
         query_params["yearFrom"] = params.year_from
@@ -1312,7 +1354,7 @@ async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
     try:
         data = await _polis_get("/elections", params=query_params)
     except Exception as e:
-        return _handle_error(e)
+        await _fail(e, ctx)
 
     elections = data.get("electionList", data.get("elections", []))
     total = data.get("total", len(elections))
@@ -1335,19 +1377,42 @@ async def democracy_polis_list_elections(params: PolisElectionInput) -> str:
 # Transport entry point
 # ===========================================================================
 
+def _build_http_app():
+    """Build the Streamable-HTTP ASGI app with CORS middleware (audit SDK-004).
+
+    The MCP session id lives in the `Mcp-Session-Id` header, so browser-based
+    clients need it both exposed (to read it) and allowed (to send it back).
+    """
+    from starlette.middleware.cors import CORSMiddleware
+
+    app = mcp.streamable_http_app()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization", "Mcp-Session-Id"],
+        expose_headers=["Mcp-Session-Id"],
+    )
+    return app
+
+
+def _run_streamable_http() -> None:
+    import uvicorn
+
+    host = settings.mcp_host
+    port = settings.mcp_port
+    if host == "0.0.0.0":  # noqa: S104 — opt-in, container-only
+        log.warning(
+            "binding_all_interfaces",
+            host=host,
+            hint="Nur in abgesicherter Container-/Cloud-Umgebung verwenden, "
+            "nicht auf einem lokalen Entwicklungsrechner.",
+        )
+    uvicorn.run(_build_http_app(), host=host, port=port, log_level=settings.log_level.lower())
+
+
 if __name__ == "__main__":
     if settings.mcp_transport == "streamable_http":
-        # Bind to loopback by default (audit finding SEC-016: NeighborJack).
-        # Set MCP_HOST=0.0.0.0 explicitly only inside a container/cloud deploy.
-        host = settings.mcp_host
-        port = settings.mcp_port
-        if host == "0.0.0.0":  # noqa: S104 — opt-in, container-only
-            log.warning(
-                "binding_all_interfaces",
-                host=host,
-                hint="Nur in abgesicherter Container-/Cloud-Umgebung verwenden, "
-                "nicht auf einem lokalen Entwicklungsrechner.",
-            )
-        mcp.run(transport="streamable_http", host=host, port=port)
+        _run_streamable_http()
     else:
         mcp.run()
