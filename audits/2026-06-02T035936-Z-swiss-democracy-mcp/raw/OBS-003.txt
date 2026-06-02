@@ -1,0 +1,4 @@
+# OBS-003 — re-audit (PASS)
+
+## Evidence
+- structlog JSON-Logging auf stderr; per-Request bound context (host/source); Severity-Stufen

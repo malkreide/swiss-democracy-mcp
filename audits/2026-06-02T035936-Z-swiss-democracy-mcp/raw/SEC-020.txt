@@ -1,0 +1,4 @@
+# SEC-020 — re-audit (PASS)
+
+## Evidence
+- Keine os.system/subprocess/eval/shell=True (grep clean)

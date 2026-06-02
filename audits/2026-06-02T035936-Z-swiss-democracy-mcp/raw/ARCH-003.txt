@@ -1,0 +1,5 @@
+# ARCH-003 — re-audit (PASS)
+
+## Evidence
+- `democracy_search_votes` liefert `match_type` (exact/none) + bei 0 Treffern actionable `note`
+- Strukturiertes Envelope mit total/count/has_more

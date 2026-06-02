@@ -1,0 +1,5 @@
+# CH-004 — re-audit (PASS)
+
+## Evidence
+- `source`/`license`-Feld (CC BY 4.0 etc.) in allen Tool-Antworten via `_emit()`
+- README dokumentiert alle Quellen-Lizenzen; je Tool genau eine Quelle (Provenance pro Antwort)

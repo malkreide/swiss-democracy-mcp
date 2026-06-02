@@ -1,0 +1,367 @@
+{
+  "audit_meta": {
+    "server_name": "swiss-democracy-mcp",
+    "run_id": "2026-06-02T035936-Z-swiss-democracy-mcp",
+    "started_at": "2026-06-02T03:59:36.149659+00:00",
+    "timezone_offset": "Z",
+    "skill_version": "1.0.0",
+    "output_dir": "audits/2026-06-02T035936-Z-swiss-democracy-mcp",
+    "catalog_hash": "091f446b27965044ce658a1d5f4b2cabe2b0ab5661dcc1a53b6be8f1f2e093c0",
+    "catalog_dir": "/tmp/mcp-audit-skill/checks",
+    "audit_date": "2026-06-02",
+    "catalog_version": "v1.0.0 (hash 091f446b2796)"
+  },
+  "results": {
+    "ARCH-001": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "10 Tools, snake_case `democracy_*`, konsistent; ausführliche Docstrings"
+      ],
+      "gaps": []
+    },
+    "ARCH-002": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "<use_case>-Tags in allen 10 Tool-Docstrings ergänzt (server.py)",
+        "Descriptions >100 Zeichen, differenziert"
+      ],
+      "gaps": []
+    },
+    "ARCH-003": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "`democracy_search_votes` liefert `match_type` (exact/none) + bei 0 Treffern actionable `note`",
+        "Strukturiertes Envelope mit total/count/has_more"
+      ],
+      "gaps": []
+    },
+    "ARCH-004": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "high",
+      "evidence": [
+        "Zentrale `Settings(BaseSettings)` statt Modul-Globals (server.py)",
+        "Geteilter Lifespan (@asynccontextmanager); Handler transport-agnostisch; Dual-Transport"
+      ],
+      "gaps": []
+    },
+    "ARCH-005": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "critical",
+      "evidence": [
+        "Keine Hardcoded Secrets; SRGSSR-Creds als `SecretStr`",
+        ".gitignore + .env.example vorhanden; Gitleaks-Secret-Scan in CI (.github/workflows/ci.yml)"
+      ],
+      "gaps": []
+    },
+    "ARCH-006": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "high",
+      "evidence": [
+        "10 Tools, use-case-orientiert"
+      ],
+      "gaps": []
+    },
+    "ARCH-007": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "Tools liefern abgeschlossene Resultate"
+      ],
+      "gaps": []
+    },
+    "ARCH-008": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "README/README.de «MCP-Primitive»-Sektion begründet Tools-only (Phase-1-Wrapper)"
+      ],
+      "gaps": []
+    },
+    "ARCH-009": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "high",
+      "evidence": [
+        "Alle Tools mit expliziten Annotations"
+      ],
+      "gaps": []
+    },
+    "ARCH-011": {
+      "status": "pass",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "CHANGELOG.md (Keep-a-Changelog) ergänzt; README/README.de, LICENSE, pyproject, src/, tests/, CI vorhanden"
+      ],
+      "gaps": []
+    },
+    "ARCH-012": {
+      "status": "partial",
+      "category": "ARCH",
+      "severity": "medium",
+      "evidence": [
+        "CHANGELOG.md + Dependabot (.github/dependabot.yml) + README «MCP Protocol Version»-Sektion",
+        "Dependabot bereits aktiv (PR #5 gemergt)"
+      ],
+      "gaps": [
+        "`protocolVersion` nicht hart im Code gepinnt — Version wird vom mcp-SDK ausgehandelt und im README/CHANGELOG dokumentiert"
+      ]
+    },
+    "CH-004": {
+      "status": "pass",
+      "category": "CH",
+      "severity": "medium",
+      "evidence": [
+        "`source`/`license`-Feld (CC BY 4.0 etc.) in allen Tool-Antworten via `_emit()`",
+        "README dokumentiert alle Quellen-Lizenzen; je Tool genau eine Quelle (Provenance pro Antwort)"
+      ],
+      "gaps": []
+    },
+    "OBS-001": {
+      "status": "pass",
+      "category": "OBS",
+      "severity": "high",
+      "evidence": [
+        "Ausführungsfehler werfen `ToolError` → FastMCP liefert isError (server.py `_fail`)",
+        "Polis-No-Creds bleibt freundlicher Normal-Hinweis; Test deckt Execution-Error-Pfad ab"
+      ],
+      "gaps": []
+    },
+    "OBS-002": {
+      "status": "partial",
+      "category": "OBS",
+      "severity": "high",
+      "evidence": [
+        "`_friendly_error` maskiert Details (keine Stacktraces); Original nur via stderr-Log",
+        "ToolError-Message ist user-friendly"
+      ],
+      "gaps": [
+        "`mask_error_details=True` nicht gesetzt — Parameter existiert in der genutzten mcp-SDK-Version nicht"
+      ]
+    },
+    "OBS-003": {
+      "status": "pass",
+      "category": "OBS",
+      "severity": "medium",
+      "evidence": [
+        "structlog JSON-Logging auf stderr; per-Request bound context (host/source); Severity-Stufen"
+      ],
+      "gaps": []
+    },
+    "OBS-004": {
+      "status": "pass",
+      "category": "OBS",
+      "severity": "critical",
+      "evidence": [
+        "Kein print() in src/; stdout bleibt fürs Protocol frei; Logging auf stderr"
+      ],
+      "gaps": []
+    },
+    "OPS-001": {
+      "status": "partial",
+      "category": "OPS",
+      "severity": "high",
+      "evidence": [
+        "respx-Mocking, @pytest.mark.live, CI `-m \"not live\"`",
+        "Neu: Unit-Tests für BFS-list/results und Polis (no-creds + gemockter Token/Endpoint); 29 Tests"
+      ],
+      "gaps": [
+        "Richtwert ≥5 Unit + ≥1 Live pro Tool noch nicht überall erreicht; kein separater nightly Live-Workflow"
+      ]
+    },
+    "OPS-002": {
+      "status": "pass",
+      "category": "OPS",
+      "severity": "medium",
+      "evidence": [
+        "README mit Configuration-Sektion, Architektur-Diagramm, Limits, License; CHANGELOG; README.de parallel; docs/"
+      ],
+      "gaps": []
+    },
+    "OPS-003": {
+      "status": "pass",
+      "category": "OPS",
+      "severity": "high",
+      "evidence": [
+        "docs/roadmap.md mit Phasenmodell + Übergangskriterien + Single-Instance-/Scaling-Hinweis"
+      ],
+      "gaps": []
+    },
+    "SCALE-002": {
+      "status": "partial",
+      "category": "SCALE",
+      "severity": "high",
+      "evidence": [
+        "Tools zustandslos; Single-Instance-Annahme + Sticky-Session-Empfehlung in docs/roadmap.md dokumentiert"
+      ],
+      "gaps": [
+        "Sticky-Sessions / Shared-State-Session-Manager nicht implementiert (nur dokumentiert)"
+      ]
+    },
+    "SDK-001": {
+      "status": "pass",
+      "category": "SDK",
+      "severity": "high",
+      "evidence": [
+        "Geteilter, gepoolter `httpx.AsyncClient` via @asynccontextmanager-Lifespan; Cleanup im finally"
+      ],
+      "gaps": []
+    },
+    "SDK-002": {
+      "status": "partial",
+      "category": "SDK",
+      "severity": "medium",
+      "evidence": [
+        "`Literal`-Typen für level/lang; einheitlicher Envelope mit `source`/count via `_emit()`; Pydantic ≥2 Inputs"
+      ],
+      "gaps": [
+        "Tool-Returns weiterhin JSON-`str` statt typisierter BaseModel/TypedDict-Returns (bewusst, Contract-Stabilität)"
+      ]
+    },
+    "SDK-003": {
+      "status": "pass",
+      "category": "SDK",
+      "severity": "medium",
+      "evidence": [
+        "`ctx: Context | None` in allen Tools; CSV-Initialload meldet ctx.report_progress() + ctx.info()"
+      ],
+      "gaps": []
+    },
+    "SDK-004": {
+      "status": "pass",
+      "category": "SDK",
+      "severity": "high",
+      "evidence": [
+        "CORS-Middleware für Streamable-HTTP: expose_headers + allow_headers enthalten `Mcp-Session-Id`",
+        "Origins via MCP_CORS_ORIGINS; HTTP via uvicorn mit umhüllter App"
+      ],
+      "gaps": []
+    },
+    "SEC-004": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "critical",
+      "evidence": [
+        "`_validate_outbound`: HTTPS-Enforcement + Host-Allow-List (frozenset) vor jedem Request",
+        "User-`result_url` zusätzlich DNS-aufgelöst + IP-Blocklist (169.254.169.254/privat/loopback)"
+      ],
+      "gaps": []
+    },
+    "SEC-005": {
+      "status": "partial",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "Einmalige getaddrinfo-Resolution + IP-Blocklist-Check für caller-supplied URLs",
+        "Fixe Host-Allow-List eliminiert den Rebinding-Vektor für vertrauenswürdige Hosts"
+      ],
+      "gaps": [
+        "Kein literales TLS-IP-Pinning (gepinnte IP in TCP-Connection bei erhaltenem SNI) — httpx löst beim Request selbst auf"
+      ]
+    },
+    "SEC-006": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "Default-Transport stdio; HTTP nur via MCP_TRANSPORT; README dokumentiert"
+      ],
+      "gaps": []
+    },
+    "SEC-007": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "Gehärtetes Dockerfile: non-root USER 10001, Multi-Stage; read-only-ready (CMD-Hinweis --read-only/--cap-drop)"
+      ],
+      "gaps": []
+    },
+    "SEC-008": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "medium",
+      "evidence": [
+        "Keine install-Hooks; transparenter Install; PyPI Trusted Publisher (publish.yml)"
+      ],
+      "gaps": []
+    },
+    "SEC-009": {
+      "status": "partial",
+      "category": "SEC",
+      "severity": "critical",
+      "evidence": [
+        "Keine eigene Session-Verwaltung; Tools zustandslos; auth_model=none (keine user-spezifischen Privilegien)"
+      ],
+      "gaps": [
+        "Keine kryptografische Session-Generierung/Binding im Code (verlässt sich auf FastMCP)"
+      ]
+    },
+    "SEC-013": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "SRGSSR-Creds als `SecretStr`; docs/secret-management.md begründet Stufe 1 (Public Open Data) + Hardening-Pfad"
+      ],
+      "gaps": []
+    },
+    "SEC-016": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "critical",
+      "evidence": [
+        "MCP_HOST-Default `127.0.0.1`; Warnung bei 0.0.0.0; README/docs erklären lokal/Container"
+      ],
+      "gaps": []
+    },
+    "SEC-018": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "Alle Tool-Args via Pydantic (extra=forbid, ge/le, max_length); result_url zusätzlich host-validiert"
+      ],
+      "gaps": []
+    },
+    "SEC-019": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "critical",
+      "evidence": [
+        "docs/security.md mit Lethal-Trifecta-Bewertung: ≤2 Fähigkeiten (public data + GET-only, kein Write/Send)"
+      ],
+      "gaps": []
+    },
+    "SEC-020": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "critical",
+      "evidence": [
+        "Keine os.system/subprocess/eval/shell=True (grep clean)"
+      ],
+      "gaps": []
+    },
+    "SEC-021": {
+      "status": "pass",
+      "category": "SEC",
+      "severity": "high",
+      "evidence": [
+        "Code-Layer `frozenset`-Allow-List + Pre-Request-Check `_validate_outbound` vor jedem Call",
+        "docs/security.md dokumentiert Hosts + empfiehlt Network-Layer-Egress-Policy"
+      ],
+      "gaps": []
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# ARCH-001 — re-audit (PASS)
+
+## Evidence
+- 10 Tools, snake_case `democracy_*`, konsistent; ausführliche Docstrings

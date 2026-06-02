@@ -1,0 +1,5 @@
+# OBS-001 — re-audit (PASS)
+
+## Evidence
+- Ausführungsfehler werfen `ToolError` → FastMCP liefert isError (server.py `_fail`)
+- Polis-No-Creds bleibt freundlicher Normal-Hinweis; Test deckt Execution-Error-Pfad ab

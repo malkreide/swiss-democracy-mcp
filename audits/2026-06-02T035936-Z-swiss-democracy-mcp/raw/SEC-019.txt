@@ -1,0 +1,4 @@
+# SEC-019 — re-audit (PASS)
+
+## Evidence
+- docs/security.md mit Lethal-Trifecta-Bewertung: ≤2 Fähigkeiten (public data + GET-only, kein Write/Send)

@@ -1,0 +1,5 @@
+# SEC-021 — re-audit (PASS)
+
+## Evidence
+- Code-Layer `frozenset`-Allow-List + Pre-Request-Check `_validate_outbound` vor jedem Call
+- docs/security.md dokumentiert Hosts + empfiehlt Network-Layer-Egress-Policy

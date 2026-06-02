@@ -1,0 +1,5 @@
+# SDK-004 — re-audit (PASS)
+
+## Evidence
+- CORS-Middleware für Streamable-HTTP: expose_headers + allow_headers enthalten `Mcp-Session-Id`
+- Origins via MCP_CORS_ORIGINS; HTTP via uvicorn mit umhüllter App

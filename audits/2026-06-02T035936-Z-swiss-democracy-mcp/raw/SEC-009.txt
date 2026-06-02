@@ -1,0 +1,7 @@
+# SEC-009 — re-audit (PARTIAL)
+
+## Evidence
+- Keine eigene Session-Verwaltung; Tools zustandslos; auth_model=none (keine user-spezifischen Privilegien)
+
+## Gaps
+- Keine kryptografische Session-Generierung/Binding im Code (verlässt sich auf FastMCP)

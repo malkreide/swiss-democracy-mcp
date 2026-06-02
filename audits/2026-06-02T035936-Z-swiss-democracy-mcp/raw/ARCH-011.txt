@@ -1,0 +1,4 @@
+# ARCH-011 — re-audit (PASS)
+
+## Evidence
+- CHANGELOG.md (Keep-a-Changelog) ergänzt; README/README.de, LICENSE, pyproject, src/, tests/, CI vorhanden

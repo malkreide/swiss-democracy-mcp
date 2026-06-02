@@ -1,0 +1,5 @@
+# SEC-004 — re-audit (PASS)
+
+## Evidence
+- `_validate_outbound`: HTTPS-Enforcement + Host-Allow-List (frozenset) vor jedem Request
+- User-`result_url` zusätzlich DNS-aufgelöst + IP-Blocklist (169.254.169.254/privat/loopback)

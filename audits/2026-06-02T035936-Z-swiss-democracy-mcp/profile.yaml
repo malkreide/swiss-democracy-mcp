@@ -1,0 +1,19 @@
+# Profil swiss-democracy-mcp — abgeleitet aus Repo-Inhalt (Weg C, Inferenz)
+# Quelle: src/swiss_democracy_mcp/server.py, pyproject.toml, README.md
+transport: dual                      # server.py:1118-1125 — MCP_TRANSPORT stdio (default) ODER streamable_http
+auth_model: none                     # Server verlangt KEINE Client-Auth; SRGSSR-Key ist outbound zu Upstream-API
+data_class: Public Open Data         # Swissvotes / opendata.swiss / Polis — alles öffentliche Daten
+write_capable: false                 # alle Tools readOnlyHint=True, destructiveHint=False
+deployment: [local-stdio]            # kein Dockerfile/Railway/Render-Artefakt im Repo
+is_cloud_deployed: false             # derived: deployment enthält nur local-stdio
+uses_sampling: false                 # kein ctx.sample im Code
+uses_sequential_thinking: false      # kein sequential-thinking
+tools_include_filesystem: false      # keine Filesystem-Tools, nur HTTP-Datenquellen
+tools_make_external_requests: true   # httpx-GET/POST zu swissvotes.ch, opendata.swiss, api.srgssr.ch
+stadt_zuerich_context: false         # Bundesebene, nicht Stadt Zürich
+schulamt_context: false
+volksschule_context: false
+enterprise_context: false
+sdk_language: Python                 # FastMCP (Python), mcp[cli]
+data_source:
+  is_swiss_open_data: true           # Swissvotes (Uni Bern), opendata.swiss/BFS
