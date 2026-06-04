@@ -1,10 +1,15 @@
-# swiss-democracy-mcp
+# 🗳️ swiss-democracy-mcp
 
 [![CI](https://github.com/malkreide/swiss-democracy-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/malkreide/swiss-democracy-mcp/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/swiss-democracy-mcp.svg)](https://pypi.org/project/swiss-democracy-mcp/)
+[![Python](https://img.shields.io/pypi/pyversions/swiss-democracy-mcp.svg)](https://pypi.org/project/swiss-democracy-mcp/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-purple)](https://modelcontextprotocol.io/)
 [![Swiss Public Data MCP](https://img.shields.io/badge/portfolio-swiss--public--data--mcp-blue)](https://github.com/malkreide/swiss-public-data-mcp)
 
-> **Teil des [Swiss Public Data MCP Portfolios](https://github.com/malkreide/swiss-public-data-mcp)** — KI-Modelle mit Schweizer Behördendaten verbinden.
+> 🇨🇭 **Teil des [Swiss Public Data MCP Portfolios](https://github.com/malkreide/swiss-public-data-mcp)** — KI-Modelle mit Schweizer Behördendaten verbinden.
+
+**[🇬🇧 English Version](README.md)** | 🌐 **Deutsch**
 
 Ein MCP-Server für Daten zur direkten Demokratie der Schweiz: alle eidgenössischen Volksabstimmungen seit 1848 und Wahlen seit 1900.
 
@@ -174,6 +179,18 @@ PYTHONPATH=src pytest tests/ -m "not live" -v
 # Live-Tests (Netzwerk erforderlich)
 PYTHONPATH=src pytest tests/ -m "live" -v
 ```
+
+---
+
+## Mitwirken
+
+Siehe [CONTRIBUTING.de.md](CONTRIBUTING.de.md) ([🇬🇧 English](CONTRIBUTING.md)).
+
+---
+
+## Sicherheit
+
+Siehe [SECURITY.de.md](SECURITY.de.md) ([🇬🇧 English](SECURITY.md)) für die Sicherheitslage und das Melden von Schwachstellen.
 
 ---
 
