@@ -239,3 +239,5 @@ Data licenses:
 - Swissvotes: [Creative Commons BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - BFS / opendata.swiss: [Open use](https://opendata.swiss/de/terms-of-use)
 - SRGSSR Polis: Non-commercial use only — see [developer.srgssr.ch](https://developer.srgssr.ch)
+
+<!-- mcp-name: io.github.malkreide/swiss-democracy-mcp -->

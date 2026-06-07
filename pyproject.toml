@@ -52,7 +52,6 @@ dev = [
 swiss-democracy-mcp = "swiss_democracy_mcp.server:mcp.run"
 
 [project.urls]
-"mcp-name" = "io.github.malkreide/swiss-democracy-mcp"
 Homepage = "https://github.com/malkreide/swiss-democracy-mcp"
 Repository = "https://github.com/malkreide/swiss-democracy-mcp"
 "Bug Tracker" = "https://github.com/malkreide/swiss-democracy-mcp/issues"
