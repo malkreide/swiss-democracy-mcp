@@ -241,3 +241,22 @@ Data licenses:
 - SRGSSR Polis: Non-commercial use only — see [developer.srgssr.ch](https://developer.srgssr.ch)
 
 <!-- mcp-name: io.github.malkreide/swiss-democracy-mcp -->
+
+<!-- BEGIN GENERATED: install -->
+## Installation
+
+Run via [`uv`](https://docs.astral.sh/uv/)'s `uvx` — no clone or manual install needed. Add to your MCP client config (`mcpServers` for Claude Desktop, Cursor and Windsurf; use a top-level `servers` key for VS Code in `.vscode/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "swiss-democracy-mcp": {
+      "command": "uvx",
+      "args": [
+        "swiss-democracy-mcp"
+      ]
+    }
+  }
+}
+```
+<!-- END GENERATED: install -->
