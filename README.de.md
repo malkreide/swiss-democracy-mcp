@@ -202,3 +202,9 @@ Datenlizenz:
 - Swissvotes: [Creative Commons BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - BFS / opendata.swiss: [Freie Nutzung](https://opendata.swiss/de/terms-of-use)
 - SRGSSR Polis: Nur nichtkommerzielle Nutzung — [developer.srgssr.ch](https://developer.srgssr.ch)
+
+---
+
+## Autor
+
+**Hayal Oezkan** · [github.com/malkreide](https://github.com/malkreide)

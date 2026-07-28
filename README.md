@@ -240,6 +240,12 @@ Data licenses:
 - BFS / opendata.swiss: [Open use](https://opendata.swiss/de/terms-of-use)
 - SRGSSR Polis: Non-commercial use only — see [developer.srgssr.ch](https://developer.srgssr.ch)
 
+---
+
+## Author
+
+**Hayal Oezkan** · [github.com/malkreide](https://github.com/malkreide)
+
 <!-- mcp-name: io.github.malkreide/swiss-democracy-mcp -->
 
 <!-- BEGIN GENERATED: install -->
