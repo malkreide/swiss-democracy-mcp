@@ -71,11 +71,10 @@ def test_explicit_cors_origin_passes_transport_check(monkeypatch):
 
 
 def _post_with_host(host_header: str):
-    mcp.settings.transport_security = build_transport_security("127.0.0.1", 8000)
-    # The SDK caches the session manager on the instance and only lets it run
-    # once; without this reset the second app build fails in the lifespan.
-    mcp._session_manager = None
-    with TestClient(mcp.streamable_http_app()) as client:
+    # mcp 2.x: transport_security is a per-app kwarg, not a setting.
+    with TestClient(
+        mcp.streamable_http_app(transport_security=build_transport_security("127.0.0.1", 8000))
+    ) as client:
         return client.post("/mcp", headers={"Host": host_header, **_HEADERS}, json=_INIT)
 
 

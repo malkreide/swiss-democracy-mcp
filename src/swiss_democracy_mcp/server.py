@@ -38,8 +38,8 @@ from urllib.parse import urlparse
 
 import httpx
 import structlog
-from mcp.server.fastmcp import Context, FastMCP
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp.server.mcpserver import Context, MCPServer
+from mcp.server.mcpserver.exceptions import ToolError
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -253,7 +253,7 @@ def _client() -> httpx.AsyncClient:
 
 
 @asynccontextmanager
-async def _lifespan(_server: FastMCP):
+async def _lifespan(_server: MCPServer):
     """Shared lifecycle: dispose the pooled HTTP client on shutdown."""
     try:
         yield
@@ -475,7 +475,7 @@ def _friendly_error(e: Exception) -> str:
 async def _fail(e: Exception, ctx: Context | None = None) -> NoReturn:
     """Signal an execution error to the client as an isError tool result.
 
-    Raising ToolError makes FastMCP return `isError: true` (audit OBS-001),
+    Raising ToolError makes MCPServer return `isError: true` (audit OBS-001),
     instead of a normal result that merely contains an error string. The
     original exception is logged to stderr; only the friendly message is
     surfaced to the model.
@@ -510,7 +510,7 @@ def _row_to_vote_summary(row: dict[str, str]) -> dict:
 # MCP Server
 # ---------------------------------------------------------------------------
 
-mcp = FastMCP(
+mcp = MCPServer(
     "swiss_democracy_mcp",
     lifespan=_lifespan,
     instructions=(
@@ -1443,9 +1443,10 @@ def _build_http_app():
             "reachable under (e.g. mcp.example.ch) so Host and Origin are "
             "validated. Without it there is no Host check at all.",
         )
-    mcp.settings.transport_security = security
-
-    app = mcp.streamable_http_app()
+    # mcp 2.x: transport_security is a per-app kwarg, not a mutable setting.
+    app = mcp.streamable_http_app(
+        transport_security=security, host=settings.mcp_host
+    )
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
