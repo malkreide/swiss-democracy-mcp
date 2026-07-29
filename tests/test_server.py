@@ -10,7 +10,7 @@ import json
 import httpx
 import pytest
 import respx
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp.server.mcpserver.exceptions import ToolError
 from pydantic import SecretStr
 
 from swiss_democracy_mcp.server import (
