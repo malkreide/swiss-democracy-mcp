@@ -84,10 +84,19 @@ class Settings(BaseSettings):
     # Comma-separated allowed CORS origins for HTTP transport. Default "*" is
     # fine for local dev; set explicit origins in production (audit SDK-004).
     mcp_cors_origins: str = "*"
+    # Inbound Host allow-list for the HTTP transport (audit SEC-005, inbound
+    # half). Comma-separated, e.g. MCP_ALLOWED_HOSTS="mcp.example.ch". Only
+    # needed for a non-loopback bind: the reachable name is then a service or
+    # public DNS name this process cannot derive from the bind address.
+    mcp_allowed_hosts: str = ""
 
     @property
     def cors_origins(self) -> list[str]:
         return [o.strip() for o in self.mcp_cors_origins.split(",") if o.strip()]
+
+    @property
+    def allowed_hosts(self) -> list[str]:
+        return [h.strip() for h in self.mcp_allowed_hosts.split(",") if h.strip()]
 
 
 settings = Settings()
@@ -1379,6 +1388,44 @@ async def democracy_polis_list_elections(params: PolisElectionInput, ctx: Contex
 # Transport entry point
 # ===========================================================================
 
+def build_transport_security(host: str, port: int):
+    """Host/Origin allow-list for the HTTP transport (audit SEC-005, inbound).
+
+    The SDK leaves DNS-rebinding protection OFF while ``transport_security`` is
+    unset — its own comment says "If not specified, disable DNS rebinding
+    protection by default for backwards compatibility". Unset therefore means
+    no Host and no Origin validation at all.
+
+    Returns ``None`` when no allow-list can be derived, i.e. a non-loopback
+    bind with no ``MCP_ALLOWED_HOSTS``. The server is then reached under a
+    service or public DNS name this process does not know, and a guessed list
+    would reject every real request with HTTP 421. The caller warns instead.
+    """
+    from mcp.server.transport_security import TransportSecuritySettings
+
+    loopback = {f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"}
+    if settings.allowed_hosts:
+        # Loopback stays reachable for health checks and local debugging.
+        hosts = set(settings.allowed_hosts) | loopback
+    elif host in ("127.0.0.1", "localhost", "::1"):
+        hosts = loopback | {f"{host}:{port}"}
+    else:
+        return None
+
+    # Fold in the configured CORS origins, otherwise the transport layer would
+    # reject exactly the browser clients CORS permits. "*" cannot be expressed
+    # here (the SDK matches origins literally, with only a trailing ":*" port
+    # wildcard), so a wildcard CORS setting means browser clients from other
+    # origins need MCP_CORS_ORIGINS listed explicitly once protection is on.
+    origins = {o for o in settings.cors_origins if o != "*"}
+    origins |= {f"http://{h}" for h in hosts}
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=sorted(hosts),
+        allowed_origins=sorted(origins),
+    )
+
+
 def _build_http_app():
     """Build the Streamable-HTTP ASGI app with CORS middleware (audit SDK-004).
 
@@ -1386,6 +1433,17 @@ def _build_http_app():
     clients need it both exposed (to read it) and allowed (to send it back).
     """
     from starlette.middleware.cors import CORSMiddleware
+
+    security = build_transport_security(settings.mcp_host, settings.mcp_port)
+    if security is None:
+        log.warning(
+            "dns_rebinding_protection_off",
+            host=settings.mcp_host,
+            hint="Set MCP_ALLOWED_HOSTS to the hostnames this server is "
+            "reachable under (e.g. mcp.example.ch) so Host and Origin are "
+            "validated. Without it there is no Host check at all.",
+        )
+    mcp.settings.transport_security = security
 
     app = mcp.streamable_http_app()
     app.add_middleware(
