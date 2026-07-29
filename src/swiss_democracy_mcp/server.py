@@ -43,6 +43,8 @@ from mcp.server.fastmcp.exceptions import ToolError
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from . import __version__
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -61,7 +63,7 @@ SRGSSR_TOKEN_URL = f"{SRGSSR_BASE}/oauth/v1/accesstoken"
 POLIS_BASE = f"{SRGSSR_BASE}/polis/v1"
 
 TIMEOUT = 30.0
-USER_AGENT = "swiss-democracy-mcp/1.0.0 (github.com/malkreide/swiss-democracy-mcp)"
+USER_AGENT = f"swiss-democracy-mcp/{__version__} (github.com/malkreide/swiss-democracy-mcp)"
 
 # ---------------------------------------------------------------------------
 # Settings (audit findings ARCH-004 / SEC-013 / ARCH-005)
