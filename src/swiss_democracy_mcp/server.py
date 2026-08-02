@@ -227,8 +227,7 @@ async def _validate_outbound(url: str, *, resolve: bool = True) -> None:
         for blocked in BLOCKED_NETWORKS:
             if ip in blocked:
                 raise ValueError(
-                    f"Aufgelöste IP {ip} liegt im gesperrten Bereich {blocked} "
-                    f"(SSRF-Schutz)."
+                    f"Aufgelöste IP {ip} liegt im gesperrten Bereich {blocked} (SSRF-Schutz)."
                 )
 
 
@@ -263,6 +262,7 @@ async def _lifespan(_server: MCPServer):
             await _http_client.aclose()
         _http_client = None
 
+
 # Rechtsform codes in Swissvotes
 RECHTSFORM_MAP = {
     "1": "Obligatorisches Referendum",
@@ -289,19 +289,41 @@ PARTY_COLUMNS = {
 
 # Cantonal abbreviations → full name
 CANTON_NAMES = {
-    "zh": "Zürich", "be": "Bern", "lu": "Luzern", "ur": "Uri",
-    "sz": "Schwyz", "ow": "Obwalden", "nw": "Nidwalden", "gl": "Glarus",
-    "zg": "Zug", "fr": "Freiburg", "so": "Solothurn", "bs": "Basel-Stadt",
-    "bl": "Basel-Landschaft", "sh": "Schaffhausen", "ar": "Appenzell AR",
-    "ai": "Appenzell AI", "sg": "St. Gallen", "gr": "Graubünden",
-    "ag": "Aargau", "tg": "Thurgau", "ti": "Tessin", "vd": "Waadt",
-    "vs": "Wallis", "ne": "Neuenburg", "ge": "Genf", "ju": "Jura",
+    "zh": "Zürich",
+    "be": "Bern",
+    "lu": "Luzern",
+    "ur": "Uri",
+    "sz": "Schwyz",
+    "ow": "Obwalden",
+    "nw": "Nidwalden",
+    "gl": "Glarus",
+    "zg": "Zug",
+    "fr": "Freiburg",
+    "so": "Solothurn",
+    "bs": "Basel-Stadt",
+    "bl": "Basel-Landschaft",
+    "sh": "Schaffhausen",
+    "ar": "Appenzell AR",
+    "ai": "Appenzell AI",
+    "sg": "St. Gallen",
+    "gr": "Graubünden",
+    "ag": "Aargau",
+    "tg": "Thurgau",
+    "ti": "Tessin",
+    "vd": "Waadt",
+    "vs": "Wallis",
+    "ne": "Neuenburg",
+    "ge": "Genf",
+    "ju": "Jura",
 }
 
 # Position codes (Bundesrat, NR, SR)
 POSITION_MAP = {
-    "1": "Ja / Annahme", "2": "Nein / Ablehnung", "3": "Keine Stimmempfehlung",
-    "8": "Keine/nicht relevant", "9": "Unbekannt",
+    "1": "Ja / Annahme",
+    "2": "Nein / Ablehnung",
+    "3": "Keine Stimmempfehlung",
+    "8": "Keine/nicht relevant",
+    "9": "Unbekannt",
 }
 
 # ---------------------------------------------------------------------------
@@ -325,7 +347,9 @@ async def _load_swissvotes(ctx: Context | None = None) -> list[dict[str, str]]:
         return _swissvotes_cache
 
     await _validate_outbound(SWISSVOTES_CSV_URL, resolve=False)
-    log.info("swissvotes_csv_refresh", host=urlparse(SWISSVOTES_CSV_URL).hostname, source="swissvotes")
+    log.info(
+        "swissvotes_csv_refresh", host=urlparse(SWISSVOTES_CSV_URL).hostname, source="swissvotes"
+    )
     if ctx is not None:
         await ctx.info("Lade Swissvotes-Datensatz (einmalig, danach 24h gecacht)…")
         await ctx.report_progress(progress=0.0, total=1.0)
@@ -441,6 +465,7 @@ async def _bfs_get(url: str, params: dict | None = None, *, resolve: bool = Fals
 # Helper functions
 # ---------------------------------------------------------------------------
 
+
 def _parse_float(val: str) -> float | None:
     try:
         return float(val.replace(",", ".")) if val.strip() else None
@@ -539,9 +564,7 @@ class VoteSearchInput(BaseModel):
     year_from: int | None = Field(
         default=None, description="Startjahr (z.B. 1990)", ge=1848, le=2100
     )
-    year_to: int | None = Field(
-        default=None, description="Endjahr (z.B. 2024)", ge=1848, le=2100
-    )
+    year_to: int | None = Field(default=None, description="Endjahr (z.B. 2024)", ge=1848, le=2100)
     legal_form: str | None = Field(
         default=None,
         description=(
@@ -562,9 +585,7 @@ class VoteSearchInput(BaseModel):
         ),
         max_length=100,
     )
-    limit: int = Field(
-        default=20, description="Maximale Anzahl Resultate (1–100)", ge=1, le=100
-    )
+    limit: int = Field(default=20, description="Maximale Anzahl Resultate (1–100)", ge=1, le=100)
     offset: int = Field(default=0, description="Offset für Pagination", ge=0)
 
     @field_validator("year_to")
@@ -625,12 +646,11 @@ async def democracy_search_votes(params: VoteSearchInput, ctx: Context | None = 
     rechtsform_targets: set[str] = set()
     if lf_filter:
         for code, label in RECHTSFORM_MAP.items():
-            if lf_filter in label.lower() or (
-                lf_filter == "initiative" and code == "3"
-            ) or (
-                lf_filter == "obligatorisch" and code == "1"
-            ) or (
-                lf_filter == "fakultativ" and code == "2"
+            if (
+                lf_filter in label.lower()
+                or (lf_filter == "initiative" and code == "3")
+                or (lf_filter == "obligatorisch" and code == "1")
+                or (lf_filter == "fakultativ" and code == "2")
             ):
                 rechtsform_targets.add(code)
 
@@ -676,11 +696,13 @@ async def democracy_search_votes(params: VoteSearchInput, ctx: Context | None = 
 
         # Policy domain filter (d1e1 contains BFS codes – search in title/keywords)
         if pd_filter:
-            combined = " ".join([
-                row.get("stichwort", ""),
-                row.get("titel_off_d", ""),
-                row.get("info_br-de", ""),
-            ]).lower()
+            combined = " ".join(
+                [
+                    row.get("stichwort", ""),
+                    row.get("titel_off_d", ""),
+                    row.get("info_br-de", ""),
+                ]
+            ).lower()
             if pd_filter not in combined:
                 continue
 
@@ -711,9 +733,7 @@ class VoteDetailInput(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
     vote_number: str = Field(
         ...,
-        description=(
-            "Abstimmungsnummer (anr) aus democracy_search_votes, z.B. '551.9' oder '546'"
-        ),
+        description=("Abstimmungsnummer (anr) aus democracy_search_votes, z.B. '551.9' oder '546'"),
         min_length=1,
         max_length=20,
     )
@@ -787,7 +807,11 @@ async def democracy_get_vote_detail(params: VoteDetailInput, ctx: Context | None
         },
         "result": {
             "accepted": annahme_val,
-            "accepted_label": "Angenommen" if annahme_val == 1 else "Abgelehnt" if annahme_val == 0 else "Unbekannt",
+            "accepted_label": "Angenommen"
+            if annahme_val == 1
+            else "Abgelehnt"
+            if annahme_val == 0
+            else "Unbekannt",
             "popular_vote_yes": _parse_int(row.get("volkja", "")),
             "popular_vote_no": _parse_int(row.get("volknein", "")),
             "yes_percent": _parse_float(row.get("volkja-proz", "")),
@@ -841,17 +865,21 @@ async def democracy_get_party_positions(params: VoteDetailInput, ctx: Context | 
 
     target = params.vote_number.strip()
     row = next(
-        (r for r in rows
-         if (r.get("\ufeffanr") or r.get("anr") or "").strip() == target),
+        (r for r in rows if (r.get("\ufeffanr") or r.get("anr") or "").strip() == target),
         None,
     )
     if row is None:
         return json.dumps({"error": f"Abstimmung '{target}' nicht gefunden."}, ensure_ascii=False)
 
     PAROLE_MAP = {
-        "1": "Ja", "2": "Nein", "3": "Stimmfreigabe",
-        "4": "Nein (zu Gegenentwurf)", "5": "Ja (zu Gegenentwurf)",
-        "66": "Keine Parole gefasst", "9": "Unbekannt", "": "Keine Angabe",
+        "1": "Ja",
+        "2": "Nein",
+        "3": "Stimmfreigabe",
+        "4": "Nein (zu Gegenentwurf)",
+        "5": "Ja (zu Gegenentwurf)",
+        "66": "Keine Parole gefasst",
+        "9": "Unbekannt",
+        "": "Keine Angabe",
     }
 
     parties: dict[str, str] = {}
@@ -867,10 +895,14 @@ async def democracy_get_party_positions(params: VoteDetailInput, ctx: Context | 
         "ja_lager": row.get("ja-lager", ""),
         "nein_lager": row.get("nein-lager", ""),
         "yes_committees": [
-            row.get("web-yes-1-de", ""), row.get("web-yes-2-de", ""), row.get("web-yes-3-de", "")
+            row.get("web-yes-1-de", ""),
+            row.get("web-yes-2-de", ""),
+            row.get("web-yes-3-de", ""),
         ],
         "no_committees": [
-            row.get("web-no-1-de", ""), row.get("web-no-2-de", ""), row.get("web-no-3-de", "")
+            row.get("web-no-1-de", ""),
+            row.get("web-no-2-de", ""),
+            row.get("web-no-3-de", ""),
         ],
         "finance_yes_total": _parse_int(row.get("finanz-ja-tot", "")),
         "finance_no_total": _parse_int(row.get("finanz-nein-tot", "")),
@@ -888,7 +920,9 @@ async def democracy_get_party_positions(params: VoteDetailInput, ctx: Context | 
         "openWorldHint": True,
     },
 )
-async def democracy_get_cantonal_results(params: VoteDetailInput, ctx: Context | None = None) -> str:
+async def democracy_get_cantonal_results(
+    params: VoteDetailInput, ctx: Context | None = None
+) -> str:
     """Gibt die Abstimmungsresultate aller 26 Kantone für eine eidgenössische Volksabstimmung zurück.
 
     <use_case>Kantonsvergleich und Ständemehr-Analyse zu einer Vorlage.</use_case>
@@ -911,8 +945,7 @@ async def democracy_get_cantonal_results(params: VoteDetailInput, ctx: Context |
 
     target = params.vote_number.strip()
     row = next(
-        (r for r in rows
-         if (r.get("\ufeffanr") or r.get("anr") or "").strip() == target),
+        (r for r in rows if (r.get("\ufeffanr") or r.get("anr") or "").strip() == target),
         None,
     )
     if row is None:
@@ -1003,7 +1036,10 @@ async def democracy_list_vote_dates(params: ListDatesInput, ctx: Context | None 
 
     sorted_dates = sorted(dates.items(), reverse=True)[: params.limit]
     return _emit(
-        {"total_dates": len(dates), "dates": [{"date": d, "vote_count": c} for d, c in sorted_dates]},
+        {
+            "total_dates": len(dates),
+            "dates": [{"date": d, "vote_count": c} for d, c in sorted_dates],
+        },
         "swissvotes",
     )
 
@@ -1047,12 +1083,14 @@ async def democracy_bfs_list_vote_dates(ctx: Context | None = None) -> str:
     for res in resources:
         name = res.get("name", {})
         name_de = name.get("de", "") if isinstance(name, dict) else str(name)
-        dates_info.append({
-            "name": name_de,
-            "date": res.get("issued", ""),
-            "url": res.get("download_url", res.get("url", "")),
-            "format": res.get("format", ""),
-        })
+        dates_info.append(
+            {
+                "name": name_de,
+                "date": res.get("issued", ""),
+                "url": res.get("download_url", res.get("url", "")),
+                "format": res.get("format", ""),
+            }
+        )
 
     dates_info.sort(key=lambda x: x.get("date", ""), reverse=True)
     return _emit({"total": len(dates_info), "vote_dates": dates_info[:50]}, "bfs")
@@ -1088,7 +1126,9 @@ class BfsVoteResultInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_bfs_get_vote_results(params: BfsVoteResultInput, ctx: Context | None = None) -> str:
+async def democracy_bfs_get_vote_results(
+    params: BfsVoteResultInput, ctx: Context | None = None
+) -> str:
     """Ruft Echtzeit- oder Archiv-Abstimmungsresultate vom BFS ab.
 
     <use_case>Resultate auf Gemeinde-/Kantons-/Bundesebene, v.a. am Abstimmungssonntag.</use_case>
@@ -1131,9 +1171,7 @@ async def democracy_bfs_get_vote_results(params: BfsVoteResultInput, ctx: Contex
     for vorlage in votes_raw:
         vorlage_id = vorlage.get("vorlagenId", "")
         title_info = vorlage.get("vorlagenTitel", [{}])
-        title_de = next(
-            (t.get("text", "") for t in title_info if t.get("langKey") == "de"), ""
-        )
+        title_de = next((t.get("text", "") for t in title_info if t.get("langKey") == "de"), "")
         entry: dict[str, Any] = {
             "vorlage_id": vorlage_id,
             "title_de": title_de,
@@ -1160,12 +1198,14 @@ async def democracy_bfs_get_vote_results(params: BfsVoteResultInput, ctx: Contex
             gemeinden = []
             for kt in vorlage.get("kantone", []):
                 for gem in kt.get("gemeinden", []):
-                    gemeinden.append({
-                        "id": gem.get("geoLevelId"),
-                        "name": gem.get("geoLevelname"),
-                        "canton": kt.get("geoLevelname"),
-                        "result": _extract_result(gem.get("resultat", {})),
-                    })
+                    gemeinden.append(
+                        {
+                            "id": gem.get("geoLevelId"),
+                            "name": gem.get("geoLevelname"),
+                            "canton": kt.get("geoLevelname"),
+                            "result": _extract_result(gem.get("resultat", {})),
+                        }
+                    )
             entry["municipalities"] = gemeinden
 
         results.append(entry)
@@ -1186,9 +1226,7 @@ class PolisListInput(BaseModel):
     year_from: int | None = Field(
         default=None, description="Startjahr (z.B. 1960), min. 1900", ge=1900, le=2100
     )
-    year_to: int | None = Field(
-        default=None, description="Endjahr (z.B. 2024)", ge=1900, le=2100
-    )
+    year_to: int | None = Field(default=None, description="Endjahr (z.B. 2024)", ge=1900, le=2100)
     lang: Literal["de", "fr", "it", "rm", "en"] = Field(
         default="de",
         description="Sprache der Resultate: 'de', 'fr', 'it', 'rm', 'en'",
@@ -1284,7 +1322,9 @@ class PolisVotationDetailInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_polis_get_votation_detail(params: PolisVotationDetailInput, ctx: Context | None = None) -> str:
+async def democracy_polis_get_votation_detail(
+    params: PolisVotationDetailInput, ctx: Context | None = None
+) -> str:
     """Gibt detaillierte Polis-Daten zu einer Volksabstimmung zurück.
 
     <use_case>Gemeindescharfe Detailanalyse einer historischen Abstimmung.</use_case>
@@ -1336,7 +1376,9 @@ class PolisElectionInput(BaseModel):
         "openWorldHint": True,
     },
 )
-async def democracy_polis_list_elections(params: PolisElectionInput, ctx: Context | None = None) -> str:
+async def democracy_polis_list_elections(
+    params: PolisElectionInput, ctx: Context | None = None
+) -> str:
     """Ruft historische Wahlen (National-/Ständerat, Regierungsrat) aus Polis ab.
 
     <use_case>Wahlanalysen (Kandidierende, Parteistimmen) seit 1900.</use_case>
@@ -1387,6 +1429,7 @@ async def democracy_polis_list_elections(params: PolisElectionInput, ctx: Contex
 # ===========================================================================
 # Transport entry point
 # ===========================================================================
+
 
 def build_transport_security(host: str, port: int):
     """Host/Origin allow-list for the HTTP transport (audit SEC-005, inbound).
@@ -1444,9 +1487,7 @@ def _build_http_app():
             "validated. Without it there is no Host check at all.",
         )
     # mcp 2.x: transport_security is a per-app kwarg, not a mutable setting.
-    app = mcp.streamable_http_app(
-        transport_security=security, host=settings.mcp_host
-    )
+    app = mcp.streamable_http_app(transport_security=security, host=settings.mcp_host)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
