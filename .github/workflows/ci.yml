@@ -29,8 +29,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install ".[dev]"
 
+      # Pin ruff so an upstream release cannot change the default rule set or
+      # formatter and break CI on unrelated, untouched code.
+      - name: Install pinned ruff
+        run: pip install ruff==0.16.1
+
       - name: Lint with ruff
-        run: python -m ruff check src/ tests/
+        run: python -m ruff check src/ tests/ scripts/
+
+      - name: Format check
+        run: python -m ruff format --check src/ tests/ scripts/
 
       - name: Run unit tests
         run: PYTHONPATH=src python -m pytest tests/ -m "not live" -v
