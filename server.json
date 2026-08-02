@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.malkreide/swiss-democracy-mcp",
   "description": "Parliament OData, Swissvotes, referendums, voting results",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "repository": {
     "url": "https://github.com/malkreide/swiss-democracy-mcp",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "pypi",
       "identifier": "swiss-democracy-mcp",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "transport": {
         "type": "stdio"
       },
