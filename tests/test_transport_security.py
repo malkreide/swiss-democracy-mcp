@@ -54,7 +54,7 @@ def test_non_local_bind_with_allowlist_enables_protection(monkeypatch):
 
 
 def test_wildcard_cors_is_not_copied_into_allowed_origins(monkeypatch):
-    """"*" is matched literally by the SDK, so copying it in would be a no-op
+    """ "*" is matched literally by the SDK, so copying it in would be a no-op
     that reads like a wildcard. It must not appear."""
     monkeypatch.setattr("swiss_democracy_mcp.server.settings", Settings(mcp_cors_origins="*"))
     sec = build_transport_security("127.0.0.1", 8000)
