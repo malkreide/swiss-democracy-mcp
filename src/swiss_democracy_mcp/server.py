@@ -480,6 +480,43 @@ def _parse_int(val: str) -> int | None:
         return None
 
 
+class UpstreamSchemaError(ValueError):
+    """Die Antwort kam an, sieht aber anders aus, als der Code sie liest.
+
+    Erbt von ``ValueError``, damit ``_friendly_error`` die Meldung wörtlich
+    durchreicht — dort steht, welche Schlüssel die Quelle tatsächlich geliefert
+    hat, und genau das braucht der nächste Schritt.
+    """
+
+
+def _ckan_resources(data: dict, action: str) -> list:
+    """Die Ressourcenliste eines CKAN-Pakets holen, oder laut scheitern.
+
+    ``data.get("result", {}).get("resources", [])`` schrieb jede
+    Strukturänderung in eine leere Liste um. Das Werkzeug meldete dann «keine
+    Abstimmungsdaten verfügbar» — für das Modell nicht davon zu unterscheiden,
+    dass das BFS gerade keine hat (FID-006).
+    """
+    if "result" not in data:
+        raise UpstreamSchemaError(
+            f"CKAN `{action}`: Antwort ohne `result`. Vorhandene Schlüssel: "
+            f"{sorted(data)}. Das ist keine Leermenge — die Struktur der Quelle "
+            "hat sich geändert."
+        )
+    result = data["result"]
+    if not isinstance(result, dict):
+        raise UpstreamSchemaError(
+            f"CKAN `{action}`: `result` ist {type(result).__name__} und kein Objekt."
+        )
+    if "resources" not in result:
+        raise UpstreamSchemaError(
+            f"CKAN `{action}`: `result` ohne `resources`. Vorhandene Schlüssel: "
+            f"{sorted(result)}. Ein BFS-Paket führt seine Ressourcen immer — "
+            "dies ist kein Paket ohne Daten."
+        )
+    return result["resources"]
+
+
 def _friendly_error(e: Exception) -> str:
     """Map an exception to a safe, user-friendly message (no stack traces)."""
     if isinstance(e, httpx.HTTPStatusError):
@@ -1078,7 +1115,11 @@ async def democracy_bfs_list_vote_dates(ctx: Context | None = None) -> str:
     if not data.get("success"):
         return json.dumps({"error": "BFS-Paket nicht abrufbar."}, ensure_ascii=False)
 
-    resources = data.get("result", {}).get("resources", [])
+    try:
+        resources = _ckan_resources(data, "package_show (BFS / opendata.swiss)")
+    except UpstreamSchemaError as e:
+        await _fail(e, ctx)
+
     dates_info = []
     for res in resources:
         name = res.get("name", {})
