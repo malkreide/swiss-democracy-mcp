@@ -1,0 +1,895 @@
+{
+  "help": "https://ckan.opendata.swiss/api/3/action/help_show?name=package_show",
+  "success": true,
+  "result": {
+    "accrual_periodicity": "http://publications.europa.eu/resource/authority/frequency/CONT",
+    "author": "Bundesamt für Statistik BFS, Office fédéral de la statistique OFS, Ufficio federale di statistica UST",
+    "author_email": null,
+    "conforms_to": [],
+    "contact_points": [
+      {
+        "email": "poku@bfs.admin.ch",
+        "name": "poku@bfs.admin.ch"
+      }
+    ],
+    "creator_user_id": "0594d621-c92a-4a32-809c-98e281dc7944",
+    "description": {
+      "de": "Webservice für Echtzeit-Ergebnisse am Abstimmungssonntag. Die Daten werden laufend mit den Gemeinderesultaten aus den Kantonen aktualisiert. Die Daten werden nach der Schliessung der letzten Urne um 12 Uhr erstmals aktualisiert.\n### Dokumentation\n* [Changelog](https://bfspoku.github.io/ogd/changelog/changelog-ka.html \"Changelog\")",
+      "fr": "Un service web pour des résultats en temps réel le dimanche de votations. Les données sont mises à jour en continu sur la base des résultats communaux livrés par les cantons. Les données sont mises à jour à partir de midi, dès la clôture du dernier scrutin.\n### Documentation\n* [Changelog](https://bfspoku.github.io/ogd/changelog/changelog-ka.html \"Changelog\")",
+      "it": "Webservice per i risultati in tempo reale durante la domenica delle votazione. I dati, aggiornati per la prima volta dopo la chiusura dell’ultima urna alle ore 12.00, sono costantemente adeguati ai risultati comunali dei Cantoni.\n### Documentazione\n* [Changelog](https://bfspoku.github.io/ogd/changelog/changelog-ka.html \"Changelog\")",
+      "en": ""
+    },
+    "display_name": {
+      "de": "Echtzeitdaten am Abstimmungstag zu kantonalen Abstimmungsvorlagen",
+      "fr": "Des données en temps réel les jours de votations cantonales",
+      "it": "Dati in tempo reale nel giorno delle votazioni per gli oggetti in votazione a livello cantonale",
+      "en": ""
+    },
+    "documentation": [],
+    "id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+    "identifier": "echtzeitdaten-kantonalen-Abstimmungsvorlagen@bundesamt-fur-statistik-bfs",
+    "isopen": false,
+    "keywords": {
+      "en": [],
+      "de": [
+        "abstimmungen",
+        "abstimmungsergebnisse",
+        "abstimmungsresultate",
+        "abstimmungssonntag",
+        "abstimmungsvorlagen",
+        "abstimmungswochenende",
+        "bezirksergebnisse",
+        "bezirksresultate",
+        "echtzeit",
+        "echtzeitdaten",
+        "echtzeitergebnisse",
+        "gemeindeergebnisse",
+        "gemeinderesultate",
+        "kantonal",
+        "kantonsergebnisse",
+        "kantonsresultate",
+        "politik",
+        "volksabstimmungen",
+        "volksinitiative",
+        "vorlagen"
+      ],
+      "fr": [
+        "canton",
+        "cantonal",
+        "communaux",
+        "communes",
+        "dimanche",
+        "direct",
+        "districts",
+        "donnees",
+        "initiative",
+        "objets",
+        "politique",
+        "populaire",
+        "resultat",
+        "scrutin",
+        "temps-reel",
+        "votation",
+        "votes",
+        "weekend"
+      ],
+      "it": [
+        "cantonali",
+        "comuni",
+        "distretti",
+        "iniziativa",
+        "politica",
+        "popolare",
+        "progetto",
+        "reale",
+        "risultati",
+        "tempo",
+        "votazioni"
+      ]
+    },
+    "language": [
+      "en",
+      "de",
+      "fr",
+      "it"
+    ],
+    "license_id": null,
+    "license_title": null,
+    "maintainer": "poku@bfs.admin.ch",
+    "maintainer_email": null,
+    "metadata_created": "2021-11-17T08:31:54.925969",
+    "metadata_modified": "2026-06-15T08:00:17.608779",
+    "name": "echtzeitdaten-am-abstimmungstag-zu-kantonalen-abstimmungsvorlagen",
+    "num_resources": 42,
+    "num_tags": 49,
+    "organization": {
+      "approval_status": "approved",
+      "created": "2015-11-30T11:50:01.742198",
+      "description": {
+        "fr": "L'OFS est le centre de compétence de la statistique publique suisse. Il produit des informations statistiques sur la population, l'économie, la société, la formation et la recherche, le territoire et l'environnement. Ces informations servent à la formation de l’opinion publique. Elles sont un outil de planification et de gouvernance dans tous les domaines de l’action politique et contribuent au bon fonctionnement de notre État moderne et démocratique.",
+        "de": "Das BFS ist das nationale Kompetenzzentrum der öffentlichen Statistik der Schweiz. Es produziert und publiziert statistische Informationen über den Stand und die Entwicklung von Bevölkerung, Wirtschaft, Gesellschaft, Bildung, Forschung, Raum und Umwelt. Diese Informationen dienen der Meinungsbildung in der Bevölkerung sowie der Planung und Steuerung von zentralen Politikbereichen. Sie leisten einen wichtigen Beitrag für einen modernen, demokratischen Staat.",
+        "en": "The FSO is Switzerland's national competence centre for official statistics. It produces and publishes statistical information on the status and development of the population, economy, society, education, research, territory and the environment. This information is used for opinion building among the population and for the planning and management of key policy areas. They make an important contribution to a modern, democratic state.",
+        "it": "L’UST è il centro di competenza nazionale per la statistica pubblica della Svizzera. Produce e pubblica informazioni statistiche sullo stato e sull'evoluzione della popolazione, dell'economia, della società, della formazione, della ricerca, del territorio e dell'ambiente. Queste informazioni servono alla formazione dell'opinione pubblica nonché alla pianificazione e alla gestione in ambiti politici di centrale importanza. Forniscono un importante contributo per uno Stato moderno e democratico."
+      },
+      "display_name": {
+        "de": "Bundesamt für Statistik BFS",
+        "en": "Federal Statistical Office FSO",
+        "fr": "Office fédéral de la statistique OFS",
+        "it": "Ufficio federale di statistica UST"
+      },
+      "id": "4309c328-c618-4077-bcdc-378a21ee1b46",
+      "image_display_url": "https://ckan.opendata.swiss/uploads/group/BFS_08_web.jpg",
+      "image_url": "https://ckan.opendata.swiss/uploads/group/BFS_08_web.jpg",
+      "is_organization": true,
+      "name": "bundesamt-fur-statistik-bfs",
+      "num_followers": 0,
+      "package_count": 3286,
+      "political_level": "confederation",
+      "state": "active",
+      "title": {
+        "de": "Bundesamt für Statistik BFS",
+        "en": "Federal Statistical Office FSO",
+        "fr": "Office fédéral de la statistique OFS",
+        "it": "Ufficio federale di statistica UST"
+      },
+      "type": "organization",
+      "url": "https://www.bfs.admin.ch",
+      "tags": [],
+      "groups": []
+    },
+    "owner_org": "4309c328-c618-4077-bcdc-378a21ee1b46",
+    "private": false,
+    "publisher": {
+      "url": "https://opendata.swiss/organization/bundesamt-fur-statistik-bfs",
+      "name": "Bundesamt für Statistik BFS, Office fédéral de la statistique OFS, Ufficio federale di statistica UST"
+    },
+    "qualified_relations": [],
+    "relations": [
+      {
+        "label": {
+          "de": "legal_basis",
+          "en": "legal_basis",
+          "fr": "legal_basis",
+          "it": "legal_basis"
+        },
+        "url": "https://www.admin.ch/opc/de/classified-compilation/19920252/index.html#a20"
+      },
+      {
+        "label": {
+          "de": "legal_basis",
+          "en": "legal_basis",
+          "fr": "legal_basis",
+          "it": "legal_basis"
+        },
+        "url": "https://www.admin.ch/opc/de/classified-compilation/19920252/index.html#a21"
+      }
+    ],
+    "see_alsos": [],
+    "spatial": "",
+    "state": "active",
+    "temporals": [
+      {
+        "end_date": "2026-06-14T23:59:59.999999",
+        "start_date": "2019-02-10T00:00:00"
+      }
+    ],
+    "title": {
+      "de": "Echtzeitdaten am Abstimmungstag zu kantonalen Abstimmungsvorlagen",
+      "fr": "Des données en temps réel les jours de votations cantonales",
+      "it": "Dati in tempo reale nel giorno delle votazioni per gli oggetti in votazione a livello cantonale",
+      "en": ""
+    },
+    "title_for_slug": "echtzeitdaten-am-abstimmungstag-zu-kantonalen-abstimmungsvorlagen",
+    "type": "dataset",
+    "url": "https://www.bfs.admin.ch/bfs/de/home/statistiken/politik/abstimmungen.html",
+    "version": null,
+    "extras": [
+      {
+        "key": "uri",
+        "value": "http://bundesamt-fur-statistik-bfs/echtzeitdaten-kantonalen-Abstimmungsvorlagen"
+      }
+    ],
+    "groups": [
+      {
+        "description": {
+          "fr": "",
+          "de": "",
+          "en": "",
+          "it": ""
+        },
+        "display_name": {
+          "de": "Bevölkerung und Gesellschaft",
+          "en": "Population and society",
+          "fr": "Population et société",
+          "it": "Popolazione e società"
+        },
+        "id": "d569c3de-4b8d-4de0-8f0e-9ac4c17f9003",
+        "image_display_url": "",
+        "name": "soci",
+        "title": {
+          "de": "Bevölkerung und Gesellschaft",
+          "en": "Population and society",
+          "fr": "Population et société",
+          "it": "Popolazione e società"
+        }
+      },
+      {
+        "description": {
+          "fr": "",
+          "de": "",
+          "en": "",
+          "it": ""
+        },
+        "display_name": {
+          "de": "Regierung und öffentlicher Sektor",
+          "en": "Government and public sector",
+          "fr": "Gouvernement et secteur public",
+          "it": "Governo e settore pubblico"
+        },
+        "id": "e63f4b4e-5e3e-4c7f-9d4a-4babf164878f",
+        "image_display_url": "",
+        "name": "gove",
+        "title": {
+          "de": "Regierung und öffentlicher Sektor",
+          "en": "Government and public sector",
+          "fr": "Gouvernement et secteur public",
+          "it": "Governo e settore pubblico"
+        }
+      }
+    ],
+    "resources": [
+      {
+        "access_services": [],
+        "byte_size": 0,
+        "cache_last_updated": null,
+        "cache_url": null,
+        "coverage": "2026-06-14",
+        "created": "2025-05-01T08:44:54.751319",
+        "datastore_active": false,
+        "datastore_contains_all_records_of_source_file": false,
+        "description": {
+          "de": "Kantonale Vorlagen in den Kantonen: ZH, BE, LU, SZ, NW, SO, BS, BL, SH, SG, AG, TG, TI, VD, NE, GE",
+          "fr": "Objets cantonaux dans les cantons: ZH, BE, LU, SZ, NW, SO, BS, BL, SH, SG, AG, TG, TI, VD, NE, GE",
+          "it": "Oggetti cantonali nei cantoni: ZH, BE, LU, SZ, NW, SO, BS, BL, SH, SG, AG, TG, TI, VD, NE, GE",
+          "en": ""
+        },
+        "display_name": {
+          "de": "Volksabstimmung vom 14.06.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 14.06.2026 – objets cantonaux",
+          "it": "Votazione popolare del 14.06.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "documentation": [],
+        "download_url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260614-kantAbstimmung.json",
+        "format": "JSON",
+        "hash": "",
+        "id": "5a4d52cc-190e-4ca7-a51b-702954161792",
+        "issued": "2026-06-02T00:00:00+00:00",
+        "language": [
+          "de",
+          "fr",
+          "it"
+        ],
+        "last_modified": null,
+        "license": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "media_type": "application/json",
+        "metadata_modified": "2026-06-15T08:00:17.625347",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "name": {
+          "de": "Volksabstimmung vom 14.06.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 14.06.2026 – objets cantonaux",
+          "it": "Votazione popolare del 14.06.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "package_id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+        "position": 0,
+        "resource_type": null,
+        "rights": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "size": null,
+        "state": "active",
+        "temporal_resolution": "",
+        "title": {
+          "de": "Volksabstimmung vom 14.06.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 14.06.2026 – objets cantonaux",
+          "it": "Votazione popolare del 14.06.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "uri": "http://bundesamt-fur-statistik-bfs/echtzeitdaten-kantonalen-Abstimmungsvorlagen/1",
+        "url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260614-kantAbstimmung.json",
+        "url_type": null
+      },
+      {
+        "access_services": [],
+        "byte_size": 0,
+        "cache_last_updated": null,
+        "cache_url": null,
+        "coverage": "2026-04-26",
+        "created": "2024-07-16T11:57:17.219378",
+        "datastore_active": false,
+        "datastore_contains_all_records_of_source_file": false,
+        "description": {
+          "de": "Kantonale Vorlagen in den Kantonen: FR",
+          "en": "",
+          "fr": "Objets cantonaux dans les cantons: FR",
+          "it": "Oggetti cantonali nei cantoni: FR"
+        },
+        "display_name": {
+          "de": "Volksabstimmung vom 26.04.2026 – Kantonale Vorlagen",
+          "en": "",
+          "fr": "Votation populaire du 26.04.2026 – objets cantonaux",
+          "it": "Votazione popolare del 26.04.2026 – oggetti cantonali"
+        },
+        "documentation": [],
+        "download_url": " https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260426-kantAbstimmung.json",
+        "format": "JSON",
+        "hash": "",
+        "id": "241f8fb3-ff6c-4e5c-9895-ff3fdb8ed26a",
+        "identifier": "",
+        "issued": "2026-06-02T00:00:00",
+        "language": [
+          "de",
+          "fr",
+          "it"
+        ],
+        "last_modified": null,
+        "license": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "media_type": "",
+        "metadata_modified": "2026-06-15T08:00:17.625441",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "modified": "",
+        "name": {
+          "de": "Volksabstimmung vom 26.04.2026 – Kantonale Vorlagen",
+          "en": "",
+          "fr": "Votation populaire du 26.04.2026 – objets cantonaux",
+          "it": "Votazione popolare del 26.04.2026 – oggetti cantonali"
+        },
+        "package_id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+        "position": 1,
+        "resource_type": null,
+        "size": null,
+        "state": "active",
+        "temporal_resolution": "",
+        "title": {
+          "de": "Volksabstimmung vom 26.04.2026 – Kantonale Vorlagen",
+          "en": "",
+          "fr": "Votation populaire du 26.04.2026 – objets cantonaux",
+          "it": "Votazione popolare del 26.04.2026 – oggetti cantonali"
+        },
+        "url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260426-kantAbstimmung.json",
+        "url_type": null
+      },
+      {
+        "access_services": [],
+        "byte_size": 0,
+        "cache_last_updated": null,
+        "cache_url": null,
+        "coverage": "2026-03-08",
+        "created": "2021-11-17T08:31:55.644245",
+        "datastore_active": false,
+        "datastore_contains_all_records_of_source_file": false,
+        "description": {
+          "de": "Kantonale Vorlagen in den Kantonen: LU, UR, SO, BL, SH, SG, AG, TI, GE",
+          "fr": "Objets cantonaux dans les cantons: LU, UR, SO, BL, SH, SG, AG, TI, GE",
+          "it": "Oggetti cantonali nei cantoni: LU, UR, SO, BL, SH, SG, AG, TI, GE",
+          "en": ""
+        },
+        "display_name": {
+          "de": "Volksabstimmung vom 08.03.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 08.03.2026 – objets cantonaux",
+          "it": "Votazione popolare del 08.03.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "documentation": [],
+        "download_url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260308-kantAbstimmung.json",
+        "format": "JSON",
+        "hash": "",
+        "id": "a594807e-6775-43c1-a85b-4ab540ad2cdf",
+        "issued": "2026-06-02T00:00:00+00:00",
+        "language": [
+          "de",
+          "fr",
+          "it"
+        ],
+        "last_modified": null,
+        "license": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "media_type": "application/json",
+        "metadata_modified": "2026-06-15T08:00:17.625513",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "name": {
+          "de": "Volksabstimmung vom 08.03.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 08.03.2026 – objets cantonaux",
+          "it": "Votazione popolare del 08.03.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "package_id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+        "position": 2,
+        "resource_type": null,
+        "rights": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "size": null,
+        "state": "active",
+        "temporal_resolution": "",
+        "title": {
+          "de": "Volksabstimmung vom 08.03.2026 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 08.03.2026 – objets cantonaux",
+          "it": "Votazione popolare del 08.03.2026 – oggetti cantonali",
+          "en": ""
+        },
+        "uri": "http://bundesamt-fur-statistik-bfs/echtzeitdaten-kantonalen-Abstimmungsvorlagen/3",
+        "url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20260308-kantAbstimmung.json",
+        "url_type": null
+      },
+      {
+        "access_services": [],
+        "byte_size": 0,
+        "cache_last_updated": null,
+        "cache_url": null,
+        "coverage": "2025-11-30",
+        "created": "2021-11-17T08:31:55.644227",
+        "datastore_active": false,
+        "datastore_contains_all_records_of_source_file": false,
+        "description": {
+          "de": "Kantonale Vorlagen in den Kantonen: ZH, LU, UR, OW, NW, ZG, FR, SO, BL, SH, AR, SG, GR, VD, GE",
+          "fr": "Objets cantonaux dans les cantons: ZH, LU, UR, OW, NW, ZG, FR, SO, BL, SH, AR, SG, GR, VD, GE",
+          "it": "Oggetti cantonali nei cantoni: ZH, LU, UR, OW, NW, ZG, FR, SO, BL, SH, AR, SG, GR, VD, GE",
+          "en": ""
+        },
+        "display_name": {
+          "de": "Volksabstimmung vom 30.11.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 30.11.2025 – objets cantonaux",
+          "it": "Votazione popolare del 30.11.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "documentation": [],
+        "download_url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20251130-kantAbstimmung.json",
+        "format": "JSON",
+        "hash": "",
+        "id": "21587825-9557-40c4-a19a-8215fd4412a3",
+        "issued": "2026-06-02T00:00:00+00:00",
+        "language": [
+          "de",
+          "fr",
+          "it"
+        ],
+        "last_modified": null,
+        "license": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "media_type": "application/json",
+        "metadata_modified": "2026-06-15T08:00:17.625575",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "name": {
+          "de": "Volksabstimmung vom 30.11.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 30.11.2025 – objets cantonaux",
+          "it": "Votazione popolare del 30.11.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "package_id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+        "position": 3,
+        "resource_type": null,
+        "rights": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "size": null,
+        "state": "active",
+        "temporal_resolution": "",
+        "title": {
+          "de": "Volksabstimmung vom 30.11.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 30.11.2025 – objets cantonaux",
+          "it": "Votazione popolare del 30.11.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "uri": "http://bundesamt-fur-statistik-bfs/echtzeitdaten-kantonalen-Abstimmungsvorlagen/4",
+        "url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20251130-kantAbstimmung.json",
+        "url_type": null
+      },
+      {
+        "access_services": [],
+        "byte_size": 0,
+        "cache_last_updated": null,
+        "cache_url": null,
+        "coverage": "2025-09-28",
+        "created": "2021-11-17T08:31:55.644230",
+        "datastore_active": false,
+        "datastore_contains_all_records_of_source_file": false,
+        "description": {
+          "de": "Kantonale Vorlagen in den Kantonen: ZH, BE, SZ, FR, SO, BS, AR, TG, TI, VD, GE",
+          "fr": "Objets cantonaux dans les cantons: ZH, BE, SZ, FR, SO, BS, AR, TG, TI, VD, GE",
+          "it": "Oggetti cantonali nei cantoni: ZH, BE, SZ, FR, SO, BS, AR, TG, TI, VD, GE",
+          "en": ""
+        },
+        "display_name": {
+          "de": "Volksabstimmung vom 28.09.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 28.09.2025 – objets cantonaux",
+          "it": "Votazione popolare del 28.09.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "documentation": [],
+        "download_url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20250928-kantAbstimmung.json",
+        "format": "JSON",
+        "hash": "",
+        "id": "bf8d96c3-f7b6-4b9b-9305-0b1ef9ebebba",
+        "issued": "2026-06-02T00:00:00+00:00",
+        "language": [
+          "de",
+          "fr",
+          "it"
+        ],
+        "last_modified": null,
+        "license": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "media_type": "application/json",
+        "metadata_modified": "2026-06-15T08:00:17.625638",
+        "mimetype": null,
+        "mimetype_inner": null,
+        "name": {
+          "de": "Volksabstimmung vom 28.09.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 28.09.2025 – objets cantonaux",
+          "it": "Votazione popolare del 28.09.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "package_id": "e3a13282-9e5b-4d23-864f-4aaaf36288c6",
+        "position": 4,
+        "resource_type": null,
+        "rights": "https://opendata.swiss/terms-of-use#terms_by_ask",
+        "size": null,
+        "state": "active",
+        "temporal_resolution": "",
+        "title": {
+          "de": "Volksabstimmung vom 28.09.2025 – Kantonale Vorlagen",
+          "fr": "Votation populaire du 28.09.2025 – objets cantonaux",
+          "it": "Votazione popolare del 28.09.2025 – oggetti cantonali",
+          "en": ""
+        },
+        "uri": "http://bundesamt-fur-statistik-bfs/echtzeitdaten-kantonalen-Abstimmungsvorlagen/5",
+        "url": "https://ogd-static.voteinfo-app.ch/v1/ogd/sd-t-17-02-20250928-kantAbstimmung.json",
+        "url_type": null
+      }
+    ],
+    "tags": [
+      {
+        "display_name": "abstimmungen",
+        "id": "9bc584e7-99e8-4652-a2fd-ceab1b75c513",
+        "name": "abstimmungen",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "abstimmungsergebnisse",
+        "id": "55db5563-e995-4089-a461-868a842406b2",
+        "name": "abstimmungsergebnisse",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "abstimmungsresultate",
+        "id": "b36289df-1916-4541-9896-a54085abdc7e",
+        "name": "abstimmungsresultate",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "abstimmungssonntag",
+        "id": "0d3229e7-5375-4e10-b658-4862f27f9858",
+        "name": "abstimmungssonntag",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "abstimmungsvorlagen",
+        "id": "c1755f9b-f05e-48b5-8ab3-fa764215d39c",
+        "name": "abstimmungsvorlagen",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "abstimmungswochenende",
+        "id": "fee84441-5b14-45c9-b6c9-06712e60afff",
+        "name": "abstimmungswochenende",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "bezirksergebnisse",
+        "id": "f06cac28-7f4e-436f-99bd-719e6ff2a794",
+        "name": "bezirksergebnisse",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "bezirksresultate",
+        "id": "c6acf8d0-9b8a-48ac-96cb-f9b7e64f94c1",
+        "name": "bezirksresultate",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "canton",
+        "id": "4794e9b1-b995-43a8-a198-a4fd1d13e7b3",
+        "name": "canton",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "cantonal",
+        "id": "c9bda5da-f4a1-4985-a77f-c4f34a2d7d3d",
+        "name": "cantonal",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "cantonali",
+        "id": "b6243ee9-cfd2-4dd9-9611-940c3b331c8f",
+        "name": "cantonali",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "communaux",
+        "id": "bea8b1c1-2647-409d-8a9b-4cd9713f9a9d",
+        "name": "communaux",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "communes",
+        "id": "5ff411a7-cce4-46f4-a0cd-b990cd9ca1b5",
+        "name": "communes",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "comuni",
+        "id": "40f95b54-e6f2-4007-874d-85bd1317c613",
+        "name": "comuni",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "dimanche",
+        "id": "d58e2338-3f50-44ca-b183-e77836942f3f",
+        "name": "dimanche",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "direct",
+        "id": "7e7c6658-6f1b-4332-b55a-de5e2c9ae268",
+        "name": "direct",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "distretti",
+        "id": "76be20ea-1d8d-4cb9-8553-fd03313b2eac",
+        "name": "distretti",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "districts",
+        "id": "aace2814-0600-4339-8ffa-5e2398806063",
+        "name": "districts",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "donnees",
+        "id": "49ad85ff-b5e4-4d0f-a80d-41a29694eec5",
+        "name": "donnees",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "echtzeit",
+        "id": "bf177fc0-addb-44f2-ac18-81035fb8edad",
+        "name": "echtzeit",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "echtzeitdaten",
+        "id": "fa19c38f-75f5-4c5a-9df5-79e6616fd924",
+        "name": "echtzeitdaten",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "echtzeitergebnisse",
+        "id": "92c91752-2de9-4a34-babe-8ab3710b7184",
+        "name": "echtzeitergebnisse",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "gemeindeergebnisse",
+        "id": "70f0b9b8-af25-4897-a81c-0888030bf9ad",
+        "name": "gemeindeergebnisse",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "gemeinderesultate",
+        "id": "8fb8963c-45f4-45c1-8688-81d0c3867b13",
+        "name": "gemeinderesultate",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "initiative",
+        "id": "ffdda522-9eed-4481-837a-2ff6dce0347f",
+        "name": "initiative",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "iniziativa",
+        "id": "7f83b3cd-c482-4514-abbd-d39632c43594",
+        "name": "iniziativa",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "kantonal",
+        "id": "fef72acc-8f8c-4467-96e6-7f7be289508c",
+        "name": "kantonal",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "kantonsergebnisse",
+        "id": "561c12f5-2c39-430d-801d-ee6e34587489",
+        "name": "kantonsergebnisse",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "kantonsresultate",
+        "id": "7c62efb4-bc51-4d20-8d89-b68564b315c7",
+        "name": "kantonsresultate",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "objets",
+        "id": "5eeaa130-620f-4fbd-b2f1-47d458c80053",
+        "name": "objets",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "politica",
+        "id": "c46a89b8-e14d-45d1-bec5-5517d63514d2",
+        "name": "politica",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "politik",
+        "id": "3614c5b2-7081-46f6-ac11-cd4e174aa1f9",
+        "name": "politik",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "politique",
+        "id": "94a1686f-e3f2-4ec6-a366-21c1e832718f",
+        "name": "politique",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "popolare",
+        "id": "6fb33696-e409-41d1-bf5d-f0f432002fb1",
+        "name": "popolare",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "populaire",
+        "id": "219f283d-8f5d-4663-b32d-30cb221143d1",
+        "name": "populaire",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "progetto",
+        "id": "c1ff47e8-27dd-4e48-aea6-46c2c7d7c0e0",
+        "name": "progetto",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "reale",
+        "id": "5fb9438e-3cdf-42de-9456-73911a57b16c",
+        "name": "reale",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "resultat",
+        "id": "a8823a3f-ad8f-486f-86dc-f7a9e3339597",
+        "name": "resultat",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "risultati",
+        "id": "30db7dfe-ea6e-4da0-9585-b1bcf7a91892",
+        "name": "risultati",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "scrutin",
+        "id": "71022481-3256-4a27-bcea-b63b5710d4ee",
+        "name": "scrutin",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "tempo",
+        "id": "46d6092b-c6df-48b7-8370-c71e0187f505",
+        "name": "tempo",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "temps-reel",
+        "id": "786db2c2-2927-4724-a192-78adb56e2fcb",
+        "name": "temps-reel",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "volksabstimmungen",
+        "id": "535976e1-6739-49d2-bf3b-d5b4ce4d3b55",
+        "name": "volksabstimmungen",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "volksinitiative",
+        "id": "b539e576-d3eb-4c04-939b-b1d7a7aa6cbc",
+        "name": "volksinitiative",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "vorlagen",
+        "id": "2158ff4f-2e58-45d5-aa0f-6c2b71bd18fb",
+        "name": "vorlagen",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "votation",
+        "id": "cc2ce8c9-0497-422f-859a-b0f0e52b3e7f",
+        "name": "votation",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "votazioni",
+        "id": "2d9bad66-2a18-418d-a9ff-81b7050f0803",
+        "name": "votazioni",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "votes",
+        "id": "4d1a9fd5-3f92-4035-aa97-60930c6c8cb2",
+        "name": "votes",
+        "state": "active",
+        "vocabulary_id": null
+      },
+      {
+        "display_name": "weekend",
+        "id": "5cd3f2b1-1279-40a9-9c50-5fa9fdd0eb2d",
+        "name": "weekend",
+        "state": "active",
+        "vocabulary_id": null
+      }
+    ],
+    "relationships_as_subject": [],
+    "relationships_as_object": []
+  }
+}

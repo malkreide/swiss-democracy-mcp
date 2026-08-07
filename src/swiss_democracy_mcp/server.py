@@ -317,6 +317,39 @@ CANTON_NAMES = {
     "ju": "Jura",
 }
 
+# Füllwerte, mit denen Swissvotes fehlende Angaben markiert. Sie stehen in
+# Code- UND Zahlenspalten und sind keine Werte, sondern deren Abwesenheit.
+#
+# Gemessen am 2026-08-07 über alle 714 Abstimmungen: `9999` steht 2 421-mal in
+# den zehn Parteispalten, `.` 472-mal, und `.` zusätzlich 129-mal in `br-pos`.
+# 667 der 714 Abstimmungen tragen mindestens einen davon.
+#
+# Sie unübersetzt durchzureichen ist der eigentliche Fehler: `{"FDP": "9999"}`
+# liest sich wie ein Code oder eine Zahl, und ein Modell, das darüber
+# schreibt, hat keine Möglichkeit zu erkennen, dass dort schlicht nichts steht.
+# «Keine Angabe» ist eine Aussage, `9999` ist eine Einladung zum Erfinden.
+SWISSVOTES_MISSING = {
+    "9999": "Keine Angabe",
+    ".": "Nicht anwendbar",
+    "": "Keine Angabe",
+}
+
+
+def _decode(code: str | None, mapping: dict[str, str]) -> str:
+    """Einen Swissvotes-Code in Klartext übersetzen, Füllwerte eingeschlossen.
+
+    Ein unbekannter Code wird als solcher benannt und nicht roh
+    durchgereicht: «Unbekannter Code '7'» ist für den Leser etwas anderes als
+    `"7"`, das wie ein Wert aussieht.
+    """
+    value = (code or "").strip()
+    if value in mapping:
+        return mapping[value]
+    if value in SWISSVOTES_MISSING:
+        return SWISSVOTES_MISSING[value]
+    return f"Unbekannter Code {value!r}"
+
+
 # Position codes (Bundesrat, NR, SR)
 POSITION_MAP = {
     "1": "Ja / Annahme",
@@ -559,11 +592,14 @@ def _row_to_vote_summary(row: dict[str, str]) -> dict:
         "title_de": row.get("titel_kurz_d", ""),
         "title_fr": row.get("titel_kurz_f", ""),
         "title_en": row.get("titel_kurz_e", ""),
-        "legal_form": RECHTSFORM_MAP.get(rechtsform_code, rechtsform_code),
+        "legal_form": _decode(rechtsform_code, RECHTSFORM_MAP),
         "accepted": _parse_int(row.get("annahme", "")),
         "yes_percent": _parse_float(row.get("volkja-proz", "")),
         "turnout_percent": _parse_float(row.get("bet", "")),
-        "federal_council_position": POSITION_MAP.get(row.get("br-pos", ""), row.get("br-pos", "")),
+        # `br-pos` trägt in 129 der 714 Abstimmungen ein `.` — «nicht
+        # anwendbar», weil es damals noch keine Bundesratsposition gab. Der
+        # frühere Fallback reichte den Punkt roh durch.
+        "federal_council_position": _decode(row.get("br-pos", ""), POSITION_MAP),
         "swissvotes_url": row.get("swissvoteslink", ""),
     }
 
@@ -830,15 +866,15 @@ async def democracy_get_vote_detail(params: VoteDetailInput, ctx: Context | None
         "title_official_de": row.get("titel_off_d", ""),
         "title_official_fr": row.get("titel_off_f", ""),
         "keyword": row.get("stichwort", ""),
-        "legal_form": RECHTSFORM_MAP.get(rechtsform_code, rechtsform_code),
+        "legal_form": _decode(rechtsform_code, RECHTSFORM_MAP),
         "swissvotes_url": row.get("swissvoteslink", ""),
         "annee_politique_url": row.get("anneepolitique", ""),
         "parliamentary_positions": {
-            "federal_council": POSITION_MAP.get(row.get("br-pos", ""), row.get("br-pos", "")),
-            "national_council": POSITION_MAP.get(row.get("nr-pos", ""), row.get("nr-pos", "")),
+            "federal_council": _decode(row.get("br-pos", ""), POSITION_MAP),
+            "national_council": _decode(row.get("nr-pos", ""), POSITION_MAP),
             "national_council_yes": _parse_int(row.get("nrja", "")),
             "national_council_no": _parse_int(row.get("nrnein", "")),
-            "council_of_states": POSITION_MAP.get(row.get("sr-pos", ""), row.get("sr-pos", "")),
+            "council_of_states": _decode(row.get("sr-pos", ""), POSITION_MAP),
             "council_of_states_yes": _parse_int(row.get("srja", "")),
             "council_of_states_no": _parse_int(row.get("srnein", "")),
         },
@@ -914,15 +950,18 @@ async def democracy_get_party_positions(params: VoteDetailInput, ctx: Context | 
         "3": "Stimmfreigabe",
         "4": "Nein (zu Gegenentwurf)",
         "5": "Ja (zu Gegenentwurf)",
+        "8": "Keine/nicht relevant",
         "66": "Keine Parole gefasst",
         "9": "Unbekannt",
-        "": "Keine Angabe",
     }
 
-    parties: dict[str, str] = {}
-    for col, label in PARTY_COLUMNS.items():
-        code = row.get(col, "")
-        parties[label] = PAROLE_MAP.get(code, code)
+    # Die Füllwerte kommen aus `SWISSVOTES_MISSING` und werden benannt, nicht
+    # durchgereicht. Vorher stand hier `PAROLE_MAP.get(code, code)`, und für
+    # 667 der 714 Abstimmungen landete mindestens ein `9999` oder `.` als
+    # scheinbarer Wert in der Antwort.
+    parties: dict[str, str] = {
+        label: _decode(row.get(col, ""), PAROLE_MAP) for col, label in PARTY_COLUMNS.items()
+    }
 
     result = {
         "vote_number": target,
@@ -1007,7 +1046,7 @@ async def democracy_get_cantonal_results(
         "vote_number": target,
         "date": row.get("datum", ""),
         "title_de": row.get("titel_kurz_d", ""),
-        "legal_form": RECHTSFORM_MAP.get(row.get("rechtsform", ""), row.get("rechtsform", "")),
+        "legal_form": _decode(row.get("rechtsform", ""), RECHTSFORM_MAP),
         "national_result": {
             "accepted": annahme_val,
             "yes_percent": _parse_float(row.get("volkja-proz", "")),

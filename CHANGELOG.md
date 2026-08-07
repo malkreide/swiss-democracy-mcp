@@ -8,6 +8,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Füllwerte wurden als Parteiparolen ausgegeben.** Swissvotes markiert
+  fehlende Angaben mit `9999` («keine Angabe») und `.` («nicht anwendbar»).
+  `democracy_get_party_positions` übersetzte die bekannten Codes und reichte
+  alles übrige **roh durch** (`PAROLE_MAP.get(code, code)`); dieselbe Stelle
+  gab es in `democracy_search_votes` für `br-pos` und in beiden Werkzeugen für
+  `rechtsform`.
+
+  Gemessen am 2026-08-07 über alle 714 Abstimmungen: `9999` steht 2 421-mal in
+  den zehn Parteispalten, `.` 472-mal, dazu `.` 129-mal in `br-pos`.
+  **667 der 714 Abstimmungen** trugen mindestens einen davon in die Antwort.
+  Für die Bundesverfassung von 1848 meldete das Werkzeug
+  `{"FDP": "9999", "SP": "9999", …}` — für alle zehn Parteien, von denen es
+  damals keine gab.
+
+  Das ist die teuerste Sorte falsch: `9999` liest sich wie ein Code oder eine
+  Zahl, und ein Modell, das darüber schreibt, hat keine Möglichkeit zu
+  erkennen, dass dort schlicht nichts steht. «Keine Angabe» ist eine Aussage,
+  `9999` ist eine Einladung zum Erfinden.
+
+  Neu übersetzt `_decode()` an allen sechs Stellen, kennt die Füllwerte aus
+  `SWISSVOTES_MISSING` und benennt einen unbekannten Code auch als solchen
+  (`Unbekannter Code '7'`) statt ihn wie einen Wert aussehen zu lassen. `8`
+  fehlte ausserdem in `PAROLE_MAP` und ist ergänzt.
+
+  **Was nicht betroffen war, und warum das nicht Glück ist:** Die Zahlenspalten
+  markieren fehlende Werte ebenfalls mit `.`, und `float(".")` wirft — die
+  Parser liefern dort `None`. Eine Null an dieser Stelle wäre eine Summe, aus
+  der stillschweigend etwas fehlt. Das ist jetzt durch einen Test festgehalten,
+  damit es richtig bleibt.
+
 - **Eine Strukturänderung von opendata.swiss wurde zu «keine Abstimmungsdaten».**
   `democracy_bfs_list_vote_dates` schrieb
   `resources = data.get("result", {}).get("resources", [])`. Fällt `result` weg
@@ -33,6 +63,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [`FID-006`](https://github.com/malkreide/mcp-audit-skill/blob/main/checks/FID-006.md)
   am 2026-08-07: Acht Server im Portfolio sprechen mit CKAN, alle acht prüfen
   das `success`-Envelope, sieben defaulteten `result` danach.
+
+### Added
+
+- **Aufgezeichnete Fixture-Herkunft.** `scripts/record_fixtures.py` holt die
+  Swissvotes-CSV und die beiden CKAN-Pakete des BFS von den echten Quellen —
+  mit denselben Parametern und demselben `User-Agent`, die der Produktivcode
+  sendet — und schreibt `tests/fixtures/PROVENANCE.md` mit Quelle, Datum,
+  Auswahlregel und SHA-256 je Datei.
+
+  **Die Auswahlregel ist hier der Punkt.** Der Datensatz hat 714 Zeilen und
+  874 Spalten; ausgeschnitten wird **nach Merkmal, nicht nach Position**. «Die
+  ersten N Zeilen» hätte genau die Zellen weggeschnitten, wegen derer es die
+  Fixture gibt — die Füllwerte, die den Befund oben ausmachen. Jede Regel
+  nennt in `PROVENANCE.md`, welche Zeile welches Merkmal belegt, und das
+  Skript bricht ab, wenn eine von ihnen nichts mehr trifft.
+
+  Ebenso bleibt das Byte-Order-Mark in der Datei: Die Quelle setzt eines, der
+  Server entfernt es ausdrücklich, und ohne BOM könnte die Fixture nicht
+  belegen, dass er das muss. Das Skript prüft dabei auf ein *doppeltes* BOM —
+  beim ersten Lauf war genau das passiert, und der Server hätte die Spalte
+  `anr` nicht mehr gefunden.
+
+  Bei den CKAN-Paketen ist `resources` auf fünf gekürzt, `num_resources` bleibt
+  der echte Wert (135 bzw. 42). Die Zahl sagt, wie viel **nicht** in der Datei
+  steht.
+
+  **SRGSSR Polis ist nicht aufgezeichnet.** Der Endpunkt verlangt einen
+  OAuth2-Token; ohne ihn antwortet er mit der Entwicklerportal-Seite in HTML
+  statt mit Daten — gemessen und in `PROVENANCE.md` unter «NICHT
+  aufgezeichnet» vermerkt, statt den vorhandenen Literalen ein Datum
+  anzuschreiben, das nicht stimmt.
+
+  `tests/test_recorded_swissvotes.py` hält die Verarbeitung dagegen;
+  `tests/fixture_data.py` lädt und behandelt einen fehlenden Namen als Fehler
+  statt als leere Struktur.
 
 ## [0.2.5] - 2026-08-02
 
