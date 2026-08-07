@@ -217,6 +217,31 @@ PYTHONPATH=src pytest tests/ -m "not live" -v
 PYTHONPATH=src pytest tests/ -m "live" -v
 ```
 
+### Where the test data comes from
+
+The fixtures under `tests/fixtures/` are **recorded from the live sources** and
+dated. Source, retrieval date, selection rule and SHA-256 for every file:
+[`tests/fixtures/PROVENANCE.md`](tests/fixtures/PROVENANCE.md).
+
+```bash
+python scripts/record_fixtures.py   # re-record
+```
+
+**The selection rule is the point here.** The Swissvotes dataset has 714 rows
+and 874 columns, and the recorded rows are chosen **by property, not by
+position**. "The first N rows" would cut away exactly the cells the fixture
+exists for: the placeholders `9999` ("no information") and `.` ("not
+applicable"), which appear in 667 of the 714 votes. A fixture without them
+would look clean and prove nothing — which is precisely why nobody noticed the
+tools were passing them through as if they were values.
+
+The byte-order mark stays in the file too, because the source sets one and the
+server strips it explicitly. Without it the fixture could not show that it has
+to.
+
+SRGSSR Polis needs OAuth credentials and is listed under **NOT RECORDED** in
+`PROVENANCE.md` rather than given a date it never had.
+
 ---
 
 ## Contributing

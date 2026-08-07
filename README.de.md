@@ -180,6 +180,33 @@ PYTHONPATH=src pytest tests/ -m "not live" -v
 PYTHONPATH=src pytest tests/ -m "live" -v
 ```
 
+### Woher die Testdaten stammen
+
+Die Fixtures unter `tests/fixtures/` sind **von den echten Quellen
+aufgezeichnet** und datiert. Quelle, Abrufdatum, Auswahlregel und SHA-256 je
+Datei: [`tests/fixtures/PROVENANCE.md`](tests/fixtures/PROVENANCE.md).
+
+```bash
+python scripts/record_fixtures.py   # neu aufzeichnen
+```
+
+**Die Auswahlregel ist hier der Punkt.** Der Swissvotes-Datensatz hat 714
+Zeilen und 874 Spalten, und die aufgezeichneten Zeilen sind **nach Merkmal
+ausgewählt, nicht nach Position**. «Die ersten N Zeilen» würde genau die Zellen
+wegschneiden, wegen derer es die Fixture gibt: die Füllwerte `9999` («keine
+Angabe») und `.` («nicht anwendbar»), die in 667 der 714 Abstimmungen
+vorkommen. Eine Fixture ohne sie sähe sauber aus und belegte nichts — und genau
+deshalb ist niemandem aufgefallen, dass die Werkzeuge sie wie Werte
+durchreichten.
+
+Auch das Byte-Order-Mark bleibt in der Datei, weil die Quelle eines setzt und
+der Server es ausdrücklich entfernt. Ohne BOM könnte die Fixture nicht belegen,
+dass er das muss.
+
+SRGSSR Polis verlangt OAuth-Zugangsdaten und steht in `PROVENANCE.md`
+ausdrücklich unter **NICHT aufgezeichnet**, statt ein Datum zu bekommen, das es
+nie hatte.
+
 ---
 
 ## Mitwirken
