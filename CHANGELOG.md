@@ -6,6 +6,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Eine Strukturänderung von opendata.swiss wurde zu «keine Abstimmungsdaten».**
+  `democracy_bfs_list_vote_dates` schrieb
+  `resources = data.get("result", {}).get("resources", [])`. Fällt `result` weg
+  oder wandert es, war `resources` leer, die Schleife lief nullmal, und das
+  Werkzeug antwortete mit `total: 0` und einer leeren Liste.
+
+  Für das Modell ist das nicht davon zu unterscheiden, dass das BFS gerade
+  keine Abstimmungsdaten führt. Nur führt das Archiv Abstimmungen **seit 1981**
+  — `total: 0` ist dort nie eine plausible Antwort, und trotzdem hätte niemand
+  etwas gemerkt.
+
+  `result` und `resources` werden jetzt bestätigt; bei Abweichung fliegt
+  `UpstreamSchemaError` und wird über `_fail` zu einem `isError: true`-Ergebnis,
+  wie jeder andere Fehler dieses Servers. Der Typ erbt von `ValueError`, weil
+  `_friendly_error` genau diese Meldungen wörtlich durchreicht — dort stehen die
+  tatsächlich vorhandenen Schlüssel, und die braucht der nächste Schritt.
+
+  `resources: []` bleibt ein normales Ergebnis: Bestätigt wird die
+  **Anwesenheit** des Schlüssels, nicht sein Inhalt. Ein Wächter, der die echte
+  Leermenge mitfängt, wird nach dem zweiten Fehlalarm abgeschaltet.
+
+  Gefunden im Portfolio-Durchlauf zu
+  [`FID-006`](https://github.com/malkreide/mcp-audit-skill/blob/main/checks/FID-006.md)
+  am 2026-08-07: Acht Server im Portfolio sprechen mit CKAN, alle acht prüfen
+  das `success`-Envelope, sieben defaulteten `result` danach.
+
 ## [0.2.5] - 2026-08-02
 
 ### Fixed
