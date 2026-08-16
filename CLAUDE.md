@@ -61,10 +61,20 @@ python scripts/check_version_sync.py
 
 Dazu ein Gitleaks-Secret-Scan über die volle Historie (`fetch-depth: 0`).
 
-**Live-Tests: DRIFT-005 erfüllt.** `.github/workflows/live-tests.yml` läuft
-geplant (`cron: "13 5 * * 1"`, dazu `workflow_dispatch`) gegen
-`api.srgssr.ch` und öffnet/schliesst bei Bedarf ein `upstream`-Issue. Die
-PR-CI schliesst die Live-Tests per `-m "not live"` aus — das ist hier kein
-Verstoss, weil der geplante Lauf existiert. `schedule` greift nur auf dem
-Default-Branch: Änderungen an dieser Datei wirken erst nach dem Merge,
+**Live-Tests: DRIFT-005 erfüllt, aber die Abdeckung ist ungleich.**
+`.github/workflows/live-tests.yml` läuft geplant (`cron: "13 5 * * 1"`, dazu
+`workflow_dispatch`) und öffnet/schliesst bei Bedarf ein `upstream`-Issue.
+Die PR-CI schliesst die Live-Tests per `-m "not live"` aus — das ist hier
+kein Verstoss, weil der geplante Lauf existiert. `schedule` greift nur auf
+dem Default-Branch: Änderungen an dieser Datei wirken erst nach dem Merge,
 vorher von Hand per `workflow_dispatch` auslösen.
+
+**Der Lauf erreicht `swissvotes.ch`, sonst nichts.** Zwei der zehn Werkzeuge
+sind live abgedeckt; `opendata.swiss`/BFS gar nicht, Polis nicht, weil es
+`SRGSSR_CONSUMER_KEY`/`-SECRET` verlangt und der Workflow keine hereinreicht.
+Der Workflow nannte trotzdem `api.srgssr.ch` als sein Ziel — die eine Quelle,
+die er nicht abfragt — und legte seine Issues unter diesem Namen an. Bei
+rotem Lauf zuerst die Quelle abzufragen heisst dann: die falsche abfragen.
+`tests/test_live_abdeckung.py` hält beides fest, und es leitet die Abdeckung
+aus den `-m live`-Tests ab statt sie aufzuschreiben — ein neues Werkzeug muss
+dort eingeordnet werden, sonst fällt der Test.
