@@ -64,6 +64,9 @@ muss sie dieselbe Version aus `pyproject.toml` beziehen und keine zweite
 nennen. Beim Anheben `ruff format` einmal über `src/ tests/ scripts/` laufen
 lassen und das Ergebnis mitcommitten.
 
+Vor dem Lauf `ruff --version` prüfen: ein älteres ruff früher im `PATH`
+schlägt den Pin, ohne dass der Install etwas meldet.
+
 Gates, wörtlich aus `ci.yml` (Python 3.11/3.12/3.13):
 
 ```
