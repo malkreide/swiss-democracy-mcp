@@ -76,7 +76,13 @@ PYTHONPATH=src python -m pytest tests/ -m "not live" -v
 python scripts/check_version_sync.py
 ```
 
-Dazu ein Gitleaks-Secret-Scan über die volle Historie (`fetch-depth: 0`).
+Alle vier laufen in einem Job auf allen drei Feldern — keine
+`if:`-Ausnahme, kein zweiter lint-Job. Ein grünes 3.13 heisst hier wirklich,
+dass alles auf 3.13 lief; im Portfolio ist das nicht durchgehend so. Ein
+`fail-fast: false` steht nicht da.
+
+Dazu ein Gitleaks-Secret-Scan über die volle Historie (`fetch-depth: 0`) —
+als eigener Job `secret-scan`, den keiner der Befehle oben nachstellt.
 
 **Live-Tests: DRIFT-005 erfüllt, aber die Abdeckung ist ungleich.**
 `.github/workflows/live-tests.yml` läuft geplant (`cron: "13 5 * * 1"`, dazu
