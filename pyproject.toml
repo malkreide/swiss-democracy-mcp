@@ -50,7 +50,13 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "respx>=0.21.0",
-    "ruff>=0.4.0",
+    # Exakt gepinnt, nicht `>=`: ruff ist ein Gate, kein Hilfsmittel. Eine
+    # neuere Version meldet Abweichungen an Code, den niemand angefasst hat.
+    # Der Pin steht hier und nur hier — die CI installiert ihn ueber
+    # `pip install ".[dev]"` mit und hat keinen eigenen Pin-Schritt mehr.
+    # Beim Anheben: Version aendern, `ruff format` einmal ueber src/ tests/
+    # scripts/ laufen lassen und das Ergebnis mit committen.
+    "ruff==0.16.1",
 ]
 
 [project.scripts]
