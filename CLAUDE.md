@@ -81,6 +81,10 @@ Alle vier laufen in einem Job auf allen drei Feldern — keine
 dass alles auf 3.13 lief; im Portfolio ist das nicht durchgehend so. Ein
 `fail-fast: false` steht nicht da.
 
+Beide Auslöser sind auf `branches: [main]` eingeschränkt. Ein PR gegen einen
+anderen Basis-Branch startet deshalb gar nichts — dieselbe leere Check-Liste
+wie beim Merge-Konflikt oben, aber eine andere Ursache.
+
 Dazu ein Gitleaks-Secret-Scan über die volle Historie (`fetch-depth: 0`) —
 als eigener Job `secret-scan`, den keiner der Befehle oben nachstellt.
 
