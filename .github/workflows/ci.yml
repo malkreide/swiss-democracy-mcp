@@ -33,6 +33,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install ".[dev]"
 
+      # Der Pin wirkt nur, wenn `ruff` ihn auch aufruft: liegt frueher im
+      # PATH ein anderes ruff, gewinnt jenes, und der Install meldet nichts.
+      - name: Ruff-Pin (PATH und Modul gegen pyproject.toml)
+        run: python scripts/check_ruff_pin.py
+
       - name: Lint with ruff
         run: python -m ruff check src/ tests/ scripts/
 
