@@ -38,6 +38,7 @@ from urllib.parse import urlparse
 
 import httpx
 import structlog
+from mcp.server.caching import CacheHint
 from mcp.server.mcpserver import Context, MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
@@ -608,8 +609,30 @@ def _row_to_vote_summary(row: dict[str, str]) -> dict:
 # MCP Server
 # ---------------------------------------------------------------------------
 
+# SEP-2549, Spec 2026-07-28: die auflistenden Methoden tragen `ttlMs` und
+# `cacheScope`. Das SDK setzt beides auf «sofort veraltet, nie geteilt» — ein
+# Server ohne `cache_hints` verhaelt sich also nicht neutral, sondern laesst
+# jeden Client bei jeder Verbindung neu auflisten, fuer Listen, die beim Import
+# feststehen und sich zur Laufzeit des Prozesses nicht aendern koennen.
+#
+# `public` folgt aus der Sache, nicht aus Bequemlichkeit: die 10 Tools werden
+# per Dekorator beim Import registriert, es gibt keine Filterung nach Aufrufer.
+# Sobald eine Liste vom Aufrufer abhaengt, muss der Scope im selben Commit auf
+# `private` wechseln.
+#
+# `prompts/list` und `resources/list` bleiben ungesetzt: dieser Server
+# registriert weder Prompts noch Ressourcen, und ein Hinweis darauf beschriebe
+# eine Flaeche, die es nicht gibt.
+LIST_CACHE_TTL_MS = 300_000
+
+CACHE_HINTS = {
+    "tools/list": CacheHint(ttl_ms=LIST_CACHE_TTL_MS, scope="public"),
+    "server/discover": CacheHint(ttl_ms=LIST_CACHE_TTL_MS, scope="public"),
+}
+
 mcp = MCPServer(
     "swiss_democracy_mcp",
+    cache_hints=CACHE_HINTS,
     lifespan=_lifespan,
     instructions=(
         "Dieser Server bietet Zugang zu Schweizer Demokratie-Daten: "
@@ -1549,6 +1572,18 @@ def build_transport_security(host: str, port: int):
     )
 
 
+# Die Header, nach denen Spec 2026-07-28 eine Streamable-HTTP-Anfrage routet —
+# in der Schreibweise des SDK (`mcp.shared.inbound`). Ein Browser darf einen
+# nicht safelisteten Header gar nicht erst senden, wenn der Server ihn nicht in
+# `Access-Control-Allow-Headers` nennt: ohne sie stirbt jede Cross-Origin-
+# Anfrage am Preflight, vor dem ersten MCP-Byte. stdio- und Python-Clients
+# kennen keinen Preflight und merken davon nichts — deshalb fiel es nicht auf.
+#
+# `Mcp-Param-*` fehlt bewusst: CORS kennt keinen Praefix-Wildcard, und kein
+# Tool-Schema dieses Servers traegt eine `x-mcp-header`-Annotation.
+CORS_ROUTING_HEADERS = ["Mcp-Method", "Mcp-Name", "Mcp-Protocol-Version"]
+
+
 def _build_http_app():
     """Build the Streamable-HTTP ASGI app with CORS middleware (audit SDK-004).
 
@@ -1572,7 +1607,7 @@ def _build_http_app():
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization", "Mcp-Session-Id"],
+        allow_headers=["Content-Type", "Authorization", *CORS_ROUTING_HEADERS, "Mcp-Session-Id"],
         expose_headers=["Mcp-Session-Id"],
     )
     return app
