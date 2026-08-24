@@ -150,6 +150,8 @@ All configuration is via environment variables (see [`.env.example`](.env.exampl
 | `MCP_HOST` | `127.0.0.1` | HTTP bind address — set `0.0.0.0` **only** in a container |
 | `MCP_PORT` | `8000` | HTTP port |
 | `LOG_LEVEL` | `INFO` | structured JSON logs go to **stderr** |
+| `MCP_CORS_ORIGINS` | — | comma-separated CORS allow-origins for the HTTP transport. **Empty means no browser client is permitted**; `*` allows any origin and is logged as a warning. stdio clients are unaffected |
+| `MCP_ALLOWED_HOSTS` | — | comma-separated inbound `Host` allow-list. Only needed for a non-loopback bind |
 | `SRGSSR_CONSUMER_KEY` / `SRGSSR_CONSUMER_SECRET` | — | optional, only for `democracy_polis_*` tools |
 
 Secrets are held as `SecretStr` and never logged. See

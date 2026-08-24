@@ -82,9 +82,14 @@ class Settings(BaseSettings):
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8000
     log_level: str = "INFO"
-    # Comma-separated allowed CORS origins for HTTP transport. Default "*" is
-    # fine for local dev; set explicit origins in production (audit SDK-004).
-    mcp_cors_origins: str = "*"
+    # Comma-separated allowed CORS origins for HTTP transport (audit SDK-004).
+    # Empty by default: unset means no cross-origin access, not access from
+    # anywhere. This used to default to "*" — every website on the internet
+    # could call this server from a visitor's browser, and nobody had chosen
+    # that. The wildcard is still reachable, it just has to be asked for now,
+    # and `_build_http_app` logs a warning when it is. stdio and non-browser
+    # clients are unaffected either way; CORS governs browsers only.
+    mcp_cors_origins: str = ""
     # Inbound Host allow-list for the HTTP transport (audit SEC-005, inbound
     # half). Comma-separated, e.g. MCP_ALLOWED_HOSTS="mcp.example.ch". Only
     # needed for a non-loopback bind: the reachable name is then a service or
@@ -1561,8 +1566,9 @@ def build_transport_security(host: str, port: int):
     # Fold in the configured CORS origins, otherwise the transport layer would
     # reject exactly the browser clients CORS permits. "*" cannot be expressed
     # here (the SDK matches origins literally, with only a trailing ":*" port
-    # wildcard), so a wildcard CORS setting means browser clients from other
-    # origins need MCP_CORS_ORIGINS listed explicitly once protection is on.
+    # wildcard), so a wildcard CORS setting still means browser clients from
+    # other origins need MCP_CORS_ORIGINS listed explicitly once protection is
+    # on.
     origins = {o for o in settings.cors_origins if o != "*"}
     origins |= {f"http://{h}" for h in hosts}
     return TransportSecuritySettings(
@@ -1603,9 +1609,23 @@ def _build_http_app():
         )
     # mcp 2.x: transport_security is a per-app kwarg, not a mutable setting.
     app = mcp.streamable_http_app(transport_security=security, host=settings.mcp_host)
+    origins = settings.cors_origins
+    if "*" in origins:
+        log.warning(
+            "cors_wildcard_origin",
+            hint="MCP_CORS_ORIGINS contains '*'; any site can call this server "
+            "from a visitor's browser. Name explicit origins in production.",
+        )
+    elif not origins:
+        log.info(
+            "cors_no_origins",
+            hint="MCP_CORS_ORIGINS is unset, so browser-based MCP clients are "
+            "not permitted. Set it to a comma-separated origin list to enable "
+            "them. stdio and non-browser clients are unaffected.",
+        )
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins,
+        allow_origins=origins,
         allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", *CORS_ROUTING_HEADERS, "Mcp-Session-Id"],
         expose_headers=["Mcp-Session-Id"],
