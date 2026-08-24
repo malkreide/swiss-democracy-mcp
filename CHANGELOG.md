@@ -6,6 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **BRECHEND: `MCP_CORS_ORIGINS` stand auf `"*"`.** Jede Website im Netz durfte
+  diesen Server aus dem Browser eines Besuchers aufrufen, und niemand hatte das
+  gewählt — der Default war es.
+
+  Gemessen vorher am zusammengebauten ASGI-Stack: ein Preflight von
+  `https://evil.example` bekam dasselbe `Access-Control-Allow-Origin: *` wie
+  `https://client.example`. Danach ohne Konfiguration gar kein
+  `Access-Control-Allow-Origin` mehr.
+
+  Die Wildcard bleibt erreichbar, muss aber verlangt werden, und
+  `_build_http_app` protokolliert sie dann als `warning`; ein leerer Wert wird
+  als `info` vermerkt.
+
+  **Wer den bisherigen Zustand behalten will, setzt `MCP_CORS_ORIGINS=*`.**
+  stdio- und Nicht-Browser-Clients sind unberührt — CORS regelt ausschliesslich
+  Browser.
+
+  `MCP_CORS_ORIGINS` und `MCP_ALLOWED_HOSTS` standen in keiner der beiden
+  README-Tabellen und nicht in `.env.example`, obwohl `Settings` sie seit je
+  liest; beide sind jetzt dokumentiert.
+
 ### Fixed
 
 - **Browser-Clients scheiterten am Preflight.** Spec `2026-07-28` routet eine

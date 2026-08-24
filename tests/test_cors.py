@@ -130,3 +130,80 @@ def test_der_session_header_ist_weiterhin_freigegeben(client: TestClient) -> Non
     resp = preflight(client, MCP_SESSION_ID_HEADER)
     assert resp.status_code == 200, "der Session-Header wird am Preflight abgewiesen"
     assert MCP_SESSION_ID_HEADER in resp.headers["access-control-allow-headers"].lower()
+
+
+# ── Origins ────────────────────────────────────────────────────────────────
+#
+# `mcp_cors_origins` stand auf `"*"`. Gemessen am zusammengebauten ASGI-Stack
+# bekam ein Preflight von `https://evil.example` dasselbe
+# `Access-Control-Allow-Origin: *` wie `https://client.example` — jede Website
+# im Netz durfte diesen Server aus dem Browser eines Besuchers aufrufen, und
+# niemand hatte das gewaehlt.
+#
+# Die Fixture oben setzt `mcp_cors_origins` selbst und haette den Default
+# deshalb nie widerlegen koennen. Die Tests hier fassen ihn direkt an.
+
+
+def test_der_default_laesst_keinen_browser_durch(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Fail-closed am Feld selbst, ohne Umweg ueber das Singleton.
+
+    Eine frisch gebaute `Settings` ohne Umgebungsvariable ist das, was ein
+    Betreiber bekommt, der nichts konfiguriert. `_env_file=None` und das
+    geloeschte Env sind beide noetig: `Settings` liest sonst `.env` bzw. eine
+    zufaellig gesetzte Variable der Testumgebung, und der Test wuerde etwas
+    anderes messen als den Default.
+    """
+    from swiss_democracy_mcp.server import Settings
+
+    monkeypatch.delenv("MCP_CORS_ORIGINS", raising=False)
+    frisch = Settings(_env_file=None)
+    assert frisch.mcp_cors_origins == ""
+    assert frisch.cors_origins == []
+
+
+def test_ohne_konfigurierte_origin_kommt_kein_browser_durch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Und dasselbe durch den ganzen Stack: kein `Access-Control-Allow-Origin`.
+
+    stdio- und Nicht-Browser-Clients sind davon unberuehrt — CORS regelt
+    ausschliesslich Browser.
+    """
+    monkeypatch.setattr(settings, "mcp_cors_origins", "")
+    c = TestClient(_build_http_app())
+    resp = preflight(c, "content-type")
+    assert "access-control-allow-origin" not in resp.headers
+
+
+def test_eine_fremde_origin_wird_abgewiesen(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Die Gegenkontrolle. Ohne sie waere jeder Origin-Test hier auch gegen den
+    alten `"*"`-Default gruen gewesen — die Zusicherung koennte nicht
+    widerlegen, wovon sie handelt."""
+    monkeypatch.setattr(settings, "mcp_cors_origins", ORIGIN)
+    c = TestClient(_build_http_app())
+    resp = c.options(
+        ENDPOINT,
+        headers={
+            "Origin": "https://woanders.example",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type",
+        },
+    )
+    assert "access-control-allow-origin" not in resp.headers
+
+
+def test_die_wildcard_bleibt_erreichbar_muss_aber_verlangt_werden(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Einen Default verschaerfen ist nicht dasselbe wie die Option streichen.
+    Wer Any-Origin will, bekommt es weiterhin — bewusst, und der Server
+    protokolliert es."""
+    monkeypatch.setattr(settings, "mcp_cors_origins", "*")
+    c = TestClient(_build_http_app())
+    assert preflight(c, "content-type").headers["access-control-allow-origin"] == "*"
+
+
+def test_cors_origins_liest_eine_liste(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Kommasepariert, Leerzeichen weg, leere Eintraege raus."""
+    monkeypatch.setattr(settings, "mcp_cors_origins", " https://a.test , ,https://b.test ")
+    assert settings.cors_origins == ["https://a.test", "https://b.test"]

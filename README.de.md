@@ -117,6 +117,8 @@ Alle Konfiguration erfolgt über Umgebungsvariablen (siehe [`.env.example`](.env
 | `MCP_HOST` | `127.0.0.1` | HTTP-Bind-Adresse — `0.0.0.0` **nur** im Container |
 | `MCP_PORT` | `8000` | HTTP-Port |
 | `LOG_LEVEL` | `INFO` | strukturierte JSON-Logs auf **stderr** |
+| `MCP_CORS_ORIGINS` | — | kommaseparierte CORS-Allow-Origins für den HTTP-Transport. **Leer heisst: kein Browser-Client wird zugelassen**; `*` erlaubt jede Origin und wird als Warnung protokolliert. stdio-Clients sind nicht betroffen |
+| `MCP_ALLOWED_HOSTS` | — | kommaseparierte Allow-List eingehender `Host`-Header. Nur nötig bei Bind ausserhalb Loopback |
 | `SRGSSR_CONSUMER_KEY` / `SRGSSR_CONSUMER_SECRET` | — | optional, nur für `democracy_polis_*` |
 
 Secrets werden als `SecretStr` gehalten und nie geloggt. Siehe
