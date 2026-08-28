@@ -139,10 +139,10 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   ```
   To use Codex here, create an environment for this repo.
   ```
-- **Der automatische Auslöser feuert nicht** — dann steht überhaupt nichts da,
-  wie beim Draft, und zwar auch dann, wenn Kontingent und Environment in
-  Ordnung sind. Belegt am 28.8. weiter unten, samt der Abhilfe: `@codex review`
-  von Hand.
+- **Der automatische Weg scheitert, wo der manuelle trägt** — dann steht die
+  Environment-Meldung da, obwohl `@codex review` Sekunden später einen
+  vollständigen Review liefert. Belegt am 28.8. weiter unten. Die Meldung ist
+  dann keine Aussage über das Repo, sondern über diesen einen Weg.
 
 Der vierte kam erst zum Vorschein, als der dritte wegfiel, und das ist kein
 Zufall: Die Prüfungen liegen hintereinander. Dass es diese Reihenfolge ist und
@@ -202,67 +202,74 @@ braucht danach Zeit; wer sofort mergt, hat das Häkchen gesetzt und den Review
 nicht abgewartet.
 
 Dritter Weg, und der unangenehmste, weil er wie gar kein Problem aussieht: Der
-Auslöser feuert nicht. Am 28.8.2026 lief in diesem Repo ein Fall, der die Zeit
-als Ursache ausschliesst — an *einem* PR, mit beiden Auslösern nacheinander:
+automatische Auslöser liefert nichts, während der manuelle liefert. Belegt am
+28.8.2026 an **einem PR, in derselben Minute** — deshalb ohne die Ausreden, die
+jeden Vergleich über Stunden hinweg entwerten:
 
-| PR #51 | Auslöser | Antwort |
+| PR #53 | Auslöser | Antwort |
 |---|---|---|
-| ready 04:35:22, gemergt 04:44:00 | Draft → ready | nichts, in 8 min 38 s |
-| `@codex review` um 18:33:48 | von Hand | Befundlos-Meldung um 18:36:45 |
+| 18:43:37 ready | Draft → ready | 18:43:41 «To use Codex here, create an environment» |
+| 18:43:51 `@codex review` | von Hand | 18:46:52 vollständiger Review, drei P2-Befunde |
 
-Der manuelle Lauf brauchte **2 min 57 s**. Das automatische Fenster war mit
-8 min 38 s dreimal so gross und blieb leer — die Zeit war es also nicht.
-
-Das Kontingent auch nicht: Es hätte **die Meldung geschrieben**. Dass der
-spätere Lauf durchlief, belegt es dagegen nicht — ein rollendes Fenster kann
-sich dazwischen wieder geöffnet haben.
-
-Über die Environment sagt der Vorgang **nichts**, und der Versuch, sie
-auszuschliessen, ist hier schon einmal schiefgegangen. In der ersten Fassung
-dieses Absatzes stand, sie scheide «gerade durch den späteren Lauf» aus, weil
-sie am Repo hänge und nicht über den Tag schwanke. Sieben Minuten nach jenem
-Lauf kam im selben Repo auf PR #53 die Environment-Meldung:
-
-| 18:36:45 | PR #51, manuell ausgelöst | echter Review, befundlos |
-| 18:43:41 | PR #53, Draft → ready | «To use Codex here, create an environment» |
-
-Beides am 28.8., dasselbe Repo, dasselbe Konto, sieben Minuten auseinander.
-Damit ist die Regel widerlegt, nicht bloss angekratzt: **Eine
-Environment-Meldung auf dem einen PR belegt nicht, dass im Repo nichts geprüft
-werden kann — und ein gelungener Review belegt nicht, dass sie Minuten später
-ausbleibt.** Ob die Environment tatsächlich schwankt oder ob der manuelle
-Aufruf sie schlicht nicht braucht, ist offen; zwei Beobachtungen tragen keine
+Zehn Sekunden zwischen den beiden Auslösern. Kein Kontingent, keine Queue und
+keine Repo-Konfiguration ändert sich in zehn Sekunden so, dass daraus der
+Unterschied folgt. Was folgt: **Die Environment-Meldung des automatischen Wegs
+sagt nichts darüber, ob der manuelle Weg prüft.** Ob er sie gar nicht braucht
+oder ob die Prüfung nur unzuverlässig ist, bleibt offen — ein Fall trägt keine
 Mechanik.
 
-Für den Fall oben heisst das: Die Environment ist als Ursache **nicht**
-ausgeschlossen. Belegt bleibt nur, was man sieht — in 8 min 38 s kam keine
-einzige der drei Meldungen und kein Review-Objekt.
+Diese Fassung ist die zweite. Die erste stützte sich auf PR #51 (ready
+04:35:22, gemergt 04:44:00, nichts in 8 min 38 s; manuell um 18:33:48 →
+Befundlos-Meldung um 18:36:45) und schloss daraus Zeit und Environment als
+Ursachen aus. Beides hielt nicht, und beides hat Codex im Review dieses
+Abschnitts selbst zerlegt:
+
+- **Die Zeit ist nicht ausgeschlossen.** Ein manueller Lauf mit 2 min 57 s
+  begrenzt nicht, wie lange der automatische Weg vierzehn Stunden früher
+  gebraucht hätte — Queue-Last und Ausführungspfad können abweichen. Schlimmer:
+  Der Merge um 04:44:00 beendet den PR, und ein noch laufender Job stirbt
+  damit. «Nichts kam an» und «nichts wurde ausgelöst» sind dann nicht mehr
+  unterscheidbar.
+- **Die Environment ist nicht ausgeschlossen.** Der Ausschluss stand auf dem
+  Satz, sie hänge am Repo und schwanke nicht über den Tag. Sieben Minuten nach
+  dem Lauf, auf den er sich stützte, kam im selben Repo die Environment-Meldung
+  — und eine Environment kann in vierzehn Stunden ohnehin angelegt worden sein.
+
+Von #51 bleibt deshalb nur die nackte Beobachtung: Zwischen ready und Merge kam
+keine der drei Meldungen und kein Review-Objekt. Warum, ist offen.
+
+Ein dritter Fall taugt weniger, als er aussieht. #45 und #46 tragen denselben
+Sekundenstempel bei der Eröffnung (08:53:57); #45 bekam um 08:55:43 ein
+Review-Objekt — **automatisch**, denn vor diesem Zeitpunkt steht kein einziger
+Kommentar auf dem PR —, #46 bis zu seinem Merge fünf Stunden später gar nichts.
+Daraus «der Auslöser fällt pro PR aus» zu folgern, geht trotzdem nicht: Für #46
+ist nicht belegt, dass er zum fraglichen Zeitpunkt überhaupt ready war. War er
+Draft, ist es Grund 2 und kein Ausfall. Was der Fall belegt, ist nur die
+Gegenrichtung — dass der automatische Weg **auch schon funktioniert hat**.
 
 Der Vorgänger-PR #50 (ready 04:26:01, gemergt 04:26:04) erklärt sich dagegen
 vollständig durch die drei Sekunden — er gehört nicht in diese Schublade. Wer
 beide Fälle zusammenwirft, hat wieder eine Ursache aus einer Fehlermeldung
 geschlossen.
 
-Ein zweiter Beleg aus dem 23.8.: #45 und #46 tragen denselben Sekundenstempel
-bei der Eröffnung (08:53:57). #45 bekam um 08:55:43 ein Review-Objekt, #46 bis
-zu seinem Merge fünf Stunden später gar nichts. Der Auslöser fällt also
-**pro PR** aus, nicht global. (Ob #46 zwischenzeitlich Draft war, ist nicht
-belegt — dann wäre es Grund 2.)
-
-Warum er ausfällt, ist offen. Eine unbelegte Vermutung: #51 war nur **12
-Sekunden** Draft, bevor er auf ready ging; vielleicht registriert ein so
-kurzer Übergang nichts. #46 mit seinen fünf Stunden passt allerdings nicht
-dazu, und ohne einen Fall, in dem ein langer Draft→ready-Übergang sicher
-gefeuert hat, ist das eine Erzählung und keine Ursache.
+Warum der automatische Weg auf #53 die Environment vermisste und der manuelle
+zehn Sekunden später nicht, ist damit offen. Eine unbelegte Vermutung zu #51 —
+er war nur **12 Sekunden** Draft, bevor er auf ready ging, vielleicht
+registriert ein so kurzer Übergang nichts — erklärt #53 gerade nicht, denn dort
+hat der Auslöser ja gefeuert und geantwortet, nur mit der falschen Antwort.
 
 Praktisch zählt zweierlei:
 
-**`@codex review` von Hand hat geliefert, wo der Auto-Auslöser schwieg.**
-Zweimal belegt (#45 am 23.8., #51 am 28.8.), beide Male unter drei Minuten —
-und auf #51 sogar, während der automatische Weg im selben Repo Minuten später
-die Environment-Meldung bekam. «Verlässlich» wäre trotzdem zu viel gesagt: Auf
-#53 quittierte Codex den Aufruf mit einer 👀-Reaktion **auf dem auslösenden
-Kommentar** und lieferte danach zunächst nichts.
+**`@codex review` von Hand hat geliefert, wo der automatische Weg schwieg oder
+scheiterte.** Dreimal belegt und erstaunlich gleichmässig: #45 in 2 min 31 s,
+#51 in 2 min 57 s, #53 in 3 min 1 s. Auf #53 sogar zehn Sekunden nach der
+Environment-Meldung desselben Repos.
+
+Wer den Aufruf absetzt, wartet diese drei Minuten ab. Codex quittiert ihn
+vorher mit einer 👀-Reaktion **auf dem auslösenden Kommentar** — das ist die
+Empfangsbestätigung, nicht das Ergebnis. Auf #53 lagen zwischen 👀 und Review
+gut drei Minuten; wer nach einer Minute nachsieht und nichts findet, hält einen
+laufenden Review für einen ausgefallenen.
 
 Die 👀 ist nebenbei die einzige Reaktion, die je beobachtet wurde. Der
 Infokasten verspricht eine 👍 auf den PR; die kam in sechs Repos am 23.8. nicht
@@ -275,9 +282,12 @@ Review. Ein zu früh gemergter PR ist also nicht verloren; der Review lässt sic
 nachholen, solange jemand merkt, dass er fehlt.
 
 Und der Umkehrschluss, der hier am teuersten ist: **Bleibt es nach dem
-Auto-Auslöser still, ist das kein Beleg für irgendetwas** — nicht für ein
-Kontingentproblem, nicht für eine fehlende Environment, und schon gar nicht für
-einen sauberen Text. Es heisst nur, dass nicht geprüft wurde.
+automatischen Auslöser still, sagt das nichts über die Ursache** — nicht
+Kontingent, nicht Environment, nicht «der Auslöser ist ausgefallen», und schon
+gar nicht «der Text ist sauber». Belegt ist allein, dass am PR kein Review
+angekommen ist. Ob keiner lief, ob einer noch lief und der Merge ihn beendet
+hat, ob einer scheiterte — das trennt von aussen nichts. Die Abhilfe ist
+dieselbe: `@codex review` absetzen und drei Minuten warten.
 
 Das Kontingent hängt am Konto, nicht am Repo, und Code-Reviews haben einen
 eigenen Topf — nur GitHub-getriggerte Reviews zählen hinein. ChatGPT-Pläne
