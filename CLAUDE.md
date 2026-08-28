@@ -132,7 +132,10 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   Infokasten, den Codex unter jeden Review setzt, behauptet weiterhin eine
   Reaktion («otherwise it will react with 👍») — am 23.8. kam in sechs Repos
   die Meldung und in keinem die Reaktion. Der Kasten ist keine Quelle.
-- **Der PR ist ein Draft** — darauf läuft Codex nicht an.
+- **Der PR ist ein Draft** — dann laufen die *automatischen* Auslöser nicht an.
+  Ein ausdrücklicher Aufruf schon: Am 28.8. lieferte er auf dem Draft #55 nach
+  2 min 14 s einen Review. Ein kommentarloser Draft ist also kein Beleg, aber
+  auch keine Sackgasse.
 - **Das Kontingent ist weg** — dann schreibt er die Meldung oben.
 - **Für das Repo fehlt eine Environment** — dann schreibt er:
 
@@ -229,12 +232,17 @@ es bisher nicht.
 
 Belastbar ist deshalb nur, was ohne die Ursache auskommt:
 
-- **Eine Environment-Meldung belegt nicht, dass im Repo nichts geprüft werden
-  kann.** Gut drei Minuten *nach* der ersten lief auf demselben PR ein
-  vollständiger Review (18:43:41 → 18:46:52).
-- **Ein gelungener Review belegt nicht, dass der nächste durchläuft.**
+- **Auf eine Environment-Meldung kann Minuten später ein vollständiger Review
+  folgen** (18:43:41 → 18:46:52, derselbe PR), **und auf den Review wieder die
+  Meldung** (→ 18:51:30).
+- Mehr als die Abfolge steht dort nicht. Ob sich in den drei bzw. fünf Minuten
+  dazwischen etwas an den Voraussetzungen geändert hat, weiss niemand — wäre
+  die Environment um 18:45 angelegt worden, hätte die erste Meldung den
+  damaligen Zustand korrekt beschrieben. Die Beobachtung trägt, ihre Deutung
+  nicht.
 - **Erneut aufrufen ist billig.** Ein ausdrücklicher Aufruf kostet einen
-  Kommentar und drei Minuten; nach einer Environment-Meldung lohnt er sich.
+  Kommentar und zwei bis drei Minuten; nach einer Environment-Meldung lohnt er
+  sich — unabhängig davon, warum sie kam.
 
 Dieser Absatz stand vor seinem Merge dreimal falsch da, und jede Fassung
 scheiterte an derselben Sache: Sie erklärte mehr, als sie gemessen hatte.
