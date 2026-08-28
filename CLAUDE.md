@@ -348,6 +348,31 @@ Review; in den übrigen Repos lief Codex am selben Morgen durch. Eine
 Environment fürs Konto genügt also nicht — wer eine anlegt und den Rest für
 erledigt hält, mergt weiter Ungeprüftes.
 
+### Verfahren für Doku-PRs
+
+Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und erst
+dann auf ready. Der Merge entscheidet dann über einen geprüften Stand.
+
+Zwei Gründe, beide am 28.8.2026 gemessen:
+
+**Der ausdrückliche Aufruf läuft auch auf einem Draft an** (#55, 2 min 14 s).
+Auf ready umzuschalten ist dafür also nicht nötig — nur die automatischen
+Auslöser brauchen es.
+
+**Ein Draft wird nicht versehentlich weggemergt.** An diesem einen Tag lagen
+bei vier PRs zwischen «ready for review» und Merge drei bis vier Sekunden, bei
+rund drei Minuten Vorlauf. Das ist keine Nachlässigkeit einzelner, sondern die
+Folge davon, dass ready und Merge zwei Klicks nebeneinander sind.
+
+Was dabei auf dem Spiel steht, ist an diesem Abschnitt selbst ablesbar: Von
+seinen Fassungen sahen drei einen Review, und **jede trug einen Befund** — drei
+P2, zwei P2, ein P2, kein einziger befundloser Lauf. Die ungeprüften Fassungen
+sind nicht die besseren, sondern die, über die nichts bekannt ist.
+
+Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
+einen zweiten PR braucht. Am 28.8. kam ein Befund 28 Sekunden vor dem Merge —
+die Behebung landete deshalb in einem Nachzügler.
+
 ## Wenn zwei Agenten dasselbe tun
 
 Vor dem Anlegen eines Branches mit vorgegebenem Namen prüfen, ob es ihn schon
