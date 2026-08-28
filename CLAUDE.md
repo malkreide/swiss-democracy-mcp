@@ -353,25 +353,35 @@ erledigt hält, mergt weiter Ungeprüftes.
 Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und erst
 dann auf ready. Der Merge entscheidet dann über einen geprüften Stand.
 
-Zwei Gründe, beide am 28.8.2026 gemessen:
-
 **Der ausdrückliche Aufruf läuft auch auf einem Draft an** (#55, 2 min 14 s).
-Auf ready umzuschalten ist dafür also nicht nötig — nur die automatischen
-Auslöser brauchen es.
+Auf ready umzuschalten ist dafür nicht nötig — nur die automatischen Auslöser
+brauchen es. Das ist der Grund, warum die Reihenfolge überhaupt möglich ist.
 
-**Ein Draft wird nicht versehentlich weggemergt.** An diesem einen Tag lagen
-bei vier PRs zwischen «ready for review» und Merge drei bis vier Sekunden, bei
-rund drei Minuten Vorlauf. Das ist keine Nachlässigkeit einzelner, sondern die
-Folge davon, dass ready und Merge zwei Klicks nebeneinander sind.
+**Was der Draft leistet, ist genau eine Sache: Vor dem Merge muss jemand erst
+umschalten.** Mehr nicht. Am 28.8. lagen bei vier PRs zwischen «ready» und
+Merge drei bis vier Sekunden, bei rund drei Minuten Vorlauf — aber diese
+Messung beginnt erst nach dem Umschalten und sagt deshalb nichts darüber, ob
+ein als Draft gestarteter PR seltener zu früh zugeht. Warum es so schnell ging,
+ist ebenfalls nicht gemessen: Nachlässigkeit, Bedienführung oder etwas Drittes
+sind von aussen nicht zu unterscheiden.
 
-Was dabei auf dem Spiel steht, ist an diesem Abschnitt selbst ablesbar: Von
-seinen Fassungen sahen drei einen Review, und **jede trug einen Befund** — drei
-P2, zwei P2, ein P2, kein einziger befundloser Lauf. Die ungeprüften Fassungen
-sind nicht die besseren, sondern die, über die nichts bekannt ist.
+**Der erste Einsatz hat den Fehler nicht verhindert.** PR #57, der dieses
+Verfahren einträgt, wurde nach dem manuellen Aufruf zu früh auf ready gesetzt
+und 2 min 30 s später gemergt — vor seinem Review. Das gehört hierher, weil ein
+Verfahren, das man beim eigenen Anlass umgeht, keines ist. Der Draft-Zustand
+ist eine Bremse, keine Sperre.
+
+Warum sich das trotzdem lohnt, hat mit den Befunden nichts zu tun. Von den
+Fassungen dieses Abschnitts trugen die geprüften Läufe drei, zwei und einen
+P2-Befund — daraus folgt aber nichts über die Qualität der ungeprüften. Der
+Abschnitt oben hält selbst fest, dass derselbe Text in 42 Läufen Befunde **und**
+sechs befundlose Ergebnisse erzeugte; ein Ergebnis sagt etwas über den Lauf.
+Der Grund ist schlichter und stärker: **Bei einer ungeprüften Fassung liegt
+überhaupt kein Ergebnis vor.** Nicht ein schlechtes, sondern keines.
 
 Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
-einen zweiten PR braucht. Am 28.8. kam ein Befund 28 Sekunden vor dem Merge —
-die Behebung landete deshalb in einem Nachzügler.
+einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
+Behebung landete deshalb in einem Nachzügler.
 
 ## Wenn zwei Agenten dasselbe tun
 
