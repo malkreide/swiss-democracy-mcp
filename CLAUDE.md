@@ -350,8 +350,16 @@ erledigt hält, mergt weiter Ungeprüftes.
 
 ### Verfahren für Doku-PRs
 
-Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und erst
-dann auf ready. Der Merge entscheidet dann über einen geprüften Stand.
+Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und
+**nach jeder Korrekturrunde erneut anfordern**, auf dem neuen Head. Erst wenn
+ein Lauf auf dem aktuellen Stand nichts mehr findet, auf ready.
+
+Die Schleife ist der Punkt, nicht die Reihenfolge. Wer nach dem Einarbeiten
+umschaltet, hat genau den Stand ungeprüft, den er mergt: Der Review lief auf
+der Fassung davor, im Draft-Zustand läuft kein automatischer nach, und nach dem
+Umschalten bleiben erfahrungsgemäss Sekunden. Von den Fassungen dieses
+Abschnitts sind am 28.8. zwei ungeprüft in `main` gelandet — **beide waren die
+Korrektur einer geprüften Fassung.**
 
 **Der ausdrückliche Aufruf läuft auch auf einem Draft an** (#55, 2 min 14 s).
 Auf ready umzuschalten ist dafür nicht nötig — nur die automatischen Auslöser
