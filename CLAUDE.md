@@ -139,10 +139,11 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   ```
   To use Codex here, create an environment for this repo.
   ```
-- **Die Environment-Prüfung ist unstet** — dann steht die Environment-Meldung
-  da, obwohl derselbe PR Minuten vorher oder nachher geprüft wurde. Belegt am
-  28.8. weiter unten. Die Meldung ist dann keine Aussage über das Repo,
-  sondern über diesen einen Aufruf; der nächste kann durchlaufen.
+- **Die Environment-Meldung kommt, obwohl geprüft werden kann** — derselbe PR
+  bekam am 28.8. innerhalb von acht Minuten Meldung, Review und wieder
+  Meldung (weiter unten). Ob der Auslöser darüber entscheidet oder die
+  Prüfung schwankt, ist offen; praktisch heisst es, dass der nächste Aufruf
+  durchlaufen kann.
 
 Der vierte kam erst zum Vorschein, als der dritte wegfiel, und das ist kein
 Zufall: Die Prüfungen liegen hintereinander. Dass es diese Reihenfolge ist und
@@ -201,9 +202,9 @@ bis fünf Sekunden. Codex wird beim Umschalten von Draft auf ready ausgelöst un
 braucht danach Zeit; wer sofort mergt, hat das Häkchen gesetzt und den Review
 nicht abgewartet.
 
-Dritter Weg, und der unangenehmste: Die Environment-Prüfung ist **unstet**. Sie
-meldet «fehlt», wo Minuten vorher oder nachher derselbe PR im selben Repo
-geprüft wurde. Am 28.8.2026 auf PR #53, alles innerhalb von acht Minuten:
+Dritter Weg, und der unangenehmste: Derselbe PR bekommt auf dieselbe Frage
+verschiedene Antworten. Am 28.8.2026 auf PR #53, alles innerhalb von acht
+Minuten:
 
 | Zeit | Auslöser | Antwort |
 |---|---|---|
@@ -212,15 +213,27 @@ geprüft wurde. Am 28.8.2026 auf PR #53, alles innerhalb von acht Minuten:
 | 18:51:30 | Kommentar (18:51:20) bzw. Push | «To use Codex here, create an environment» |
 
 Fehlschlag, Erfolg, Fehlschlag — derselbe PR, dasselbe Repo, dasselbe Konto.
-Eine Environment, die zwischen 18:43 und 18:46 entsteht und bis 18:51 wieder
-verschwindet, ist keine plausible Erklärung; die Prüfung selbst ist es. Was
-daraus folgt, ist bescheiden, aber belastbar:
+**Warum, ist offen**, und zwei Erklärungen sind mit diesen drei Zeilen
+verträglich:
+
+- **Der Auslöser entscheidet.** Der automatische Weg verlangt die Environment,
+  der ausdrückliche Aufruf umgeht sie. Dann fehlt die Environment durchgehend,
+  und nichts schwankt.
+- **Die Prüfung selbst ist unstet.** Dann sagt der Weg nichts, und derselbe
+  Aufruf kann mal so und mal anders ausgehen.
+
+Die dritte Zeile könnte zwischen beiden entscheiden — aber genau bei ihr ist
+der Auslöser nicht eindeutig (siehe unten). Was es bräuchte, ist ein Erfolg
+**und** ein Fehlschlag auf demselben zweifelsfrei bestimmten Auslöser. Den gibt
+es bisher nicht.
+
+Belastbar ist deshalb nur, was ohne die Ursache auskommt:
 
 - **Eine Environment-Meldung belegt nicht, dass im Repo nichts geprüft werden
-  kann.** Der nächste Aufruf kann durchlaufen.
+  kann.** Vier Minuten vor der ersten lief hier ein vollständiger Review.
 - **Ein gelungener Review belegt nicht, dass der nächste durchläuft.**
-- **Erneut aufrufen ist billig.** `@codex review` kostet einen Kommentar und
-  drei Minuten; beim zweiten Versuch kann es klappen.
+- **Erneut aufrufen ist billig.** Ein ausdrücklicher Aufruf kostet einen
+  Kommentar und drei Minuten; nach einer Environment-Meldung lohnt er sich.
 
 Dieser Absatz stand vor seinem Merge dreimal falsch da, und jede Fassung
 scheiterte an derselben Sache: Sie erklärte mehr, als sie gemessen hatte.
@@ -229,15 +242,23 @@ scheiterte an derselben Sache: Sie erklärte mehr, als sie gemessen hatte.
    Der Zeit-Ausschluss verglich einen manuellen Lauf mit einem automatischen
    vierzehn Stunden früher; der Environment-Ausschluss stützte sich auf einen
    Lauf, dem sieben Minuten später die Environment-Meldung folgte.
-2. «Die Environment ist nicht ausgeschlossen, aber der manuelle Weg trägt, wo
-   der automatische scheitert.» — Vier Minuten später scheiterte der manuelle
-   Weg mit derselben Meldung.
-3. Diese hier, die nur noch beschreibt.
+2. «Der manuelle Weg trägt, wo der automatische scheitert.» — Vier Minuten
+   später kam die Meldung auf einen Aufruf, der manuell ausgesehen hat.
+3. «Die Prüfung ist unstet, der Weg ist nicht die Variable.» — Beides war zu
+   viel. Aus «beide Wege haben schon geliefert und schon versagt» folgt nur,
+   dass keiner von beiden immer funktioniert; über den Einfluss des Wegs sagt
+   es nichts. Bei 1 Fehlschlag von 2 gegen 1 von 4 wäre ein Unterschied mit
+   diesen Zahlen ohnehin nicht zu sehen — und der eine «manuelle» Fehlschlag
+   ist nicht einmal zweifelsfrei manuell.
 
-Der Weg ist also **nicht** die Variable: Automatisch hat geliefert (#45 um
-08:55:43, ohne jeden vorherigen Kommentar auf dem PR) und gescheitert (#53 um
-18:43:41); von Hand hat geliefert (#45, #51, #53) und gescheitert (#53 um
-18:51:30).
+Die vierte Fassung nennt deshalb keine Ursache mehr, sondern die Beobachtung
+und das, was sie entscheiden würde. Wer den Abschnitt fortschreibt: Eine
+Erklärung gehört erst hinein, wenn ein Erfolg und ein Fehlschlag auf demselben
+eindeutigen Auslöser vorliegen.
+
+Was beide Wege betrifft, ist belegt und mehr nicht: **Beide können
+funktionieren.** Automatisch hat geliefert (#45 um 08:55:43, ohne jeden
+vorherigen Kommentar auf dem PR), von Hand ebenfalls (#45, #51, #53).
 
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
