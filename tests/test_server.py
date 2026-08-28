@@ -227,8 +227,6 @@ def _build_sample_csv() -> str:
 SAMPLE_CSV = _build_sample_csv()
 SWISSVOTES_URL = "https://swissvotes.ch/page/dataset/swissvotes_dataset.csv"
 
-SWISSVOTES_URL = "https://swissvotes.ch/page/dataset/swissvotes_dataset.csv"
-
 
 @pytest.fixture(autouse=True)
 def reset_cache():
@@ -387,22 +385,87 @@ async def test_cantonal_zurich_result():
 @pytest.mark.live
 @pytest.mark.asyncio
 async def test_live_search_ahv():
-    """Live: Suche nach 'AHV' liefert Resultate."""
+    """Live: Suche nach 'AHV' liefert Resultate — mit Inhalt, nicht nur mit Anzahl.
+
+    `total` allein deckt die Titelspalten ab, denn danach wird gefiltert. Die
+    Felder der Treffer kommen aus anderen Spalten (`datum`, `volkja-proz`,
+    `bet`), und die pruefte hier nichts: Wuerde die Quelle sie umbenennen,
+    kaeme dieselbe Trefferzahl mit lauter leeren Vorlagen zurueck.
+    """
     params = VoteSearchInput(keyword="AHV")
     result = await democracy_search_votes(params)
     data = json.loads(result)
     assert data["total"] > 5
+    assert data["votes"], "Treffer gezaehlt, aber keine Vorlage geliefert"
+
+    # Gemessen am 28.8.2026 ueber die erste Seite: `date`, `title_de`,
+    # `yes_percent` und `turnout_percent` sind in 20 von 20 Treffern belegt.
+    # `accepted` bewusst NICHT — es fehlt in einem der zwanzig (zurueckgezogene
+    # Vorlage), und eine Zusicherung, die an echten Daten schon heute wackelt,
+    # meldet spaeter Drift, die keine ist.
+    for feld in ("date", "title_de", "yes_percent", "turnout_percent"):
+        leer = [v["vote_number"] for v in data["votes"] if v.get(feld) in (None, "")]
+        assert not leer, f"{feld} fehlt bei Abstimmung(en) {leer} — Spalte umbenannt?"
 
 
 @pytest.mark.live
 @pytest.mark.asyncio
 async def test_live_cantonal_results_recent():
-    """Live: Kantonsresultate für eine bekannte moderne Abstimmung."""
+    """Live: Kantonsresultate für eine bekannte moderne Abstimmung.
+
+    `len(cantons) == 26` allein war zahnlos: Die Schluessel kommen aus
+    `CANTON_NAMES`, nicht aus der Quelle. Gegengeprobt am 28.8.2026 — mit
+    umbenannten Kantonsspalten liefert das Werkzeug 26 Kantone mit null
+    belegten Datenfeldern, und der Test blieb gruen. Genau dieser Ausfall ist
+    am 3.8.2026 im Portfolio passiert (Kopfzeile umbenannt, produktiv kaputt,
+    alle Tests gruen), und ihn zu sehen ist der Zweck der Live-Suite.
+
+    Die Zusicherungen stehen deshalb auf den Werten, nicht auf der Form.
+    """
     params = VoteDetailInput(vote_number="551")
     result = await democracy_get_cantonal_results(params)
     data = json.loads(result)
     assert "cantons" in data
-    assert len(data["cantons"]) == 26
+    kantone = data["cantons"]
+    # Strukturell — haelt auch ohne jede Zahl aus der Quelle. Steht hier, damit
+    # ein verlorener Kanton auffaellt, nicht als Beleg fuer Daten.
+    assert len(kantone) == 26
+
+    felder = (
+        "eligible_voters",
+        "votes_cast",
+        "turnout_percent",
+        "valid_votes",
+        "yes_votes",
+        "no_votes",
+        "yes_percent",
+        "accepted",
+    )
+    for feld in felder:
+        leer = sorted(ab for ab, k in kantone.items() if k.get(feld) is None)
+        assert not leer, f"{feld} fehlt in {len(leer)} Kanton(en): {leer} — Spalte umbenannt?"
+
+    # Rechnet die Quelle mit sich selbst auf? Diese Zusicherung kommt ohne
+    # hartkodierte Zahl aus und faellt auch dann, wenn die Spalten nicht
+    # verschwinden, sondern verrutschen — dann stehen zwar Zahlen da, aber die
+    # falschen, und die Arithmetik geht nicht mehr auf.
+    for ab, k in kantone.items():
+        abgegeben = k["yes_votes"] + k["no_votes"]
+        assert abgegeben == k["valid_votes"], (
+            f"{ab}: ja+nein={abgegeben}, gueltig={k['valid_votes']}"
+        )
+        assert abs(100.0 * k["yes_votes"] / abgegeben - k["yes_percent"]) < 0.05, (
+            f"{ab}: Ja-Anteil passt nicht zur Stimmenzahl"
+        )
+        assert 0 < k["votes_cast"] <= k["eligible_voters"], (
+            f"{ab}: {k['votes_cast']} Stimmende bei {k['eligible_voters']} Berechtigten"
+        )
+        assert k["accepted"] in (0, 1), f"{ab}: annahme={k['accepted']!r}"
+        # Angenommen heisst mehr Ja als Nein — die beiden Spalten gehoeren
+        # zusammen, und nur zusammen belegen sie, dass keine verrutscht ist.
+        assert k["accepted"] == (1 if k["yes_percent"] > 50 else 0), (
+            f"{ab}: annahme={k['accepted']} bei {k['yes_percent']}% Ja"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -415,48 +478,51 @@ async def test_live_cantonal_results_recent():
 # ihn keine PR-CI je gesehen haette.
 
 
-def test_client_wird_pro_event_loop_neu_gebaut():
-    """Ein neuer Loop bekommt einen neuen Client — der alte Pool ist dort tot.
+@pytest.fixture
+def frischer_client():
+    """Client-Globals vor und nach dem Test leeren.
 
-    Gegenprobe: Faellt die Loop-Pruefung in `_client()` weg, liefert der
-    zweite `asyncio.run` dasselbe Objekt zurueck und dieser Test faellt.
+    Ausdruecklich NICHT `autouse`: Wuerde der Client vor jedem Test genullt,
+    liefe die Live-Suite auch ohne die Loop-Pruefung in `_client()` gruen
+    durch — die Fixture wuerde den Fehler zudecken, den zu zeigen ihr Zweck
+    waere. Nur diese beiden Tests, die den Loop selbst in der Hand haben,
+    bekommen sie.
     """
     import swiss_democracy_mcp.server as srv
 
     srv._http_client = None
     srv._http_client_loop = None
-    try:
-        erster = asyncio.run(_hole_client())
-        zweiter = asyncio.run(_hole_client())
-        assert erster is not zweiter
-    finally:
-        srv._http_client = None
-        srv._http_client_loop = None
-
-
-def test_client_bleibt_innerhalb_eines_loops_derselbe():
-    """Der Pool wird geteilt (SDK-001) — die Loop-Pruefung darf ihn nicht
-    bei jedem Aufruf wegwerfen."""
-    import swiss_democracy_mcp.server as srv
-
+    yield srv
     srv._http_client = None
     srv._http_client_loop = None
-    try:
-
-        async def zweimal():
-            return srv._client(), srv._client()
-
-        erster, zweiter = asyncio.run(zweimal())
-        assert erster is zweiter
-    finally:
-        srv._http_client = None
-        srv._http_client_loop = None
 
 
-async def _hole_client():
-    import swiss_democracy_mcp.server as srv
+def test_client_wird_pro_event_loop_neu_gebaut(frischer_client):
+    """Ein neuer Loop bekommt einen neuen Client — der alte Pool ist dort tot.
 
-    return srv._client()
+    Gegenprobe: Faellt die Loop-Pruefung in `_client()` weg, liefert der
+    zweite `asyncio.run` dasselbe Objekt zurueck und dieser Test faellt.
+    """
+    srv = frischer_client
+
+    async def hole():
+        return srv._client()
+
+    erster = asyncio.run(hole())
+    zweiter = asyncio.run(hole())
+    assert erster is not zweiter
+
+
+def test_client_bleibt_innerhalb_eines_loops_derselbe(frischer_client):
+    """Der Pool wird geteilt (SDK-001) — die Loop-Pruefung darf ihn nicht
+    bei jedem Aufruf wegwerfen."""
+    srv = frischer_client
+
+    async def zweimal():
+        return srv._client(), srv._client()
+
+    erster, zweiter = asyncio.run(zweimal())
+    assert erster is zweiter
 
 
 # ---------------------------------------------------------------------------

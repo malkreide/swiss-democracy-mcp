@@ -31,6 +31,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Die Live-Suite hätte den Ausfall vom 3.8.2026 nicht bemerkt.**
+  `test_live_cantonal_results_recent` prüfte `len(cantons) == 26` — und die 26
+  Schlüssel kommen aus `CANTON_NAMES`, nicht aus der Quelle. Gegengeprobt am
+  28.8.2026: Mit umbenannten Kantonsspalten liefert das Werkzeug 26 Kantone mit
+  **null** belegten Datenfeldern, und der Test blieb grün. Derselbe Test, der
+  eine umbenannte Kopfzeile fangen soll, ist genau dafür blind gewesen.
+
+  `test_live_search_ahv` prüfte nur `total > 5`. Das deckt die Titelspalten ab,
+  nach denen gefiltert wird — nicht aber `datum`, `volkja-proz` und `bet`, aus
+  denen die Treffer bestehen. Dieselbe Trefferzahl mit lauter leeren Vorlagen
+  wäre durchgegangen.
+
+  Beide stehen jetzt auf Werten statt auf der Form. Die Kantonsprüfung rechnet
+  die Quelle gegen sich selbst auf (`ja + nein == gültig`, Prozentwert passt zur
+  Stimmenzahl, `annahme` passt zum Ja-Anteil) — ohne hartkodierte Zahl, und
+  damit auch gegen verrutschte statt verschwundener Spalten.
+
+  Gegenprobe über drei simulierte Quellenänderungen (Kantonsspalten umbenannt,
+  ja/nein vertauscht, Suchfeldspalten umbenannt): Die alte Fassung lief durch
+  alle drei grün, die neue fällt bei allen dreien.
+
+  `accepted` ist in der Suche bewusst nicht zugesichert — es fehlt in einem von
+  zwanzig Treffern (zurückgezogene Vorlage), und eine Zusicherung, die an echten
+  Daten schon heute wackelt, meldet später Drift, die keine ist.
+
 - **Der geteilte HTTP-Client überlebte seinen Event-Loop.** Der wöchentliche
   Live-Lauf war seit dem 17.8.2026 rot: `test_live_cantonal_results_recent`
   endete mit `RuntimeError: Event loop is closed`.
