@@ -230,7 +230,8 @@ es bisher nicht.
 Belastbar ist deshalb nur, was ohne die Ursache auskommt:
 
 - **Eine Environment-Meldung belegt nicht, dass im Repo nichts geprüft werden
-  kann.** Vier Minuten vor der ersten lief hier ein vollständiger Review.
+  kann.** Gut drei Minuten *nach* der ersten lief auf demselben PR ein
+  vollständiger Review (18:43:41 → 18:46:52).
 - **Ein gelungener Review belegt nicht, dass der nächste durchläuft.**
 - **Erneut aufrufen ist billig.** Ein ausdrücklicher Aufruf kostet einen
   Kommentar und drei Minuten; nach einer Environment-Meldung lohnt er sich.
