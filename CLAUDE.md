@@ -213,12 +213,30 @@ als Ursache ausschliesst — an *einem* PR, mit beiden Auslösern nacheinander:
 Der manuelle Lauf brauchte **2 min 57 s**. Das automatische Fenster war mit
 8 min 38 s dreimal so gross und blieb leer — die Zeit war es also nicht.
 
-Kontingent und Environment auch nicht, aber aus zwei verschiedenen Gründen, und
-die gehören auseinandergehalten. Das Kontingent scheidet aus, weil es **die
-Meldung geschrieben hätte**; dass der spätere Lauf durchlief, belegt es nicht,
-denn ein rollendes Fenster kann sich dazwischen wieder geöffnet haben. Die
-Environment scheidet umgekehrt gerade durch den späteren Lauf aus: Sie hängt am
-Repo und schwankt nicht über den Tag.
+Das Kontingent auch nicht: Es hätte **die Meldung geschrieben**. Dass der
+spätere Lauf durchlief, belegt es dagegen nicht — ein rollendes Fenster kann
+sich dazwischen wieder geöffnet haben.
+
+Über die Environment sagt der Vorgang **nichts**, und der Versuch, sie
+auszuschliessen, ist hier schon einmal schiefgegangen. In der ersten Fassung
+dieses Absatzes stand, sie scheide «gerade durch den späteren Lauf» aus, weil
+sie am Repo hänge und nicht über den Tag schwanke. Sieben Minuten nach jenem
+Lauf kam im selben Repo auf PR #53 die Environment-Meldung:
+
+| 18:36:45 | PR #51, manuell ausgelöst | echter Review, befundlos |
+| 18:43:41 | PR #53, Draft → ready | «To use Codex here, create an environment» |
+
+Beides am 28.8., dasselbe Repo, dasselbe Konto, sieben Minuten auseinander.
+Damit ist die Regel widerlegt, nicht bloss angekratzt: **Eine
+Environment-Meldung auf dem einen PR belegt nicht, dass im Repo nichts geprüft
+werden kann — und ein gelungener Review belegt nicht, dass sie Minuten später
+ausbleibt.** Ob die Environment tatsächlich schwankt oder ob der manuelle
+Aufruf sie schlicht nicht braucht, ist offen; zwei Beobachtungen tragen keine
+Mechanik.
+
+Für den Fall oben heisst das: Die Environment ist als Ursache **nicht**
+ausgeschlossen. Belegt bleibt nur, was man sieht — in 8 min 38 s kam keine
+einzige der drei Meldungen und kein Review-Objekt.
 
 Der Vorgänger-PR #50 (ready 04:26:01, gemergt 04:26:04) erklärt sich dagegen
 vollständig durch die drei Sekunden — er gehört nicht in diese Schublade. Wer
@@ -239,9 +257,17 @@ gefeuert hat, ist das eine Erzählung und keine Ursache.
 
 Praktisch zählt zweierlei:
 
-**`@codex review` von Hand ist der verlässliche Weg.** Zweimal belegt (#45 am
-23.8., #51 am 28.8.), beide Male unter drei Minuten. Wer das Häkchen ernst
-meint, setzt den Kommentar, statt auf den Auto-Auslöser zu hoffen.
+**`@codex review` von Hand hat geliefert, wo der Auto-Auslöser schwieg.**
+Zweimal belegt (#45 am 23.8., #51 am 28.8.), beide Male unter drei Minuten —
+und auf #51 sogar, während der automatische Weg im selben Repo Minuten später
+die Environment-Meldung bekam. «Verlässlich» wäre trotzdem zu viel gesagt: Auf
+#53 quittierte Codex den Aufruf mit einer 👀-Reaktion **auf dem auslösenden
+Kommentar** und lieferte danach zunächst nichts.
+
+Die 👀 ist nebenbei die einzige Reaktion, die je beobachtet wurde. Der
+Infokasten verspricht eine 👍 auf den PR; die kam in sechs Repos am 23.8. nicht
+und auf #51 am 28.8. auch nicht (`reactions.total_count: 0`). Die 👀 sitzt an
+anderer Stelle und bedeutet etwas anderes: gesehen, nicht geprüft.
 
 **Er wirkt auch auf einem bereits gemergten PR.** #45 war beim manuellen
 Aufruf seit 70 Minuten gemergt, #51 seit knapp 14 Stunden — beide bekamen ihren
