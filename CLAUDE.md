@@ -367,9 +367,9 @@ sind von aussen nicht zu unterscheiden.
 
 **Der erste Einsatz hat den Fehler nicht verhindert.** PR #57, der dieses
 Verfahren einträgt, wurde nach dem manuellen Aufruf zu früh auf ready gesetzt
-und 2 min 30 s später gemergt — vor seinem Review. Das gehört hierher, weil ein
-Verfahren, das man beim eigenen Anlass umgeht, keines ist. Der Draft-Zustand
-ist eine Bremse, keine Sperre.
+und 2 min 30 s später gemergt — vor seinem Review. Das gehört hierher: Wer das
+Verfahren übernimmt, soll wissen, dass es beim ersten Mal nicht eingehalten
+wurde und woran es lag — am Umschalten, nicht am Aufruf.
 
 Warum sich das trotzdem lohnt, hat mit den Befunden nichts zu tun. Von den
 Fassungen dieses Abschnitts trugen die geprüften Läufe drei, zwei und einen
