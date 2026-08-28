@@ -118,7 +118,7 @@ Meldung liefen ganz ohne Codex-Auslöser, dort hat niemand gemessen.
 In der Zwischenzeit sind 32 PRs mit formal erfülltem Häkchen gemergt worden,
 ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
 
-**Vier** Gründe, warum Codex schweigt, und nur einer davon ist harmlos:
+**Fünf** Gründe, warum Codex schweigt, und nur einer davon ist harmlos:
 
 - **Kein Befund** — dann schreibt er einen gewöhnlichen Issue-Kommentar:
 
@@ -127,7 +127,8 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   ```
 
   Der Schlusssatz wechselt bei jedem Lauf («Delightful!», «Keep it up!»,
-  «More of your lovely PRs please.»); stabil ist nur der Satz davor. Der
+  «More of your lovely PRs please.», «Keep them coming!»); stabil ist nur der
+  Satz davor. Der
   Infokasten, den Codex unter jeden Review setzt, behauptet weiterhin eine
   Reaktion («otherwise it will react with 👍») — am 23.8. kam in sechs Repos
   die Meldung und in keinem die Reaktion. Der Kasten ist keine Quelle.
@@ -138,6 +139,10 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   ```
   To use Codex here, create an environment for this repo.
   ```
+- **Der automatische Auslöser feuert nicht** — dann steht überhaupt nichts da,
+  wie beim Draft, und zwar auch dann, wenn Kontingent und Environment in
+  Ordnung sind. Belegt am 28.8. weiter unten, samt der Abhilfe: `@codex review`
+  von Hand.
 
 Der vierte kam erst zum Vorschein, als der dritte wegfiel, und das ist kein
 Zufall: Die Prüfungen liegen hintereinander. Dass es diese Reihenfolge ist und
@@ -171,9 +176,9 @@ Der Kommentarzähler allein reicht ohnehin nicht: `comments: 1` kann die
 Befundlos-, die Kontingent- **oder** die Environment-Meldung sein — drei
 gegensätzliche Bedeutungen unter derselben Zahl. Den Text lesen, nicht die Zahl.
 Und einen unbekannten vierten Text wörtlich zitieren, statt ihn in eine der
-bekannten Schubladen zu zwingen: Dieser Abschnitt musste schon einmal von drei
-auf vier Gründe wachsen, und die 👍-Reaktion stand hier zwei Fassungen lang als
-Tatsache.
+bekannten Schubladen zu zwingen: Dieser Abschnitt musste erst von drei auf vier
+und dann auf fünf Gründe wachsen, und die 👍-Reaktion stand hier zwei Fassungen
+lang als Tatsache.
 
 Und ein befundloser Lauf ist kein Freispruch. Am 23.8. lief derselbe Text durch
 42 Reviews: 36 meldeten denselben P2-Befund, 6 die Befundlos-Meldung — gleiche
@@ -195,6 +200,58 @@ mergen. Am 21./22.8. lagen zwischen «ready for review» und Merge mehrfach drei
 bis fünf Sekunden. Codex wird beim Umschalten von Draft auf ready ausgelöst und
 braucht danach Zeit; wer sofort mergt, hat das Häkchen gesetzt und den Review
 nicht abgewartet.
+
+Dritter Weg, und der unangenehmste, weil er wie gar kein Problem aussieht: Der
+Auslöser feuert nicht. Am 28.8.2026 lief in diesem Repo ein Fall, der die Zeit
+als Ursache ausschliesst — an *einem* PR, mit beiden Auslösern nacheinander:
+
+| PR #51 | Auslöser | Antwort |
+|---|---|---|
+| ready 04:35:22, gemergt 04:44:00 | Draft → ready | nichts, in 8 min 38 s |
+| `@codex review` um 18:33:48 | von Hand | Befundlos-Meldung um 18:36:45 |
+
+Der manuelle Lauf brauchte **2 min 57 s**. Das automatische Fenster war mit
+8 min 38 s dreimal so gross und blieb leer — die Zeit war es also nicht.
+
+Kontingent und Environment auch nicht, aber aus zwei verschiedenen Gründen, und
+die gehören auseinandergehalten. Das Kontingent scheidet aus, weil es **die
+Meldung geschrieben hätte**; dass der spätere Lauf durchlief, belegt es nicht,
+denn ein rollendes Fenster kann sich dazwischen wieder geöffnet haben. Die
+Environment scheidet umgekehrt gerade durch den späteren Lauf aus: Sie hängt am
+Repo und schwankt nicht über den Tag.
+
+Der Vorgänger-PR #50 (ready 04:26:01, gemergt 04:26:04) erklärt sich dagegen
+vollständig durch die drei Sekunden — er gehört nicht in diese Schublade. Wer
+beide Fälle zusammenwirft, hat wieder eine Ursache aus einer Fehlermeldung
+geschlossen.
+
+Ein zweiter Beleg aus dem 23.8.: #45 und #46 tragen denselben Sekundenstempel
+bei der Eröffnung (08:53:57). #45 bekam um 08:55:43 ein Review-Objekt, #46 bis
+zu seinem Merge fünf Stunden später gar nichts. Der Auslöser fällt also
+**pro PR** aus, nicht global. (Ob #46 zwischenzeitlich Draft war, ist nicht
+belegt — dann wäre es Grund 2.)
+
+Warum er ausfällt, ist offen. Eine unbelegte Vermutung: #51 war nur **12
+Sekunden** Draft, bevor er auf ready ging; vielleicht registriert ein so
+kurzer Übergang nichts. #46 mit seinen fünf Stunden passt allerdings nicht
+dazu, und ohne einen Fall, in dem ein langer Draft→ready-Übergang sicher
+gefeuert hat, ist das eine Erzählung und keine Ursache.
+
+Praktisch zählt zweierlei:
+
+**`@codex review` von Hand ist der verlässliche Weg.** Zweimal belegt (#45 am
+23.8., #51 am 28.8.), beide Male unter drei Minuten. Wer das Häkchen ernst
+meint, setzt den Kommentar, statt auf den Auto-Auslöser zu hoffen.
+
+**Er wirkt auch auf einem bereits gemergten PR.** #45 war beim manuellen
+Aufruf seit 70 Minuten gemergt, #51 seit knapp 14 Stunden — beide bekamen ihren
+Review. Ein zu früh gemergter PR ist also nicht verloren; der Review lässt sich
+nachholen, solange jemand merkt, dass er fehlt.
+
+Und der Umkehrschluss, der hier am teuersten ist: **Bleibt es nach dem
+Auto-Auslöser still, ist das kein Beleg für irgendetwas** — nicht für ein
+Kontingentproblem, nicht für eine fehlende Environment, und schon gar nicht für
+einen sauberen Text. Es heisst nur, dass nicht geprüft wurde.
 
 Das Kontingent hängt am Konto, nicht am Repo, und Code-Reviews haben einen
 eigenen Topf — nur GitHub-getriggerte Reviews zählen hinein. ChatGPT-Pläne
