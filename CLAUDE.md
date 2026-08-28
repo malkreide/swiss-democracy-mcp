@@ -50,6 +50,31 @@ Datensatz weg war, sondern dass die Quelle die Schreibweise ihrer Kopfzeile
 gewechselt hatte — vier von sechs Datensätzen produktiv kaputt, alle
 Unit-Tests grün.
 
+Die Regel gilt in beide Richtungen. Am 24.8.2026 war die Quelle tadellos —
+714 Zeilen, Abstimmung 551 da, 28 AHV-Treffer, alles nachgefragt — und rot
+war der eigene Prozess: pytest-asyncio gibt jedem Test einen eigenen
+Event-Loop, der prozessglobale `httpx.AsyncClient` überlebt den Test, und der
+zweite Live-Test erbte den Pool des ersten samt dessen geschlossenem Loop.
+`RuntimeError: Event loop is closed`, gemeldet als `finding`, etikettiert als
+`upstream`. Wer nur die Quelle prüft, findet dort nichts und hat trotzdem
+nichts erklärt.
+
+Der Wächter hat es nicht gesehen, weil er nicht danach sucht:
+`_client()` prüft `is_closed`, und das ist genau dann False, wenn niemand
+`aclose()` gerufen hat — also auch bei einem Client, dessen Loop tot ist. Eine
+Prüfung, die den einen Zustand nicht kennt, wegen dem sie da ist. Seither steht
+der Loop daneben, und zwei `-m "not live"`-Tests halten beides fest: dass ein
+neuer Loop einen neuen Client bekommt, und dass derselbe Loop denselben behält
+(sonst wäre der geteilte Pool aus SDK-001 stillschweigend weg).
+
+Warum das nur der Live-Lauf sah: Produktiv hat der Server einen Loop, der so
+lange lebt wie er selbst. Die Live-Suite ist der einzige Ort im Repo, an dem
+zwei echte Netzaufrufe auf zwei Loops treffen — die autouse-Fixture
+`reset_cache` leert den 24h-CSV-Cache vor jedem Test, also geht wirklich jeder
+Live-Test ans Netz. Ein Fehler, den ausschliesslich der wöchentliche Lauf
+zeigt, wird auch ausschliesslich dort bemerkt: zwischen dem ersten roten Lauf
+(17.8.) und der Diagnose lag eine Woche und ein zweiter roter Lauf.
+
 PR ohne jeden Check ist selten ein Repo ohne CI, meistens ein
 Merge-Konflikt: GitHub berechnet dafür keinen Merge-Commit und startet nichts.
 

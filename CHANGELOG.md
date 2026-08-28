@@ -31,6 +31,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Der geteilte HTTP-Client überlebte seinen Event-Loop.** Der wöchentliche
+  Live-Lauf war seit dem 17.8.2026 rot: `test_live_cantonal_results_recent`
+  endete mit `RuntimeError: Event loop is closed`.
+
+  Nicht die Quelle. Nachgefragt am 28.8.2026 lieferte
+  `swissvotes.ch` 714 Zeilen, Abstimmung 551 war da, «AHV» traf 28-mal — die
+  beiden Zusicherungen der Live-Suite hielten gegen die echten Daten. Rot war
+  der eigene Prozess: pytest-asyncio gibt jedem Test einen eigenen Event-Loop,
+  der prozessglobale `httpx.AsyncClient` aus SDK-001 überlebt den Test, und
+  sein Verbindungspool hängt am Loop, auf dem er entstand. Der zweite Live-Test
+  erbte den Client des ersten samt dessen geschlossenem Loop.
+
+  `_client()` prüfte auf `is_closed` — False, solange niemand `aclose()` ruft,
+  also auch bei einem Client, dessen Loop tot ist: genau der Zustand, gegen den
+  die Prüfung da war. Jetzt steht der erzeugende Loop daneben, und nur beide
+  zusammen entscheiden, ob der Client noch benutzbar ist. Ein veralteter wird
+  fallen gelassen statt geschlossen — `aclose()` bräuchte den Loop, den es
+  nicht mehr gibt.
+
+  Der geteilte Pool bleibt geteilt: Zwei `-m "not live"`-Tests halten beide
+  Richtungen fest — neuer Loop, neuer Client; gleicher Loop, gleicher Client.
+  Sie laufen in der PR-CI, wo der Fehler bisher unsichtbar war, weil nur die
+  Live-Suite zwei echte Netzaufrufe auf zwei Loops bringt.
+
+  Das Issue, das der Lauf öffnet, nannte als Ursachen nur «Vertrag geändert»
+  oder «Quelle aus» und trägt das Label `upstream`; es nennt jetzt auch die
+  dritte Möglichkeit und sagt, dass das Label eine Vermutung ist.
+
 - **Browser-Clients scheiterten am Preflight.** Spec `2026-07-28` routet eine
   Streamable-HTTP-Anfrage über `Mcp-Method`, `Mcp-Name` und
   `Mcp-Protocol-Version`; die CORS-Freigabeliste nannte keinen davon, dafür mit

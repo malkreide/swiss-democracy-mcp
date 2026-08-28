@@ -241,19 +241,50 @@ async def _validate_outbound(url: str, *, resolve: bool = True) -> None:
 # Shared HTTP client (audit finding SDK-001): one pooled AsyncClient for the
 # whole process instead of a fresh client per tool call. Created lazily and
 # closed by the server lifespan.
+#
+# Der Pool haengt am Event-Loop, auf dem er entstanden ist: Seine Verbindungen
+# sind dort registriert. Laeuft der naechste Aufruf auf einem anderen Loop,
+# greift httpx auf den alten zu und bekommt `RuntimeError: Event loop is
+# closed` — der Client selbst ist dabei tadellos, `is_closed` ist False, weil
+# niemand `aclose()` gerufen hat. Diese Pruefung kennt also genau den Zustand
+# nicht, wegen dem sie da ist. Deshalb steht der Loop daneben: Nur beide
+# zusammen sagen, ob der Client jetzt noch benutzbar ist.
+#
+# Am 24.8.2026 ist genau daran der geplante Live-Lauf gescheitert
+# (`test_live_cantonal_results_recent`). pytest-asyncio gibt jedem Test einen
+# eigenen Loop; der zweite Live-Test erbte den Client des ersten. Produktiv
+# faellt es nicht auf, weil der Server einen Loop hat, der so lange lebt wie
+# er selbst — die Live-Suite ist der einzige Ort, an dem beides passiert.
 # ---------------------------------------------------------------------------
 
 _http_client: httpx.AsyncClient | None = None
+_http_client_loop: asyncio.AbstractEventLoop | None = None
 
 
 def _client() -> httpx.AsyncClient:
-    global _http_client
-    if _http_client is None or _http_client.is_closed:
+    global _http_client, _http_client_loop
+    try:
+        loop: asyncio.AbstractEventLoop | None = asyncio.get_running_loop()
+    except RuntimeError:
+        # Ausserhalb eines Loops gerufen: Dann gibt es keinen, zu dem der
+        # Client passen oder nicht passen koennte.
+        loop = None
+
+    veraltet = (
+        _http_client is None
+        or _http_client.is_closed
+        or (loop is not None and _http_client_loop is not loop)
+    )
+    if veraltet:
+        # Kein `aclose()` auf den alten Client: Das braeuchte seinen Loop, und
+        # der ist ja gerade der, den es nicht mehr gibt. Die Referenz fallen
+        # zu lassen ist das Einzige, was hier ohne neuen Fehler geht.
         _http_client = httpx.AsyncClient(
             timeout=TIMEOUT,
             follow_redirects=False,
             headers={"User-Agent": USER_AGENT},
         )
+        _http_client_loop = loop
     return _http_client
 
 
@@ -263,10 +294,11 @@ async def _lifespan(_server: MCPServer):
     try:
         yield
     finally:
-        global _http_client
+        global _http_client, _http_client_loop
         if _http_client is not None and not _http_client.is_closed:
             await _http_client.aclose()
         _http_client = None
+        _http_client_loop = None
 
 
 # Rechtsform codes in Swissvotes

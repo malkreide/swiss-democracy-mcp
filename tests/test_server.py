@@ -6,6 +6,7 @@ Ausführung: PYTHONPATH=src pytest tests/ -m "not live" -v
 
 from __future__ import annotations
 
+import asyncio
 import json
 
 import httpx
@@ -402,6 +403,60 @@ async def test_live_cantonal_results_recent():
     data = json.loads(result)
     assert "cantons" in data
     assert len(data["cantons"]) == 26
+
+
+# ---------------------------------------------------------------------------
+# Geteilter HTTP-Client ueber Event-Loop-Grenzen hinweg
+# ---------------------------------------------------------------------------
+#
+# Diese Tests laufen bewusst OHNE `-m live` und ohne Netz: Sie pruefen die
+# Auswahl des Clients, nicht die Quelle. Der Fehler, der sie noetig gemacht
+# hat, war nur im woechentlichen Live-Lauf sichtbar — dort schlug er zu, wo
+# ihn keine PR-CI je gesehen haette.
+
+
+def test_client_wird_pro_event_loop_neu_gebaut():
+    """Ein neuer Loop bekommt einen neuen Client — der alte Pool ist dort tot.
+
+    Gegenprobe: Faellt die Loop-Pruefung in `_client()` weg, liefert der
+    zweite `asyncio.run` dasselbe Objekt zurueck und dieser Test faellt.
+    """
+    import swiss_democracy_mcp.server as srv
+
+    srv._http_client = None
+    srv._http_client_loop = None
+    try:
+        erster = asyncio.run(_hole_client())
+        zweiter = asyncio.run(_hole_client())
+        assert erster is not zweiter
+    finally:
+        srv._http_client = None
+        srv._http_client_loop = None
+
+
+def test_client_bleibt_innerhalb_eines_loops_derselbe():
+    """Der Pool wird geteilt (SDK-001) — die Loop-Pruefung darf ihn nicht
+    bei jedem Aufruf wegwerfen."""
+    import swiss_democracy_mcp.server as srv
+
+    srv._http_client = None
+    srv._http_client_loop = None
+    try:
+
+        async def zweimal():
+            return srv._client(), srv._client()
+
+        erster, zweiter = asyncio.run(zweimal())
+        assert erster is zweiter
+    finally:
+        srv._http_client = None
+        srv._http_client_loop = None
+
+
+async def _hole_client():
+    import swiss_democracy_mcp.server as srv
+
+    return srv._client()
 
 
 # ---------------------------------------------------------------------------
