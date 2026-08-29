@@ -675,6 +675,8 @@ mit, nicht nur die Liste.
 
 **Was die Fälle nicht hergeben:** dass jede Ergänzung jede Zahl falsch macht.
 Kommt zu einer Tabelle mit Fehlschlägen ein erfolgreicher Fall hinzu, bleibt die
-Zahl der Fehlschläge richtig. Entscheidend ist, ob die Bezugsmenge der Zahl
-wächst — deshalb steht die Regel in `CLAUDE.md` mit dieser Einschränkung und
-nicht als Verbot von Zahlen.
+Zahl der Fehlschläge richtig. Entscheidend ist, ob der Zuwachs die Aussage
+trifft: Eine Ziffer fällt, sobald er in ihre Bezugsmenge gehört; eine relative
+Angabe erst, wenn er das Verhältnis kippt — «die Mehrzahl» übersteht jeden
+passenden Zuwachs und fällt mit dem ersten unpassenden. Deshalb steht die Regel
+in `CLAUDE.md` als Prüfauftrag und nicht als Verbot von Zahlen.

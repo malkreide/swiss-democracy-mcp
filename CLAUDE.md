@@ -45,17 +45,20 @@ Endpunkt, mit Aufnahmedatum.
 ## Zahlen, die eine Aufzählung wiederholen
 
 Eine Zahl im Fliesstext, die eine Liste oder Tabelle daneben zählt, ist eine
-Kopie. **Wächst die Menge, auf die sie sich bezieht, wird die Kopie mit dem
-nächsten Eintrag falsch** — nicht irgendwann. Streichen statt nachführen: Die
-Aufzählung ist die Quelle, der Satz verweist auf sie.
+Kopie. **Wächst die Aufzählung, ist die Kopie beim nächsten Eintrag fällig** —
+prüfen oder streichen, nicht nachführen: Die Aufzählung ist die Quelle, der
+Satz verweist auf sie.
 
 Wächst die Bezugsmenge nicht, bleibt die Zahl richtig; die Regel gilt nicht
 gegen Zahlen überhaupt.
 
-Was dabei leicht übersehen wird — jeweils zu prüfen, ob die Bezugsmenge wächst:
+Was dabei leicht übersehen wird — jeweils zu prüfen, ob der Zuwachs die Aussage
+trifft:
 
 - **Relative Angaben sind auch Zählungen.** «Die Mehrzahl», «die meisten»,
-  «fast alle» hängen an derselben Aufzählung wie eine Ziffer.
+  «fast alle» hängen an derselben Aufzählung wie eine Ziffer — aber anders:
+  Ein Zuwachs, der zu ihnen passt, lässt sie stehen (drei von fünf werden vier
+  von sechs), der erste unpassende kippt sie.
 - **Ein Bruch hat zwei Zählungen.** Bei «Zwei der vier» kann die eine driften
   und die andere nicht; welche, hängt davon ab, was dazukommt.
 - **Nicht die Länge messen, den Inhalt lesen.** `grep -c` bestätigt eine Zahl,
@@ -63,7 +66,8 @@ Was dabei leicht übersehen wird — jeweils zu prüfen, ob die Bezugsmenge wäc
   der Satz behauptet.
 
 Die Fälle, an denen das gelernt wurde, stehen in
-[`docs/codex-reviews.md`](docs/codex-reviews.md), Abschnitt 10.
+[`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Zahlen, die eine
+Aufzählung wiederholen».
 
 ## Wenn etwas rot ist
 
