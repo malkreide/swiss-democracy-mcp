@@ -695,7 +695,10 @@ will sie präzisieren und präzisiert sie falsch.
 Zahlen.** Eine relative Zählung («die Mehrzahl der Fälle oben»), ein Verweis auf
 eine Abschnittsnummer statt auf einen Titel, und ein Verweis auf «die letzte
 Zeile» einer Tabelle, die ausdrücklich fortgeschrieben werden soll. Nur die
-Zählung ist eine Zahl, die beiden Verweise sind Positionen. Die Regel steht deshalb über
-Zahlen, greift aber weiter: **Jede Kopie einer Ordnung, die sich ändern darf,
-veraltet mit ihr** — eine Nummer, ein «oben», ein «letzte» so gut wie eine
-Ziffer.
+Zählung ist eine Zahl, die beiden Verweise sind Positionen. Die Regel steht
+deshalb über Zahlen, ist bei Positionen aber genauso zu fahren: **Eine Nummer,
+ein «oben», ein «letzte» sind zu prüfen, sobald sich die Ordnung ändert** — und
+zwar daraufhin, ob die Änderung sie trifft. Ein Abschnitt hinter dem
+verwiesenen lässt dessen Nummer stehen, einer davor verschiebt sie; eine Zeile
+mitten in der Tabelle lässt «die letzte Zeile» stehen, eine am Ende nicht.
+Ansehen kann man es keinem von beiden.
