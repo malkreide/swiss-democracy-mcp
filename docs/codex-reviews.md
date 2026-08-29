@@ -403,21 +403,25 @@ Danach diese Fehlschläge, alle mit derselben Meldung:
 | 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
 | 10:00:34 | #64 | ready 10:00:32, **ohne** Merge | 2 s |
 | 10:11:22 | #65 | ready 10:11:20, **ohne** Merge | 2 s |
+| 10:15:03 | #66 | ready 10:15:02, Merge 10:15:03 | 1 s bzw. 0 s |
+| 10:45:33 | #66 | `@codex review` um 10:45:22 | 11 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
 Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das entsprechende
 Fenster beim Ausfall vom 21./22.8. war mit 67 Minuten **enger**, um 38 min 18 s.
-Was sich unterscheidet, ist nicht die Schärfe des Beginns, sondern das Ende:
-dort blieb es ganz offen, hier nicht.
 
-**Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 58 min 57 s, dichter abgetastet als im August — die Punkte
-der Tabelle oben gegen dort zwei, und ihre Auslöser sind voneinander
-unabhängig. Dichter heisst
-trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
-geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
-10:11:22 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
-mehr durch.
+**Das Ende ist auf 1 h 10 min 2 s eingegrenzt** — zwischen dem letzten
+Fehlschlag um 10:45:33 und dem ersten wieder gelungenen Lauf um 11:55:35, den
+der Status-Kommentar auf #66 als «Completed» führt und der einen P2 lieferte.
+Darin unterscheidet sich diese Episode von der ersten, deren Ende ganz offen
+blieb — nicht in der Schärfe des Beginns.
+
+**Zur Dauer gibt sie trotzdem so wenig her wie die erste.** Zwischen erstem und
+letztem Fehlschlag liegen 1 h 33 min 8 s, dichter abgetastet als im August — die
+Punkte der Tabelle oben gegen dort zwei, und ihre Auslöser sind voneinander
+unabhängig. Dichter heisst trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen
+kann sich das Fenster geöffnet und durch den nächsten Auslöser wieder
+geschlossen haben.
 
 **Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
 einen Abruf ohne ChatGPT-Anmeldung mit HTTP 403. Welches Limit griff — rollendes
