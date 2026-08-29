@@ -10,9 +10,11 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Acht Fassungen sind daran gescheitert,
-mehr zu erklären als gemessen war — vier am ursprünglichen Abschnitt, vier an
-der stillen Draft-Eröffnung; sie stehen unten als Mahnung.
+entscheidende Vergleich vorliegt. Abschnitt 9 sammelt die Fassungen, die daran
+gescheitert sind, mehr zu erklären als gemessen war — zwei Gruppen, eine zum
+ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Sie stehen dort
+als Mahnung, gezählt wird nirgends: Jede Zahl über sie war bisher nach der
+nächsten Ergänzung falsch.
 
 ---
 
@@ -600,8 +602,10 @@ Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
 
 ### Fassungen zur stillen Draft-Eröffnung (4.3)
 
-Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt, jede von der
-nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
+Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt. Die ersten
+drei wurden je von der nächsten Fassung ersetzt; die vierte nicht — sie wurde
+gestrichen, und an ihrer Stelle steht seither keine Regel mehr. Dieselbe
+Krankheit bei allen vieren: aus Stille auf Ursachen schliessen.
 
 1. **«Der Vergleich steht bei durchgehend gesperrtem Kontingent.»** Für die
    Eröffnung um 10:03:12 war der Kontingentzustand nie beobachtet, und gerade
