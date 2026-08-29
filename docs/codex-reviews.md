@@ -226,6 +226,16 @@ auf jedes PR-Ereignis mit dieser Meldung antwortet und den Review dennoch erst
 ab ready startet, ist offen; dafür bräuchte es denselben Versuch bei freiem
 Kontingent. Belegt ist nur: Ein Draft löst *etwas* aus.
 
+**Ein Push auf denselben Draft löste dagegen nichts aus.** Um 09:56:42 ging ein
+zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
+weitere Meldung da. Die beobachtete Obergrenze für Ausfallmeldungen liegt bei
+22 Sekunden, das Fünffache war also verstrichen — und der Connector unterdrückt
+Wiederholungen nicht, er hatte auf diesem PR schon zweimal binnen acht Sekunden
+geantwortet. Beweisend ist ein einzelnes stilles Fenster trotzdem nicht; es
+passt aber zu der Zeile in Abschnitt 8, wonach im Draft-Zustand nach einer
+Korrektur kein Lauf nachkommt. Eröffnung und Push sind hier verschiedene Dinge,
+und nur die Eröffnung hat geantwortet.
+
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
 siebzig Sekunden nach einem Push. Der Abstand spricht für den Kommentar — die
