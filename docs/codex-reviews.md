@@ -391,7 +391,7 @@ Repo. Der letzte gelungene Lauf trägt **07:27:07** — Review-Objekt auf #61 zu
 Commit `2f04077`, der Status-Kommentar nennt «Completed
 2026-08-29T07:27:10.829173Z».
 
-Danach vier Fehlschläge, alle mit derselben Meldung:
+Danach diese Fehlschläge, alle mit derselben Meldung:
 
 | Zeit | PR | Auslöser | Abstand |
 |---|---|---|---|
@@ -403,19 +403,29 @@ Danach vier Fehlschläge, alle mit derselben Meldung:
 | 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
 | 10:00:34 | #64 | ready 10:00:32, **ohne** Merge | 2 s |
 | 10:11:22 | #65 | ready 10:11:20, **ohne** Merge | 2 s |
+| 10:15:03 | #66 | ready 10:15:02, Merge 10:15:03 | 1 s bzw. 0 s |
+| 10:45:33 | #66 | `@codex review` um 10:45:22 | 11 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
-Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
-Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
-entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
+Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das entsprechende
+Fenster beim Ausfall vom 21./22.8. war mit 67 Minuten **enger**, um 38 min 18 s.
 
-**Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 58 min 57 s, dichter abgetastet als im August — acht Punkte
-statt zwei, und die acht Auslöser sind voneinander unabhängig. Dichter heisst
-trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
-geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
-10:11:22 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
-mehr durch.
+**Das Ende ist auf 1 h 10 min 2 s eingegrenzt** — zwischen dem letzten
+Fehlschlag um 10:45:33 und dem ersten wieder gelungenen Lauf um 11:55:35, den
+der Status-Kommentar auf #66 als «Completed» führt und der einen P2 lieferte.
+Auch die erste Episode hat ein eingegrenztes Ende — zwischen der letzten
+Limit-Meldung am 22.8. um 11:03 und der abweichenden Meldung am 23.8. um 08:22,
+also 21 h 19 min, und genau diese Grenze führt der Abschnitt darüber schon als
+obere Schranke. Der belegte Unterschied ist deshalb nicht «offen gegen
+eingegrenzt», sondern die Weite: 1 h 10 min 2 s gegen 21 h 19 min. Beim Beginn
+liegt es umgekehrt.
+
+**Zur Dauer gibt sie trotzdem so wenig her wie die erste.** Zwischen erstem und
+letztem Fehlschlag liegen 1 h 33 min 8 s, dichter abgetastet als im August — die
+Punkte der Tabelle oben gegen dort zwei, und ihre Auslöser sind voneinander
+unabhängig. Dichter heisst trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen
+kann sich das Fenster geöffnet und durch den nächsten Auslöser wieder
+geschlossen haben.
 
 **Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
 einen Abruf ohne ChatGPT-Anmeldung mit HTTP 403. Welches Limit griff — rollendes
@@ -423,11 +433,13 @@ Fünf-Stunden-Fenster oder Wochenlimit —, ist deshalb auch für diese Episode
 offen. Die Frage lässt sich ohne Anmeldung nicht am Dashboard klären, wohl aber
 am Verhalten des Bots: Er sagt selbst, dass er nicht kann.
 
-**Eine Sperre bremst die Auslöser nicht.** Zwei der vier Fehlschläge stammen von
-Merges, die während der Sperre stattfanden. Warum diese beiden PRs gerade da
-gemergt wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier.
-Festzuhalten ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein
-abgewiesener Versuch selbst etwas kostet, ist nicht bekannt.
+**Eine Sperre bremst die Auslöser nicht.** Mehrere Zeilen der Tabelle hängen
+zeitlich an einem Merge, der während der Sperre stattfand — bei #62 eindeutig,
+bei #63 und #66 bleibt offen, ob ready oder der Merge auslöste, weil beide in
+dieselbe oder die benachbarte Sekunde fallen. Warum diese PRs gerade da gemergt
+wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier. Festzuhalten
+ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein abgewiesener
+Versuch selbst etwas kostet, ist nicht bekannt.
 
 ### Die Meldung hat am 29.8. einen zweiten Satz bekommen
 
