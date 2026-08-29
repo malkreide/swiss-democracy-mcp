@@ -391,7 +391,7 @@ Repo. Der letzte gelungene Lauf trägt **07:27:07** — Review-Objekt auf #61 zu
 Commit `2f04077`, der Status-Kommentar nennt «Completed
 2026-08-29T07:27:10.829173Z».
 
-Danach vier Fehlschläge, alle mit derselben Meldung:
+Danach diese Fehlschläge, alle mit derselben Meldung:
 
 | Zeit | PR | Auslöser | Abstand |
 |---|---|---|---|
@@ -405,13 +405,15 @@ Danach vier Fehlschläge, alle mit derselben Meldung:
 | 10:11:22 | #65 | ready 10:11:20, **ohne** Merge | 2 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
-Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
-Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
-entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
+Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das entsprechende
+Fenster beim Ausfall vom 21./22.8. war mit 67 Minuten **enger**, um 38 min 18 s.
+Was sich unterscheidet, ist nicht die Schärfe des Beginns, sondern das Ende:
+dort blieb es ganz offen, hier nicht.
 
 **Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 58 min 57 s, dichter abgetastet als im August — acht Punkte
-statt zwei, und die acht Auslöser sind voneinander unabhängig. Dichter heisst
+Fehlschlag liegen 58 min 57 s, dichter abgetastet als im August — die Punkte
+der Tabelle oben gegen dort zwei, und ihre Auslöser sind voneinander
+unabhängig. Dichter heisst
 trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
 geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
 10:11:22 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
@@ -423,7 +425,7 @@ Fünf-Stunden-Fenster oder Wochenlimit —, ist deshalb auch für diese Episode
 offen. Die Frage lässt sich ohne Anmeldung nicht am Dashboard klären, wohl aber
 am Verhalten des Bots: Er sagt selbst, dass er nicht kann.
 
-**Eine Sperre bremst die Auslöser nicht.** Zwei der vier Fehlschläge stammen von
+**Eine Sperre bremst die Auslöser nicht.** Zwei Fehlschläge der Tabelle stammen von
 Merges, die während der Sperre stattfanden. Warum diese beiden PRs gerade da
 gemergt wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier.
 Festzuhalten ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein
