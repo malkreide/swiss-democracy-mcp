@@ -71,8 +71,9 @@ Handgriffe daraus:
   geblieben* war. Die mechanische Prüfung schützt gegen Drift und ist blind für
   Bedeutung.
 - **Beim Ergänzen die Prosa daneben mitlesen**, nicht nur die Liste. Die
-  Mehrzahl der Fälle oben entstand dadurch, dass ein Eintrag dazukam und ein
-  Satz einen Absatz weiter unbemerkt veraltete.
+  Überschrift «Drei Fassungen», die «vier Fehlschläge» und der Zähler «Zwei»
+  wurden alle dadurch falsch, dass ein Eintrag dazukam und ein Satz einen
+  Absatz weiter unbemerkt veraltete.
 
 ## Wenn etwas rot ist
 
