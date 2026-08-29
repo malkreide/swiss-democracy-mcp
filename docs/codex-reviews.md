@@ -10,11 +10,16 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Abschnitt 9 sammelt die Fassungen, die daran
-gescheitert sind, mehr zu erklären als gemessen war — zwei Gruppen, eine zum
-ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Sie stehen dort
-als Mahnung, gezählt wird nirgends: Jede Zahl über sie war bisher nach der
-nächsten Ergänzung falsch.
+entscheidende Vergleich vorliegt. Abschnitt 9 führt die Fassungen, die daran
+gescheitert sind, mehr zu erklären als gemessen war — in zwei Gruppen, eine zum
+ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Die erste Gruppe
+schliesst mit der Fassung, die stehen geblieben ist; sie gehört nicht zu den
+gescheiterten und steht dort, weil der Unterschied zu ihnen der Punkt ist.
+
+Eine Gesamtzahl steht hier nicht. Am 29.8. wurde sie in drei aufeinander
+folgenden Review-Runden dreimal korrigiert: «sechs» gegen «sieben» an zwei
+Stellen, dann eine Überschrift mit «drei» über vier Einträgen, dann «acht»,
+das die überlebende Fassung mitzählte. Jede Korrektur erzeugte die nächste.
 
 ---
 
