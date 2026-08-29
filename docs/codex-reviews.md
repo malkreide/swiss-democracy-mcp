@@ -206,11 +206,25 @@ Sieben bzw. vierzehn Sekunden nach demselben Aufruf, Fehlschlag und Erfolg.
 Zweifelsfrei ist es trotzdem nicht: Dass ein Draft die automatischen Auslöser
 nicht anlaufen lässt, ist eine Behauptung dieser Sammlung, keine hier gemessene
 Grösse. Gilt sie nicht, kann die Environment-Meldung von der Eröffnung vier
-Sekunden zuvor stammen.
+Sekunden zuvor stammen — und dafür spricht seit dem 29.8. die Beobachtung
+gleich unten. Diese Zeile trägt damit weniger, als sie beim Aufschreiben trug.
 
-**Ein offener Versuch, drei Minuten Aufwand:** Ein Draft-PR **ohne** jeden
-Aufruf. Kommt dort eine Environment-Meldung, stammt sie von der Eröffnung und
-diese Beobachtung zerfällt. Bleibt es still, trägt sie.
+**Der Versuch ist am 29.8. halb gelaufen — und er fiel gegen die Behauptung.**
+PR #64 wurde um 09:52:31 als Draft eröffnet. Elf Sekunden später, um 09:52:42,
+stand die Kontingent-Meldung da, Kommentar-ID `5461650608`. Der einzige
+`@codex review` auf diesem PR trägt dieselbe Sekunde, aber die höhere ID
+`5461650666` — er kam danach, und eine Wirkung geht ihrer Ursache nicht voraus.
+Der PR-Text nennt `@codex` nirgends. Übrig bleibt die Eröffnung.
+
+Halb gelaufen, weil der Versuch einen Draft **ohne** jeden Aufruf verlangte und
+hier acht Sekunden darauf doch einer kam, mit eigener Antwort um 09:52:50. Für
+die Reihenfolge reicht es trotzdem.
+
+**Was es nicht zeigt:** dass eine Draft-Eröffnung einen *Lauf* auslöst.
+Beobachtet ist eine Ausfallmeldung bei erschöpftem Kontingent. Ob der Connector
+auf jedes PR-Ereignis mit dieser Meldung antwortet und den Review dennoch erst
+ab ready startet, ist offen; dafür bräuchte es denselben Versuch bei freiem
+Kontingent. Belegt ist nur: Ein Draft löst *etwas* aus.
 
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
@@ -235,8 +249,9 @@ Viermal geliefert, erstaunlich gleichmässig:
 Einmal gescheitert (#53 um 18:51:30, siehe 4.3). Nach einem Fehlschlag lohnt
 der zweite Versuch.
 
-**Auf einem Draft läuft er an** — #55 ist der Beleg. Nur die automatischen
-Auslöser brauchen den ready-Zustand.
+**Auf einem Draft läuft er an** — #55 ist der Beleg. Dass umgekehrt die
+automatischen Auslöser den ready-Zustand *brauchen*, stand hier lange
+unwidersprochen daneben; seit dem 29.8. ist es fraglich (Abschnitt 4.3).
 
 **Auf einem gemergten PR läuft er an** — #45 war seit 70 Minuten gemergt, #51
 seit knapp 14 Stunden; beide bekamen ihren Review. Geprüft wird dann allerdings
@@ -318,6 +333,8 @@ Danach vier Fehlschläge, alle mit derselben Meldung:
 | 09:29:43 | #62 | Merge um 09:29:40 | 3 s |
 | 09:39:26 | #63 | `@codex review` um 09:39:17 | 9 s |
 | 09:43:51 | #63 | ready 09:43:48, Merge 09:43:50 | 3 s bzw. 1 s |
+| 09:52:42 | #64 | Eröffnung als Draft um 09:52:31 | 11 s |
+| 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
 Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
@@ -325,11 +342,11 @@ Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
 entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
 
 **Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 31 min 26 s, dichter abgetastet als im August — vier Punkte
-statt zwei, und die vier Auslöser sind voneinander unabhängig. Dichter heisst
+Fehlschlag liegen 40 min 25 s, dichter abgetastet als im August — sechs Punkte
+statt zwei, und die sechs Auslöser sind voneinander unabhängig. Dichter heisst
 trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
 geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
-09:43:51 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
+09:52:50 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
 mehr durch.
 
 **Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
