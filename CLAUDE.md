@@ -190,14 +190,43 @@ Eingabe, gegenteiliges Urteil, alles in denselben neun Minuten. Ein sauberer
 Lauf sagt damit etwas über den Lauf, nicht über den Text. Wer sein Häkchen
 daran hängt, hängt es an einen Münzwurf.
 
-Portfolio-weit nachsehen:
+Portfolio-weit nachsehen — mit **zwei** Abfragen, aus demselben Grund, aus dem
+am einzelnen PR `get_reviews` und `get_comments` beide nötig sind:
 
 ```
 search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] updated:>=<Datum>
 ```
 
-Findet nur, wo er *kommentiert* hat. Repos ohne PR-Aktivität tauchen nicht auf
-— das ist kein Beleg, dass dort geprüft wurde.
+Findet, wo er *kommentiert* hat, also die Befundlos-Meldung und die beiden
+Ausfallmeldungen — die aber nicht voneinander; dafür ist der Text zu lesen. Ein
+Review **mit** Befund ist kein Kommentar und taucht hier gar nicht auf.
+
+```
+search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot]
+```
+
+Findet die Review-**Objekte**, also genau die Läufe mit Befund. Hier fehlt
+umgekehrt jeder befundlose Review, weil der ein gewöhnlicher Kommentar ist.
+
+Keine der beiden allein beantwortet «wurde geprüft?». Belegt ist eine Prüfung
+durch ein Objekt **oder** eine Befundlos-Meldung, und jede Abfrage sieht nur
+eine der beiden Sorten: Wer sich auf `commenter:` verlässt, übersieht die Repos
+mit Befund; wer sich auf `reviewed-by:` verlässt, hält die befundlos geprüften
+für ungeprüft.
+
+Und beide zusammen reichen nur so weit, wie es PR-Aktivität gab. Repos ohne
+tauchen in keiner von beiden auf — das ist kein Beleg, dass dort geprüft wurde.
+
+Gemessen am 23.8.2026 über die 41 Server-Repos: **25 mit mindestens einem
+echten Review, 16 nur mit Absagen.** Zwei Vorbehalte, ohne die die Zahlen mehr
+behaupten, als sie tragen. «Belegt» heisst hier «damals» — ein Review vom 16.8.
+sagt über den heutigen Stand nichts. Und aus der Abfrage fällt nur die 25; die
+16 verlangt, dass jemand in diesen Repos die Kommentartexte gelesen hat. Wer
+sie stattdessen als 41 − 25 ausrechnet, zählt jeden befundlosen Review als
+Absage — derselbe Fehlalarm wie oben, nur portfolio-weit.
+
+Nicht mit der anderen Zahl desselben Tages verrechnen: Die 25 zählt Repos, die
+42 weiter oben zählt Reviews.
 
 Zweiter Weg, den Prüfer zu verlieren, ganz ohne Kontingentproblem: zu schnell
 mergen. Am 21./22.8. lagen zwischen «ready for review» und Merge mehrfach drei
