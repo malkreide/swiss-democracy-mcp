@@ -10,9 +10,9 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Vier Fassungen des ursprünglichen Abschnitts
-sind daran gescheitert, mehr zu erklären als gemessen war; sie stehen unten
-als Mahnung.
+entscheidende Vergleich vorliegt. Sieben Fassungen sind daran gescheitert,
+mehr zu erklären als gemessen war — vier am ursprünglichen Abschnitt, drei an
+der stillen Draft-Eröffnung; sie stehen unten als Mahnung.
 
 ---
 
@@ -234,34 +234,23 @@ review`. Das ist der Versuch, wie er oben verlangt war. Nach 5 min 17 s war
 weder ein Kommentar noch ein Review-Objekt da — das Vierzehnfache der
 beobachteten Obergrenze von 22 Sekunden.
 
-**Der Kontingentzustand während dieser 317 Sekunden ist nicht beobachtet.**
-Belegt sind Sperren um 10:00:34 und um 10:11:22, davor und danach; dass sich
-das Fenster dazwischen geöffnet haben kann, steht in Abschnitt 6 selbst. Eine
-frühere Fassung dieses Absatzes sprach trotzdem von einer «durchgehenden»
-Sperre. Unbelegt — und gerade die Stille kann sie nicht bestätigen.
+**Weiter als diese 317 Sekunden trägt die Beobachtung nicht.** Löst eine
+Eröffnung aus und antwortet der Connector erst später — oder scheitert er vor
+dem sichtbaren Ergebnis —, sieht das im Messfenster genauso aus. Abschnitt 5
+hält für #51 fest, warum sich das von aussen nicht trennen lässt: «nichts kam
+an» ist nicht «nichts wurde ausgelöst». Der Kontingentzustand während der
+317 Sekunden ist ebenfalls nicht beobachtet; belegt sind Sperren um 10:00:34
+und um 10:11:22, davor und danach.
 
-**Der Ersatz war nicht besser.** Danach stand hier eine Fallunterscheidung:
-gesperrt hätte eine Ausfallmeldung erzeugt, frei einen Lauf samt
-Status-Kommentar, also gelte der Schluss unabhängig vom Kontingent. Sie
-übersieht einen dritten Ausgang, den Abschnitt 5 für #51 längst festhält: Wird
-die Eröffnung angenommen und scheitert der Connector danach, oder braucht er
-länger als 317 Sekunden, bleibt sie in beiden Kontingentzuständen unsichtbar.
-Dass jeder ausgelöste Lauf einen Status-Kommentar hinterlässt, ist ausserdem
-nirgends belegt, sondern aus wenigen Beobachtungen unterstellt.
-
-**Was #65 also hergibt: eine stille Gegenbeobachtung, mehr nicht.** Sie
-widerlegt, dass eine Eröffnung *verlässlich* eine sichtbare Antwort erzeugt.
-Dass eine Eröffnung nichts *auslöst*, folgt daraus nicht — «nichts kam an» ist
-von aussen nicht von «nichts wurde ausgelöst» zu trennen, und diese Regel steht
-in Abschnitt 5, seit sie dort für #51 aufgeschrieben wurde.
+**Was #65 hergibt, in einem Satz:** Auf eine Draft-Eröffnung kam binnen
+317 Sekunden keine sichtbare Antwort. Nicht mehr — weder über das Auslösen noch
+über spätere Antworten noch über das Kontingent. Drei frühere Fassungen dieses
+Absatzes behaupteten jeweils mehr; sie stehen in Abschnitt 9.
 
 Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
-vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
-Aber auf #65 blieb eine Eröffnung ohne sichtbare Antwort, und damit taugt die
-Eröffnung nicht als Ursache, auf die man sich berufen könnte: Erzeugte sie
-regelmässig eine, hätte #65 etwas gezeigt. Ob sie auf #64 ausgelöst hat, bleibt
-davon unberührt — nur belegen lässt es sich nicht. Übrig bleiben zwei Lesarten, zwischen denen
-hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
+vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts. Ob
+die Eröffnung sie ausgelöst hat, ist offen. Übrig bleiben zwei Lesarten,
+zwischen denen hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
 oder auf #64 wirkte etwas, das in den Ereignissen nicht sichtbar ist.
 
 **Der Vergleich innerhalb eines PRs macht es noch deutlicher.** #65 lieferte
@@ -274,18 +263,17 @@ beides, acht Minuten auseinander, am selben PR:
 
 Derselbe PR, derselbe Connector. **Dass ready auslöst, ist gut belegt** — zwei
 saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
-darüber nur, dass nichts sichtbar wurde; ob nichts ausgelöst wurde, bleibt
-offen. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
+darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
 **Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
-genau einen Fall. «Ein Draft löst verlässlich etwas Sichtbares aus» ist
-damit ebenfalls nicht belegt — #65 ist die stille
-Gegenbeobachtung, mit Zeiten und abgefragten Kommentaren oben. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
+genau einen Fall. «Ein Draft löst binnen fünf Minuten sichtbar etwas aus»
+ebenfalls nicht — #65 ist die stille Gegenbeobachtung, mit Zeiten und
+abgefragten Kommentaren oben. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
 wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
 freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
 
-**Ein Push auf denselben Draft blieb dagegen ohne sichtbare Antwort.** Um 09:56:42 ging ein
+**Ein Push auf denselben Draft blieb 100 Sekunden lang ohne sichtbare Antwort.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
 weitere Meldung da. Die beobachtete Obergrenze für Ausfallmeldungen liegt bei
 22 Sekunden, das Fünffache war also verstrichen — und der Connector unterdrückt
@@ -580,7 +568,7 @@ jeder Runde Behauptungen verloren und keine gewonnen.
 
 ---
 
-## 9. Vier Fassungen, die nicht hielten
+## 9. Fassungen, die nicht hielten
 
 Der Abschnitt über die schwankenden Antworten (4.3) stand vor seinem Merge
 viermal falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
@@ -603,3 +591,23 @@ Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
 - **«Der Merge tötet einen laufenden Job»** — widerlegt durch #60 (siehe 5).
 - **«Die 👀 ist die einzige je beobachtete Reaktion»** — widerlegt durch #59
   und #60 (siehe 1).
+
+### Drei Fassungen zur stillen Draft-Eröffnung (4.3)
+
+Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt, jede von der
+nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
+
+1. **«Der Vergleich steht bei durchgehend gesperrtem Kontingent.»** Für die
+   Eröffnung um 10:03:12 war der Kontingentzustand nie beobachtet, und gerade
+   die Stille kann eine Sperre nicht bestätigen.
+2. **«Beide Kontingentzustände hätten etwas Sichtbares erzeugt, der Schluss
+   gilt also unabhängig davon.»** Die Fallunterscheidung übersieht den dritten
+   Ausgang — ein Trigger, der angenommen wird und unsichtbar scheitert — und
+   setzt voraus, dass jeder Lauf einen Status-Kommentar hinterlässt. Beides
+   unbelegt, und den dritten Ausgang hält Abschnitt 5 für #51 längst fest.
+3. **«Eine Eröffnung erzeugt nicht verlässlich eine sichtbare Antwort.»** Zu
+   allgemein: Antwortet der Connector nach mehr als 317 Sekunden, sieht #65 im
+   Messfenster genauso aus und kann trotzdem verlässlich später antworten.
+   Belegt ist nur die Stille *innerhalb* des gemessenen Fensters.
+
+Die vierte Fassung nennt die Sekundenzahl und sonst nichts.
