@@ -234,17 +234,26 @@ review`. Das ist der Versuch, wie er oben verlangt war. Nach 5 min 17 s war
 weder ein Kommentar noch ein Review-Objekt da — das Vierzehnfache der
 beobachteten Obergrenze von 22 Sekunden.
 
-**Der Kontingentzustand während dieser 317 Sekunden ist nicht beobachtet — und
-wird auch nicht gebraucht.** Belegt sind Sperren um 10:00:34 und um 10:11:22,
-davor und danach; dass sich das Fenster dazwischen geöffnet haben kann, steht
-in Abschnitt 6 selbst. Beide möglichen Zustände hätten aber etwas Sichtbares
-erzeugt: War gesperrt, wäre die Ausfallmeldung binnen 1 bis 22 Sekunden
-gekommen. War frei, und löst eine Eröffnung aus, wäre binnen zwei bis drei
-Minuten ein Lauf samt Status-Kommentar erschienen. Im Fenster kam keines von
-beidem. Der Schluss steht deshalb unabhängig davon, was das Kontingent gerade
-tat — anders als eine frühere Fassung dieses Absatzes, die eine «durchgehende»
-Sperre voraussetzte und damit genau das behauptete, was die Stille nicht
-hergibt.
+**Der Kontingentzustand während dieser 317 Sekunden ist nicht beobachtet.**
+Belegt sind Sperren um 10:00:34 und um 10:11:22, davor und danach; dass sich
+das Fenster dazwischen geöffnet haben kann, steht in Abschnitt 6 selbst. Eine
+frühere Fassung dieses Absatzes sprach trotzdem von einer «durchgehenden»
+Sperre. Unbelegt — und gerade die Stille kann sie nicht bestätigen.
+
+**Der Ersatz war nicht besser.** Danach stand hier eine Fallunterscheidung:
+gesperrt hätte eine Ausfallmeldung erzeugt, frei einen Lauf samt
+Status-Kommentar, also gelte der Schluss unabhängig vom Kontingent. Sie
+übersieht einen dritten Ausgang, den Abschnitt 5 für #51 längst festhält: Wird
+die Eröffnung angenommen und scheitert der Connector danach, oder braucht er
+länger als 317 Sekunden, bleibt sie in beiden Kontingentzuständen unsichtbar.
+Dass jeder ausgelöste Lauf einen Status-Kommentar hinterlässt, ist ausserdem
+nirgends belegt, sondern aus wenigen Beobachtungen unterstellt.
+
+**Was #65 also hergibt: eine stille Gegenbeobachtung, mehr nicht.** Sie
+widerlegt, dass eine Eröffnung *verlässlich* eine sichtbare Antwort erzeugt.
+Dass eine Eröffnung nichts *auslöst*, folgt daraus nicht — «nichts kam an» ist
+von aussen nicht von «nichts wurde ausgelöst» zu trennen, und diese Regel steht
+in Abschnitt 5, seit sie dort für #51 aufgeschrieben wurde.
 
 Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
 vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
@@ -261,14 +270,16 @@ beides, acht Minuten auseinander, am selben PR:
 | Eröffnung als Draft 10:03:12 | nach 5 min 17 s nichts |
 | ready 10:11:20 | Meldung nach **2 s** |
 
-Derselbe PR, derselbe Connector. Der Kontingentzustand bei der Eröffnung ist
-offen und trägt hier nach dem Absatz oben auch nichts. Dass ready auslöst, ist
-gut belegt; dass eine Eröffnung es tut, ist es nicht. Die Antwort auf #64 vor
-meinem Aufruf bleibt als Einzelfall stehen und ist nicht erklärt.
+Derselbe PR, derselbe Connector. **Dass ready auslöst, ist gut belegt** — zwei
+saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
+darüber nur, dass nichts sichtbar wurde; ob nichts ausgelöst wurde, bleibt
+offen. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
+ist nicht erklärt.
 
 **Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
-genau einen Fall. «Ein Draft löst etwas aus» ist damit nicht belegt — #65 ist
-der Gegenbeleg. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
+genau einen Fall. «Ein Draft löst verlässlich etwas Sichtbares aus» ist
+damit ebenfalls nicht belegt — #65 und #66 sind die stillen
+Gegenbeobachtungen. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
 wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
 freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
 
