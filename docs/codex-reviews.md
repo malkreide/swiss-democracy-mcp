@@ -257,8 +257,10 @@ in Abschnitt 5, seit sie dort für #51 aufgeschrieben wurde.
 
 Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
 vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
-Aber eine Eröffnung, die auf #65 nichts auslöst, kann auf #64 nicht die
-hinreichende Ursache gewesen sein. Übrig bleiben zwei Lesarten, zwischen denen
+Aber auf #65 blieb eine Eröffnung ohne sichtbare Antwort, und damit taugt die
+Eröffnung nicht als Ursache, auf die man sich berufen könnte: Erzeugte sie
+regelmässig eine, hätte #65 etwas gezeigt. Ob sie auf #64 ausgelöst hat, bleibt
+davon unberührt — nur belegen lässt es sich nicht. Übrig bleiben zwei Lesarten, zwischen denen
 hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
 oder auf #64 wirkte etwas, das in den Ereignissen nicht sichtbar ist.
 
@@ -278,12 +280,12 @@ ist nicht erklärt.
 
 **Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
 genau einen Fall. «Ein Draft löst verlässlich etwas Sichtbares aus» ist
-damit ebenfalls nicht belegt — #65 und #66 sind die stillen
-Gegenbeobachtungen. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
+damit ebenfalls nicht belegt — #65 ist die stille
+Gegenbeobachtung, mit Zeiten und abgefragten Kommentaren oben. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
 wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
 freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
 
-**Ein Push auf denselben Draft löste dagegen nichts aus.** Um 09:56:42 ging ein
+**Ein Push auf denselben Draft blieb dagegen ohne sichtbare Antwort.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
 weitere Meldung da. Die beobachtete Obergrenze für Ausfallmeldungen liegt bei
 22 Sekunden, das Fünffache war also verstrichen — und der Connector unterdrückt
@@ -291,7 +293,8 @@ Wiederholungen nicht, er hatte auf diesem PR schon zweimal binnen acht Sekunden
 geantwortet. Beweisend ist ein einzelnes stilles Fenster trotzdem nicht; es
 passt aber zu der Zeile in Abschnitt 8, wonach im Draft-Zustand nach einer
 Korrektur kein Lauf nachkommt. Eröffnung und Push sind hier verschiedene Dinge,
-und nur die Eröffnung hat geantwortet.
+und nur nach der Eröffnung wurde etwas sichtbar. Was jeweils ausgelöst wurde,
+sagt auch dieser Absatz nicht — aus demselben Grund wie oben.
 
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
