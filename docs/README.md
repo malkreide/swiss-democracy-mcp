@@ -11,10 +11,16 @@ READMEs and from `SECURITY.md`.
 | File | Contents |
 |---|---|
 | [`roadmap.md`](roadmap.md) | Phased architecture; the server is Phase 1 (audit OPS-003) |
-| [`security.md`](security.md) | Transport, binding, egress allow-list, CORS |
+| [`security.md`](security.md) | Transport and binding, egress allow-list and SSRF, the lethal-trifecta assessment, secrets |
 | [`secret-management.md`](secret-management.md) | How the optional SRGSSR credentials are handled |
 
 `assets/` holds images used by the READMEs.
+
+**Not here:** the environment variables, `MCP_CORS_ORIGINS` among them, are
+documented in the configuration table in [`../README.md`](../README.md). This
+line exists because the index once promised CORS guidance in `security.md`,
+where there is none — an index that sends the reader to the wrong page is
+worse than no index.
 
 ## Working notes (German)
 
