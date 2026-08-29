@@ -336,19 +336,18 @@ ein Lauf, um 07:11:53 wurde gemergt, und um 07:12:44 stand er auf «Completed».
 Was zwei Fassungen lang als eigener Grund dastand — der Merge töte einen
 laufenden Job — ist damit als allgemeine Regel widerlegt.
 
-**Überleben heisst aber nicht, dass ein Ergebnis ankommt.** Auf #79 lief am
-29.8. ein Review, während gemergt wurde: Aufruf 18:31:52, Lauf ab 18:32:05,
-ready 18:32:33, Merge 18:32:40 — und um 18:34:05, 85 Sekunden nach dem Merge,
-stand die Statuszeile auf «Completed». Sichtbar wurde von diesem Lauf nichts:
-kein Review-Objekt und keine Befundlos-Meldung (`get_reviews` leer, insgesamt
-zwei Kommentare auf dem PR, nachgeprüft um 18:37).
+**Überleben heisst aber nicht, dass ein Ergebnis ankommt.** Schon für diesen
+#60-Lauf ist keines zuzuordnen: Die Befundlos-Meldung von 07:11:04 liegt
+**vor** seinem Start um 07:11:27 und gehört damit zu einem früheren Lauf. Nach
+dem Merge kam nur noch die «Completed»-Zeile.
 
-Der Unterschied zu #60 liegt nicht im Merge, sondern darin, wann das Ergebnis
-fällig war: Dort stand die Befundlos-Meldung schon um 07:11:04 und damit vor
-dem Merge. Auf #79 hätte jedes Ergebnis danach kommen müssen, und es kam
-keines.
+Auf #79 dasselbe, dort ohne Verwechslungsmöglichkeit: Aufruf 18:31:52, Lauf ab
+18:32:05, ready 18:32:33, Merge 18:32:40, «Completed» um 18:34:05 — 85 Sekunden
+nach dem Merge. Auf dem PR steht überhaupt keine Ergebnis-Meldung: kein
+Review-Objekt und keine Befundlos-Meldung (`get_reviews` leer, insgesamt zwei
+Kommentare, nachgeprüft um 18:37).
 
-Was das **nicht** hergibt: ob der Lauf nichts gefunden hat oder ob nach dem
+Was das **nicht** hergibt: ob die Läufe nichts gefunden haben oder ob nach dem
 Schliessen nichts mehr zugestellt wird. Von aussen sieht beides gleich aus —
 dieselbe Trennung wie zwischen «nichts kam an» und «nichts wurde ausgelöst».
 Dazu kommt, dass sich die beiden Läufe auf #79 nicht auseinanderhalten lassen:
