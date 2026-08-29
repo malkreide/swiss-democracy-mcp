@@ -214,7 +214,8 @@ PR #64 wurde um 09:52:31 als Draft eröffnet. Elf Sekunden später, um 09:52:42,
 stand die Kontingent-Meldung da, Kommentar-ID `5461650608`. Der einzige
 `@codex review` auf diesem PR trägt dieselbe Sekunde, aber die höhere ID
 `5461650666` — er kam danach, und eine Wirkung geht ihrer Ursache nicht voraus.
-Der PR-Text nennt `@codex` nirgends. Übrig bleibt die Eröffnung.
+Der PR-Text nennt `@codex` nirgends. Als Ursache blieb damit die Eröffnung —
+bis der saubere Versuch elf Minuten später das Gegenteil zeigte.
 
 Halb gelaufen, weil der Versuch einen Draft **ohne** jeden Aufruf verlangte und
 hier acht Sekunden darauf doch einer kam, mit eigener Antwort um 09:52:50. Für
@@ -224,7 +225,28 @@ die Reihenfolge reicht es trotzdem.
 Beobachtet ist eine Ausfallmeldung bei erschöpftem Kontingent. Ob der Connector
 auf jedes PR-Ereignis mit dieser Meldung antwortet und den Review dennoch erst
 ab ready startet, ist offen; dafür bräuchte es denselben Versuch bei freiem
-Kontingent. Belegt ist nur: Ein Draft löst *etwas* aus.
+Kontingent. Belegt ist nur: Auf diesem einen Draft kam vor jedem Aufruf eine
+Antwort.
+
+**Die saubere Replikation misslang — elf Minuten später, im selben Repo.**
+PR #65 wurde um 10:03:12 als Draft eröffnet, diesmal **ohne jeden** `@codex
+review`. Das ist der Versuch, wie er oben verlangt war. Nach 5 min 17 s war
+weder ein Kommentar noch ein Review-Objekt da: das Vierzehnfache der
+beobachteten Obergrenze von 22 Sekunden, und das Kontingent war um 10:00:34
+noch nachweislich gesperrt, die Meldung also fällig gewesen.
+
+Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
+vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
+Aber eine Eröffnung, die auf #65 nichts auslöst, kann auf #64 nicht die
+hinreichende Ursache gewesen sein. Übrig bleiben zwei Lesarten, zwischen denen
+hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
+oder auf #64 wirkte etwas, das in den Ereignissen nicht sichtbar ist.
+
+**Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
+genau einen Fall. «Ein Draft löst etwas aus» ist damit nicht belegt — #65 ist
+der Gegenbeleg. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
+wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
+freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
 
 **Ein Push auf denselben Draft löste dagegen nichts aus.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
