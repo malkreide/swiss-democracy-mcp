@@ -202,7 +202,7 @@ Ausfallmeldungen — die aber nicht voneinander; dafür ist der Text zu lesen. E
 Review **mit** Befund ist kein Kommentar und taucht hier gar nicht auf.
 
 ```
-search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot]
+search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
 ```
 
 Findet die Review-**Objekte**, also genau die Läufe mit Befund. Hier fehlt
@@ -213,6 +213,16 @@ durch ein Objekt **oder** eine Befundlos-Meldung, und jede Abfrage sieht nur
 eine der beiden Sorten: Wer sich auf `commenter:` verlässt, übersieht die Repos
 mit Befund; wer sich auf `reviewed-by:` verlässt, hält die befundlos geprüften
 für ungeprüft.
+
+Dasselbe `updated:`-Fenster gehört an **beide**, sonst sind ihre Ergebnisse
+nicht zusammenzurechnen: Ohne Fenster liefert `reviewed-by:` jeden je geprüften
+PR, und ein Repo mit einem Review vom Juni sähe im August-Fenster geprüft aus,
+obwohl darin nichts lief.
+
+Auch mit Fenster bleiben es Vorfilter. `updated:` datiert den **PR**, nicht die
+Prüfung — ein im Juni geprüfter PR, den im August irgendein Kommentar berührt,
+fällt weiterhin hinein. Ob die Prüfung selbst im Fenster liegt, entscheidet
+allein der Zeitstempel am Review bzw. am Kommentar.
 
 Und beide zusammen reichen nur so weit, wie es PR-Aktivität gab. Repos ohne
 tauchen in keiner von beiden auf — das ist kein Beleg, dass dort geprüft wurde.
