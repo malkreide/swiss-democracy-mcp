@@ -10,8 +10,8 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Sieben Fassungen sind daran gescheitert,
-mehr zu erklären als gemessen war — vier am ursprünglichen Abschnitt, drei an
+entscheidende Vergleich vorliegt. Acht Fassungen sind daran gescheitert,
+mehr zu erklären als gemessen war — vier am ursprünglichen Abschnitt, vier an
 der stillen Draft-Eröffnung; sie stehen unten als Mahnung.
 
 ---
@@ -266,9 +266,9 @@ saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
 darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
-**Eine zusammenfassende Regel steht hier nicht mehr.** Sechs Fassungen sind
-daran gescheitert, aus zwei Zeitreihen eine Aussage über Ursachen zu machen;
-die letzte behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
+**Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
+versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
+Ursachen zu machen; Abschnitt 9 zählt sie. Die letzte behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
 wofür es einen kausal zugeordneten Fall bräuchte, den weder #64 noch #65
 hergibt. Was gemessen ist, steht oben und in der Tabelle. Wer mehr will,
 braucht Wiederholungen bei freiem Kontingent, wo ein Lauf und nicht nur eine
@@ -610,5 +610,12 @@ nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
    allgemein: Antwortet der Connector nach mehr als 317 Sekunden, sieht #65 im
    Messfenster genauso aus und kann trotzdem verlässlich später antworten.
    Belegt ist nur die Stille *innerhalb* des gemessenen Fensters.
+4. **«‹Ein Draft löst nie etwas aus› ist widerlegt, durch genau einen Fall.»**
+   Der zusammenfassende Absatz, der die drei Korrekturen überlebt hatte. Eine
+   Widerlegung braucht einen kausal zugeordneten Fall; #64 gibt ihn nicht her
+   (die Antwort kam vor dem Aufruf, die Ursache ist offen) und #65 auch nicht
+   (Stille sagt nichts über das Auslösen). Er wurde nicht ersetzt, sondern
+   gestrichen.
 
-Die vierte Fassung nennt die Sekundenzahl und sonst nichts.
+Eine fünfte Fassung gibt es nicht: An der Stelle steht jetzt die Sekundenzahl
+und sonst nichts.
