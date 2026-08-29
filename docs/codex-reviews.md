@@ -1,0 +1,422 @@
+# Codex-Reviews: was beobachtet wurde
+
+Beobachtungssammlung zum Codex-Review-Bot (`chatgpt-codex-connector[bot]`).
+Die **Handlungsregeln** stehen in `CLAUDE.md`, Abschnitt «Wenn Codex gar nicht
+erst hinsieht»; hier liegen die Belege dazu — Zeitstempel, Einzelfälle und die
+Fassungen, die sich als falsch erwiesen haben.
+
+Der Sinn der Trennung: `CLAUDE.md` wird beim Arbeitsbeginn gelesen und muss
+kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
+fortschreiben will oder wissen muss, wie belastbar sie ist.
+
+**Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
+entscheidende Vergleich vorliegt. Vier Fassungen des ursprünglichen Abschnitts
+sind daran gescheitert, mehr zu erklären als gemessen war; sie stehen unten
+als Mahnung.
+
+---
+
+## 1. Die sechs Formen, in denen sich ein Lauf zeigt
+
+| Form | Wo | Bedeutet |
+|---|---|---|
+| «💡 Codex Review» | Review-**Objekt** (`get_reviews`) | Lauf mit Befund |
+| «Codex Review: Didn't find any major issues.» | Issue-Kommentar | Lauf ohne Befund |
+| «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar | Kontingent weg |
+| «To use Codex here, create an environment for this repo.» | Issue-Kommentar | Environment-Meldung |
+| Status-Kommentar «🔄 Running» / «✅ Completed» | Issue-Kommentar, **bearbeitet** | Lauf läuft / ist durch |
+| gar nichts | — | nichts belegt |
+
+Die ersten fünf verlangen **zwei** Abfragen: `get_reviews` für das Objekt,
+`get_comments` für alles andere. Wer nur eine nimmt, übersieht den Rest —
+genau so ist die Limit-Meldung zuerst durchgerutscht.
+
+### Der Schlusssatz der Befundlos-Meldung wechselt
+
+Beobachtet: «Swish!», «Delightful!», «Keep it up!», «More of your lovely PRs
+please.», «Keep them coming!», «Hooray!», «Breezy!» — und am 29.8. stand dort
+statt eines Satzes bloss ein 🚀. Stabil ist nur der Satz davor.
+
+### Der Status-Kommentar (seit 29.8.)
+
+Kenntlich am HTML-Marker `<!-- codex-pull-request-review-summary -->`. Codex
+legt ihn zu Beginn eines Laufs an und **aktualisiert ihn an Ort und Stelle**
+von «🔄 Running» auf «✅ Completed» — kein zweiter Kommentar, sondern ein
+`issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht das Ende des
+Laufs nicht.
+
+Seine Tabelle nennt als Einzige **beides**: den geprüften Commit *und* den
+Auslöser («Manual request», «Draft marked ready»). Die Befundlos-Meldung und
+das Review-Objekt nennen nur den Commit.
+
+Zwei Vorbehalte:
+
+- Kein Beleg für eine abgeschlossene Prüfung — auf «Running» steht er auch
+  dann, wenn nie ein Ergebnis folgt.
+- Kein Protokoll, sondern **eine einzige Zeile mit dem letzten Lauf**. Ein
+  neuer Auslöser überschreibt den vorigen spurlos: Am 29.8. verdrängte auf #61
+  der ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
+  seither nirgends mehr. Wer zwei Läufe auseinanderhalten will, braucht ihre
+  Ergebnis-Kommentare — die bleiben einzeln stehen.
+
+### `comments: 1` hat fünf Bedeutungen
+
+Befundlos-, Kontingent-, Environment-Meldung oder Status-Kommentar — und der
+zählt doppelt, weil «🔄 Running» und «✅ Completed» Gegenteiliges heissen.
+
+Die letzte ist die tückischste: Endet ein Lauf **mit** Befund, steht der im
+Review-Objekt und damit gar nicht unter den Kommentaren; als einziger Kommentar
+bleibt der Status auf «Completed». `comments: 1` kann also einen
+abgeschlossenen Lauf mit Befund bezeichnen — wer den Status-Kommentar pauschal
+für «läuft noch» hält, verbucht einen fertigen Befund als laufende Prüfung.
+Gefunden hat das Codex an der Fassung dieses Absatzes, die genau diesen Fehler
+machte.
+
+**Den Text lesen, nicht die Zahl** — und beim Status-Kommentar auch das Feld
+daneben. Einen unbekannten Text wörtlich zitieren, statt ihn in eine der
+bekannten Schubladen zu zwingen: Der Abschnitt musste erst von drei auf vier
+und dann auf fünf Gründe wachsen, die Formen von vier auf sechs.
+
+### Die Reaktionen belegen nichts
+
+Der Infokasten unter jedem Review verspricht eine 👍. Es gibt sie — nur nicht
+verlässlich: Am 29.8. trugen #59 und #60 nach ihrem befundlosen Lauf je
+`reactions: {"+1": 1}`; in sechs Repos am 23.8. und auf #51 am 28.8. kam sie
+nicht (`reactions.total_count: 0`). Zwei Fassungen des Abschnitts führten sie
+als Tatsache, eine erklärte sie für widerlegt; beides ging über die
+Beobachtungen hinaus.
+
+Und selbst wo sie steht, belegt sie weniger, als sie verspricht: Auf #59 steht
+die 👍 an einem PR, der eineinhalb Stunden zuvor einen zutreffenden P2-Befund
+bekommen hatte. Sie folgt einem Lauf, nicht dem PR.
+
+Die 👀 sitzt an anderer Stelle — auf dem **auslösenden Kommentar** — und
+bedeutet etwas anderes: gesehen, nicht geprüft. Sie ist die
+Empfangsbestätigung. Auf #53 stand sie, solange der Lauf lief, und war weg,
+nachdem der Review stand; als nachträglicher Nachweis taugt sie damit auch
+nicht.
+
+Auch der Infokasten selbst ist keine Quelle: Am 29.8. trugen zwei Kommentare
+desselben Bots auf demselben PR zwei verschiedene Fassungen davon — eine mit
+`@codex security review` und der 👀/👍-Beschreibung, die andere ohne beides.
+
+---
+
+## 2. Die fünf Gründe fürs Schweigen — und ihre Reihenfolge
+
+Der vierte Grund (Environment) kam erst zum Vorschein, als der dritte
+(Kontingent) wegfiel, und das ist kein Zufall: Die Prüfungen liegen
+hintereinander.
+
+Dass es diese Reihenfolge ist und nicht die umgekehrte, lässt sich an einem
+einzigen Repo ablesen — in `swiss-public-data-mcp` bekam PR #54 am 22.8. um
+10:56:55 die Kontingent-Meldung und PR #56 am 23.8. um 08:22:20 die
+Environment-Meldung. Läge die Environment-Prüfung vorn, hätte #54 sie schon am
+Vortag gesehen; die Environment fehlte ja bereits.
+
+Daraus die Regel: **Eine verschwundene Limit-Meldung ist keine Entwarnung.**
+Sie kann bedeuten, dass das Kontingent wieder da ist — und dass jetzt etwas
+anderes den Review verhindert.
+
+---
+
+## 3. Ein Ergebnis sagt etwas über den Lauf, nicht über den Text
+
+Am 23.8. lief derselbe Text durch **42 Reviews**: 36 meldeten denselben
+P2-Befund, 6 die Befundlos-Meldung — gleiche Eingabe, gegenteiliges Urteil,
+alles in denselben neun Minuten.
+
+Am 29.8. dasselbe an einem einzelnen benannten Fehler statt an einer
+Verteilung, und deshalb schärfer, weil die richtige Antwort bekannt ist. Der
+`reviewed-by:`-Abfrage fehlte das `updated:`-Fenster, das die
+`commenter:`-Abfrage daneben trägt, während der Text dazu aufforderte, beide
+Ergebnisse zusammenzunehmen. Drei Läufe auf denselben Defekt, neun Minuten:
+
+| Zeit | Commit | Auslöser | Urteil |
+|---|---|---|---|
+| 07:00:06 | `37b8753` | `@codex review` | befundlos |
+| 07:04:53 | `37b8753` | Draft → ready | **P2, zutreffend** |
+| 07:09:27 | `789e901`, enthält denselben Defekt | `@codex review` | befundlos |
+
+Zwei Freisprüche und ein Treffer für ein und denselben Fehler. Gefunden hat ihn
+nur der Lauf, den niemand mit Absicht angestossen hat.
+
+---
+
+## 4. Drei Wege, den Prüfer zu verlieren
+
+### 4.1 Zu schnell mergen
+
+Am 21./22.8. lagen zwischen «ready for review» und Merge mehrfach drei bis fünf
+Sekunden. Codex wird beim Umschalten ausgelöst und braucht danach Zeit.
+
+Am 28.8. bei vier PRs: #50 (3 s), #54 (3 s), #55 (4 s), #56 (4 s) — bei rund
+drei Minuten Vorlauf.
+
+**Was diese Messung nicht hergibt:** Sie beginnt erst *nach* dem Umschalten auf
+ready und sagt deshalb nichts darüber, ob ein als Draft gestarteter PR seltener
+zu früh zugeht. Warum es so schnell ging, ist ebenfalls nicht gemessen:
+Nachlässigkeit, Bedienführung oder etwas Drittes sind von aussen nicht zu
+unterscheiden. Belastbar ist allein, dass vor dem Merge zusätzlich umgeschaltet
+werden muss.
+
+### 4.2 Der Review ist da, und niemand sieht hin
+
+Am 29.8. auf #59: Um 07:04:53 stand der P2-Befund am PR, mit Datei und Zeile.
+Um 07:06:14 wurde gemergt — 81 Sekunden später, mit dem befundbehafteten
+Commit als Head. Die Behebung war da noch nicht geschrieben; ihr Commit trägt
+07:06:28. Der Defekt stand damit in `main`, und es brauchte den Nachzügler #60.
+
+Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
+er geliefert und niemand hat hingesehen. Deshalb steht die Checkliste im
+PR-Template auf «beantwortet oder behoben», nicht auf «Review gelaufen».
+
+### 4.3 Derselbe PR bekommt auf dieselbe Frage verschiedene Antworten
+
+Am 28.8. auf PR #53, alles innerhalb von acht Minuten:
+
+| Zeit | Auslöser | Antwort |
+|---|---|---|
+| 18:43:41 | Draft → ready (18:43:37) | «To use Codex here, create an environment» |
+| 18:46:52 | `@codex review` (18:43:51) | vollständiger Review, drei P2-Befunde |
+| 18:51:30 | Kommentar (18:51:20) bzw. Push | «To use Codex here, create an environment» |
+
+Fehlschlag, Erfolg, Fehlschlag — derselbe PR, dasselbe Repo, dasselbe Konto.
+**Warum, ist offen.** Zwei Erklärungen sind verträglich:
+
+- **Der Auslöser entscheidet.** Der automatische Weg verlangt die Environment,
+  der ausdrückliche Aufruf umgeht sie. Dann fehlt die Environment durchgehend.
+- **Die Prüfung selbst ist unstet.** Dann sagt der Weg nichts.
+
+Die dritte Zeile könnte entscheiden — aber genau bei ihr ist der Auslöser nicht
+eindeutig. Was es bräuchte: ein Erfolg **und** ein Fehlschlag auf demselben
+zweifelsfrei bestimmten Auslöser.
+
+**Eine Beobachtung kommt nahe heran.** PR #60 wurde am 29.8. um 07:09:06 als
+Draft eröffnet, um 07:09:10 ging genau ein `@codex review` hinaus:
+
+| Zeit | Antwort |
+|---|---|
+| 07:09:17 | «To use Codex here, create an environment for this repo» |
+| 07:09:24 | Lauf startet, Auslöser laut Status-Kommentar «Manual request» |
+
+Sieben bzw. vierzehn Sekunden nach demselben Aufruf, Fehlschlag und Erfolg.
+Zweifelsfrei ist es trotzdem nicht: Dass ein Draft die automatischen Auslöser
+nicht anlaufen lässt, ist eine Behauptung dieser Sammlung, keine hier gemessene
+Grösse. Gilt sie nicht, kann die Environment-Meldung von der Eröffnung vier
+Sekunden zuvor stammen.
+
+**Ein offener Versuch, drei Minuten Aufwand:** Ein Draft-PR **ohne** jeden
+Aufruf. Kommt dort eine Environment-Meldung, stammt sie von der Eröffnung und
+diese Beobachtung zerfällt. Bleibt es still, trägt sie.
+
+**Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
+einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
+siebzig Sekunden nach einem Push. Der Abstand spricht für den Kommentar — die
+beiden anderen Läufe antworteten nach vier und zehn Sekunden —, entscheiden
+lässt es sich mit einer Beobachtung nicht. Wer beim Beantworten eines Reviews
+aus ihm zitiert, sollte mit einem neuen Lauf rechnen.
+
+---
+
+## 5. Der manuelle Aufruf: was belegt ist
+
+Viermal geliefert, erstaunlich gleichmässig:
+
+| PR | Vorlauf |
+|---|---|
+| #45 | 2 min 31 s |
+| #51 | 2 min 57 s |
+| #53 | 3 min 1 s |
+| #55 (Draft!) | 2 min 14 s |
+
+Einmal gescheitert (#53 um 18:51:30, siehe 4.3). Nach einem Fehlschlag lohnt
+der zweite Versuch.
+
+**Auf einem Draft läuft er an** — #55 ist der Beleg. Nur die automatischen
+Auslöser brauchen den ready-Zustand.
+
+**Auf einem gemergten PR läuft er an** — #45 war seit 70 Minuten gemergt, #51
+seit knapp 14 Stunden; beide bekamen ihren Review. Geprüft wird dann allerdings
+der **Merge-Commit**, nicht der Branch-Stand: Der Aufruf auf dem gemergten #59
+am 29.8. um 07:07:24 lieferte um 07:09:27 einen Review von `789e901`.
+
+**Ein Lauf kann einen Merge überleben.** Auf #60 startete am 29.8. um 07:11:27
+ein Lauf, um 07:11:53 wurde gemergt, und um 07:12:44 stand er auf «Completed».
+Was zwei Fassungen lang als eigener Grund dastand — der Merge töte einen
+laufenden Job — ist damit als allgemeine Regel widerlegt.
+
+### Beide Wege können funktionieren
+
+Automatisch hat geliefert (#45 um 08:55:43, ohne jeden vorherigen Kommentar auf
+dem PR) und versagt (#53 um 18:43:41); von Hand hat geliefert (#45, #51, #53,
+#55) und versagt (#53 um 18:51:30). Über den *Einfluss* des Wegs sagt das
+nichts: Bei 1 Fehlschlag von 2 gegen 1 von 4 wäre ein Unterschied mit diesen
+Zahlen nicht zu sehen.
+
+### Fälle, die weniger taugen, als sie aussehen
+
+**#51** (ready 04:35:22, gemergt 04:44:00, nichts in 8 min 38 s; manuell um
+18:33:48 → Befundlos-Meldung um 18:36:45): Warum dort nichts kam, ist offen.
+Ein manueller Lauf mit knapp drei Minuten begrenzt nicht, wie lange der
+automatische Weg vierzehn Stunden früher gebraucht hätte, und «nichts kam an»
+ist von aussen nicht von «nichts wurde ausgelöst» zu trennen.
+
+**#50** (ready 04:26:01, gemergt 04:26:04) gehört dagegen in 4.1: drei Sekunden
+erklären ihn vollständig.
+
+**#45 gegen #46:** Beide tragen denselben Sekundenstempel bei der Eröffnung
+(08:53:57), #45 bekam um 08:55:43 seinen automatischen Review, #46 bis zum
+Merge fünf Stunden später gar nichts. Daraus «der Auslöser fällt pro PR aus» zu
+folgern geht nicht: Für #46 ist nicht belegt, dass er zum fraglichen Zeitpunkt
+überhaupt ready war.
+
+---
+
+## 6. Kontingent und Environment
+
+### Der Ausfall vom 21./22.8.2026
+
+Zwischen 08:41 und 09:48 am 21.8. war das Code-Review-Kontingent aufgebraucht —
+davor echte Reviews, danach in 30 Repos nur noch die Limit-Meldung. In der
+Zwischenzeit sind 32 PRs mit formal erfülltem Häkchen gemergt worden, ohne dass
+jemand hineingesehen hat, und am 22.8. noch einmal 43.
+
+Vier Zeitpunkte sind belegt: letzter gelungener Review am 21.8. um 08:41, erste
+Limit-Meldung um 09:48, letzte beobachtete Limit-Meldung am 22.8. um 11:03,
+erste *andere* Meldung am 23.8. um 08:22.
+
+**Zur Dauer.** Zwischen erster und letzter Limit-Meldung liegen 25 h 15 min.
+Das ist der Abstand zweier Fehlschläge, nicht die Dauer einer Sperre. Wer ihn
+Untergrenze nennt, hat die durchgehende Erschöpfung schon vorausgesetzt, die er
+belegen soll: Öffnete sich das Fenster zwischendurch und schloss es sich durch
+neue Auslöser wieder, waren es zwei kurze Sperren.
+
+Nach oben trägt die Rechnung dagegen: Die längste verträgliche Sperre reicht
+vom letzten Erfolg um 08:41 bis zur abweichenden Meldung um 08:22, also
+**47 h 41 min**. Wer ab der ersten Limit-Meldung rechnet, unterschlägt die 67
+Minuten, in denen das Kontingent schon weg gewesen sein kann.
+
+Beobachtungspunkte sind keine Messreihe — die 21 Stunden vor der abweichenden
+Meldung liefen ganz ohne Codex-Auslöser.
+
+### Wie das Kontingent funktioniert
+
+Es hängt am Konto, nicht am Repo, und Code-Reviews haben einen eigenen Topf —
+nur GitHub-getriggerte Reviews zählen hinein. ChatGPT-Pläne fahren ein
+rollendes Fünf-Stunden-Fenster plus Wochenlimits; welches greift, steht im
+Codex-Dashboard.
+
+Welches 2026 im August griff, ist **offen**. Die Lücke oben schliesst das
+Fünf-Stunden-Fenster nicht aus: Es kann sich zwischendurch geöffnet und durch
+neue Auslöser wieder erschöpft haben. Eine lange Reihe von Fehlschlägen belegt
+eine lange Reihe von Fehlschlägen, nicht ihre Ursache.
+
+Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, ist
+das ein bekannter Fehler bei mehreren verbundenen Konten — dann den
+GitHub-Connector in den Codex-Einstellungen trennen und neu verbinden.
+
+### Die Environment
+
+Anlegen unter `chatgpt.com/codex/cloud/settings/environments`, und zwar **je
+Repo**. Die Meldung sagt es selbst («for this repo»), und am 23.8. war es genau
+so: In `swiss-public-data-mcp` fehlte sie, dort kam kein Review; in den übrigen
+Repos lief Codex am selben Morgen durch. Eine Environment fürs Konto genügt
+nicht.
+
+---
+
+## 7. Portfolio-weit nachsehen
+
+Zwei Abfragen, aus demselben Grund, aus dem am einzelnen PR `get_reviews` und
+`get_comments` beide nötig sind:
+
+```
+search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] updated:>=<Datum>
+```
+
+Findet, wo er *kommentiert* hat — Befundlos-Meldung und die beiden
+Ausfallmeldungen, die aber nicht voneinander; dafür ist der Text zu lesen. Ein
+Review **mit** Befund ist kein Kommentar und taucht hier nicht auf.
+
+```
+search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
+```
+
+Findet die Review-**Objekte**, also die Läufe mit Befund. Hier fehlt umgekehrt
+jeder befundlose Review.
+
+Keine der beiden allein beantwortet «wurde geprüft?». Wer sich auf `commenter:`
+verlässt, übersieht die Repos mit Befund; wer sich auf `reviewed-by:` verlässt,
+hält die befundlos geprüften für ungeprüft.
+
+**Dasselbe `updated:`-Fenster gehört an beide**, sonst sind ihre Ergebnisse
+nicht zusammenzurechnen: Ohne Fenster liefert `reviewed-by:` jeden je geprüften
+PR, und ein Repo mit einem Review vom Juni sähe im August-Fenster geprüft aus.
+
+Auch mit Fenster bleiben es Vorfilter. `updated:` datiert den **PR**, nicht die
+Prüfung — ein im Juni geprüfter PR, den im August irgendein Kommentar berührt,
+fällt weiterhin hinein. Und beide zusammen reichen nur so weit, wie es
+PR-Aktivität gab; Repos ohne tauchen in keiner auf.
+
+### Die Messung vom 23.8.2026
+
+Über die 41 Server-Repos: **25 mit mindestens einem echten Review, 16 nur mit
+Absagen.** Zwei Vorbehalte: «Belegt» heisst «damals» — ein Review vom 16.8.
+sagt über den heutigen Stand nichts. Und aus der Abfrage fällt nur die 25; die
+16 verlangt, dass jemand in diesen Repos die Kommentartexte gelesen hat. Wer
+sie als 41 − 25 ausrechnet, zählt jeden befundlosen Review als Absage.
+
+Nicht mit der anderen Zahl desselben Tages verrechnen: Die 25 zählt Repos, die
+42 aus Abschnitt 3 zählt Reviews.
+
+---
+
+## 8. Zum Verfahren für Doku-PRs
+
+Das Verfahren selbst steht in `CLAUDE.md`. Hier, was bei seiner Einführung
+beobachtet wurde.
+
+**Der erste Einsatz hat den Fehler nicht verhindert.** PR #57, der das
+Verfahren einträgt, wurde nach dem manuellen Aufruf zu früh auf ready gesetzt
+und 2 min 30 s später gemergt — vor seinem Review. Wer das Verfahren
+übernimmt, soll wissen, dass es beim ersten Mal nicht eingehalten wurde und
+woran es lag: am Umschalten, nicht am Aufruf.
+
+**Die Korrekturschleife kam erst durch einen Befund hinein.** Die erste Fassung
+verlangte nur «Draft, Review, dann ready» — und liess damit ausgerechnet den
+Stand ungeprüft, der gemergt wird: Sobald der erste Review einen Befund
+liefert, verändert dessen Einarbeitung den Head. An den Daten belegt: Von den
+Fassungen des Abschnitts sind am 28.8. zwei ungeprüft in `main` gelandet, und
+**beide waren die Korrektur einer geprüften Fassung** (`465fd9b` nach
+`4c19aff`, `abc15e3` nach `ccf476d`).
+
+**Der Abschnitt selbst brauchte fünf Runden.** Sieben P2-Befunde, keiner
+bestritten, danach ein befundloser Lauf auf dem aktuellen Head. Der Text hat in
+jeder Runde Behauptungen verloren und keine gewonnen.
+
+---
+
+## 9. Vier Fassungen, die nicht hielten
+
+Der Abschnitt über die schwankenden Antworten (4.3) stand vor seinem Merge
+viermal falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
+mehr, als sie gemessen hatte.
+
+1. **«Der Auslöser feuert nicht, Zeit und Environment sind ausgeschlossen.»**
+   Der Zeit-Ausschluss verglich einen manuellen Lauf mit einem automatischen
+   vierzehn Stunden früher; der Environment-Ausschluss stützte sich auf einen
+   Lauf, dem sieben Minuten später die Environment-Meldung folgte.
+2. **«Der manuelle Weg trägt, wo der automatische scheitert.»** Vier Minuten
+   später kam die Meldung auf einen Aufruf, der manuell ausgesehen hat.
+3. **«Die Prüfung ist unstet, der Weg ist nicht die Variable.»** Beides war zu
+   viel. Aus «beide Wege haben schon geliefert und schon versagt» folgt nur,
+   dass keiner immer funktioniert.
+4. Die vierte nennt keine Ursache mehr, sondern die Beobachtung und das, was
+   sie entscheiden würde.
+
+Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
+
+- **«Der Merge tötet einen laufenden Job»** — widerlegt durch #60 (siehe 5).
+- **«Die 👀 ist die einzige je beobachtete Reaktion»** — widerlegt durch #59
+  und #60 (siehe 1).
