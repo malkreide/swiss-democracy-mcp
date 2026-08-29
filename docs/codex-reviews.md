@@ -300,6 +300,39 @@ Minuten, in denen das Kontingent schon weg gewesen sein kann.
 Beobachtungspunkte sind keine Messreihe — die 21 Stunden vor der abweichenden
 Meldung liefen ganz ohne Codex-Auslöser.
 
+### Die Meldung hat am 29.8. einen zweiten Satz bekommen
+
+Beobachtet auf PR #62 um 09:12:25, wörtlich:
+
+```
+You have reached your Codex usage limits for code reviews. You can see your
+limits in the [Codex usage dashboard](https://chatgpt.com/codex/cloud/settings/usage).
+```
+
+Bis dahin war nur der erste Satz beobachtet. Der zweite nennt erstmals eine
+Adresse: `chatgpt.com/codex/cloud/settings/usage` — nicht dieselbe wie die für
+die Environment (`.../environments`) und nicht dieselbe, die der Infokasten
+verlinkt (`.../general`).
+
+Die Antwort kam **22 Sekunden** nach dem Aufruf. Das passt ins Bild: Die
+Ausfallmeldungen kommen nach 4 bis 22 Sekunden, ein echter Lauf braucht zwei
+bis drei Minuten. Wer nach einer halben Minute etwas sieht, sieht keinen
+Review.
+
+### Die Korrekturschleife verbraucht das Kontingent
+
+Das Verfahren für Doku-PRs verlangt nach jeder Korrekturrunde einen neuen Lauf.
+PR #58 brauchte davon fünf, und am 28./29.8. sind über beide Sessions hinweg
+rund fünfzehn Läufe an einem einzigen Abschnitt zusammengekommen. Am 29.8. um
+09:12 war das Kontingent weg — ausgerechnet auf dem PR, der diese Sammlung
+anlegt.
+
+Ein Zusammenhang ist damit **nicht belegt**: Was sonst noch auf das Konto ging,
+ist von hier aus nicht zu sehen, und die Sperre kann andere Ursachen haben. Wer
+das Verfahren anwendet, sollte aber wissen, dass es nicht gratis ist und bei
+langen Korrekturketten an eine Grenze stossen kann. Blockiert es, bleibt der PR
+Draft, bis wieder ein Lauf durchgeht.
+
 ### Wie das Kontingent funktioniert
 
 Es hängt am Konto, nicht am Repo, und Code-Reviews haben einen eigenen Topf —
