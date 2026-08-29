@@ -429,11 +429,13 @@ Fünf-Stunden-Fenster oder Wochenlimit —, ist deshalb auch für diese Episode
 offen. Die Frage lässt sich ohne Anmeldung nicht am Dashboard klären, wohl aber
 am Verhalten des Bots: Er sagt selbst, dass er nicht kann.
 
-**Eine Sperre bremst die Auslöser nicht.** Zwei Fehlschläge der Tabelle stammen von
-Merges, die während der Sperre stattfanden. Warum diese beiden PRs gerade da
-gemergt wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier.
-Festzuhalten ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein
-abgewiesener Versuch selbst etwas kostet, ist nicht bekannt.
+**Eine Sperre bremst die Auslöser nicht.** Mehrere Zeilen der Tabelle hängen
+zeitlich an einem Merge, der während der Sperre stattfand — bei #62 eindeutig,
+bei #63 und #66 bleibt offen, ob ready oder der Merge auslöste, weil beide in
+dieselbe oder die benachbarte Sekunde fallen. Warum diese PRs gerade da gemergt
+wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier. Festzuhalten
+ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein abgewiesener
+Versuch selbst etwas kostet, ist nicht bekannt.
 
 ### Die Meldung hat am 29.8. einen zweiten Satz bekommen
 
