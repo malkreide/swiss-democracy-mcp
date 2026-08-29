@@ -592,6 +592,16 @@ Fassungen des Abschnitts sind am 28.8. zwei ungeprüft in `main` gelandet, und
 bestritten, danach ein befundloser Lauf auf dem aktuellen Head. Der Text hat in
 jeder Runde Behauptungen verloren und keine gewonnen.
 
+**Die Frist kann auch null sein.** Auf #76 ging das Review-Objekt zu Head
+`65519e8` um 17:20:46 UTC ein; der Merge trägt denselben Sekundenwert. Welches
+zuerst kam, geben Sekunden nicht her — feiner ist es hinter dem Proxy nicht zu
+messen. Eine Warnung auf dem PR stand gut eine halbe Minute später und kam zu
+spät: Der Befund («die letzte Zeile» einer wachsenden Tabelle) stand damit in
+`main` und brauchte #78. Die Checkliste «kein offener Befund beim Merge» blieb
+unabgehakt und stimmte damit. Neben den 28 Sekunden vom 28.8. und den 81
+Sekunden auf #59 ist das der Fall, der zeigt: Aufpassen hilft hier nicht mehr,
+nur noch Warten.
+
 ---
 
 ## 9. Fassungen, die nicht hielten
@@ -695,10 +705,9 @@ will sie präzisieren und präzisiert sie falsch.
 Zahlen.** Eine relative Zählung («die Mehrzahl der Fälle oben»), ein Verweis auf
 eine Abschnittsnummer statt auf einen Titel, und ein Verweis auf «die letzte
 Zeile» einer Tabelle, die ausdrücklich fortgeschrieben werden soll. Nur die
-Zählung ist eine Zahl, die beiden Verweise sind Positionen. Die Regel steht
-deshalb über Zahlen, ist bei Positionen aber genauso zu fahren: **Eine Nummer,
-ein «oben», ein «letzte» sind zu prüfen, sobald sich die Ordnung ändert** — und
-zwar daraufhin, ob die Änderung sie trifft. Ein Abschnitt hinter dem
-verwiesenen lässt dessen Nummer stehen, einer davor verschiebt sie; eine Zeile
-mitten in der Tabelle lässt «die letzte Zeile» stehen, eine am Ende nicht.
-Ansehen kann man es keinem von beiden.
+Zählung ist eine Zahl, die beiden Verweise sind Positionen; die Regel dazu steht
+in `CLAUDE.md`. Dass sie dort als Prüfauftrag steht und nicht als Vorhersage,
+liegt an diesen Gegenbeispielen: Ein Abschnitt hinter dem verwiesenen lässt
+dessen Nummer stehen, einer davor verschiebt sie; eine Zeile mitten in der
+Tabelle lässt «die letzte Zeile» stehen, eine am Ende nicht. Ansehen kann man
+es keinem von beiden.

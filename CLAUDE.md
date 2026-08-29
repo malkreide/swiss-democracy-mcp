@@ -65,6 +65,12 @@ trifft:
   die sachlich falsch ist, wenn ein Listenpunkt etwas anderes beschreibt als
   der Satz behauptet.
 
+Dasselbe gilt für **Positionen**: eine Abschnittsnummer, ein «oben», ein «die
+letzte Zeile». Sie sind zu prüfen, sobald sich die Ordnung ändert — daraufhin,
+ob die Änderung sie trifft. Ein Abschnitt hinter dem verwiesenen lässt dessen
+Nummer stehen, einer davor verschiebt sie. Wo ein Titel eindeutig ist, nimm ihn
+statt der Nummer.
+
 Die Fälle, an denen das gelernt wurde, stehen in
 [`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Zahlen, die eine
 Aufzählung wiederholen».
@@ -343,14 +349,9 @@ schlechtes, sondern keines.
 Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
 einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
 Behebung landete in einem Nachzügler. Und am 29.8. lagen auf #59 zwischen
-Befund und Merge 81 Sekunden; der Defekt stand damit in `main`.
-
-Der Abstand kann unter der Auflösung liegen, in der man ihn misst: Auf #76
-tragen Review-Objekt und Merge **denselben Zeitstempel** (17:20:46 UTC). Welches
-zuerst kam, geben Sekunden nicht her — die Warnung, gut eine halbe Minute
-später, kam jedenfalls zu spät, und die Checkliste «kein offener Befund beim
-Merge» blieb unabgehakt und stimmte damit. Wer den Review anfordert und
-weiterarbeitet, statt ihn abzuwarten, hat keine Frist — er hat Glück oder keins.
+Befund und Merge 81 Sekunden; der Defekt stand damit in `main`. Auf #76 trugen
+beide denselben Sekundenwert — wer den Review anfordert und weiterarbeitet,
+statt ihn abzuwarten, hat also keine knappe Frist, sondern keine.
 
 ## Wenn zwei Agenten dasselbe tun
 
