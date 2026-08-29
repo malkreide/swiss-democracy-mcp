@@ -336,6 +336,28 @@ ein Lauf, um 07:11:53 wurde gemergt, und um 07:12:44 stand er auf «Completed».
 Was zwei Fassungen lang als eigener Grund dastand — der Merge töte einen
 laufenden Job — ist damit als allgemeine Regel widerlegt.
 
+**Überleben heisst aber nicht, dass ein Ergebnis ankommt.** Schon für diesen
+#60-Lauf ist keines zuzuordnen: Die Befundlos-Meldung von 07:11:04 liegt
+**vor** seinem Start um 07:11:27 und gehört damit zu einem früheren Lauf. Nach
+dem Merge kam nur noch die «Completed»-Zeile.
+
+Auf #79 dasselbe, dort ohne Verwechslungsmöglichkeit: Aufruf 18:31:52, Lauf ab
+18:32:05, ready 18:32:33, Merge 18:32:40, «Completed» um 18:34:05 — 85 Sekunden
+nach dem Merge. Auf dem PR steht überhaupt keine Ergebnis-Meldung: kein
+Review-Objekt und keine Befundlos-Meldung (`get_reviews` leer, insgesamt zwei
+Kommentare, nachgeprüft um 18:37).
+
+Was das **nicht** hergibt: ob die Läufe nichts gefunden haben oder ob nach dem
+Schliessen nichts mehr zugestellt wird. Von aussen sieht beides gleich aus —
+dieselbe Trennung wie zwischen «nichts kam an» und «nichts wurde ausgelöst».
+Dazu kommt, dass sich die beiden Läufe auf #79 nicht auseinanderhalten lassen:
+Die Statuszeile nannte zuletzt «Draft marked ready» und hatte den manuellen
+Auslöser von 18:32:05 damit überschrieben.
+
+Praktisch heisst das: **Nach einem frühen Merge ist am PR nicht mehr
+abzulesen, ob geprüft wurde.** Der Rückgriff ist ein neuer Aufruf von Hand —
+er läuft auf dem gemergten PR an, prüft dann aber den Merge-Commit.
+
 ### Beide Wege können funktionieren
 
 Automatisch hat geliefert (#45 um 08:55:43, ohne jeden vorherigen Kommentar auf
