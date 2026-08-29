@@ -484,9 +484,14 @@ Fünf-Stunden-Fenster nicht aus: Es kann sich zwischendurch geöffnet und durch
 neue Auslöser wieder erschöpft haben. Eine lange Reihe von Fehlschlägen belegt
 eine lange Reihe von Fehlschlägen, nicht ihre Ursache.
 
-Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, ist
-das ein bekannter Fehler bei mehreren verbundenen Konten — dann den
-GitHub-Connector in den Codex-Einstellungen trennen und neu verbinden.
+Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, sagt
+das noch nicht, woran es liegt: Ein Draft, eine fehlende Environment und die
+unstete Prüfung aus Abschnitt 3 erzeugen dasselbe Bild. Bekannt ist, dass es
+bei mehreren verbundenen Konten einen Fehler gibt, den ein Trennen und
+Neuverbinden des GitHub-Connectors behebt — aber das ist eine Möglichkeit unter
+mehreren. Wer sofort trennt, kostet unter Umständen eine funktionierende
+Verbindung für eine Diagnose, die er nicht gestellt hat. Vorher die anderen
+Gründe in ihrer Reihenfolge ausschliessen (Abschnitt 2).
 
 ### Die Environment
 
