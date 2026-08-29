@@ -189,15 +189,30 @@ Commit und den Auslöser («Manual request», «Draft marked ready»). Wer
 auseinanderhalten will, welcher Lauf welchen Stand gesehen hat, liest ihn; die
 Befundlos-Meldung und das Review-Objekt nennen nur den Commit.
 
-Er ist allerdings kein Beleg für eine abgeschlossene Prüfung: Auf «Running»
-steht er auch dann, wenn nie ein Ergebnis folgt.
+Zwei Vorbehalte. Er ist kein Beleg für eine abgeschlossene Prüfung: Auf
+«Running» steht er auch dann, wenn nie ein Ergebnis folgt. Und er ist kein
+Protokoll, sondern **eine einzige Zeile mit dem letzten Lauf** — ein neuer
+Auslöser überschreibt den vorigen spurlos. Am 29.8. verdrängte auf #61 der
+ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
+seither nirgends mehr, und ob er starb oder still fertig wurde, ist von aussen
+nicht zu sehen. Wer zwei Läufe auseinanderhalten will, braucht ihre
+Ergebnis-Kommentare — die bleiben einzeln stehen.
 
 Der Kommentarzähler allein reicht ohnehin nicht: `comments: 1` kann die
-Befundlos-, die Kontingent-, die Environment-Meldung **oder** der
-Status-Kommentar eines noch laufenden Reviews sein — vier Bedeutungen unter
-derselben Zahl, darunter zwei gegensätzliche und eine, die noch gar nichts
-sagt. Den Text lesen, nicht die Zahl. Und einen unbekannten Text wörtlich
-zitieren, statt ihn in eine der bekannten Schubladen zu zwingen: Dieser
+Befundlos-, die Kontingent-, die Environment-Meldung oder den Status-Kommentar
+bedeuten — und der zählt doppelt, weil «🔄 Running» und «✅ Completed»
+Gegenteiliges heissen. **Fünf** Bedeutungen unter derselben Zahl.
+
+Die letzte ist die tückischste. Endet ein Lauf mit einem Befund, steht der im
+Review-**Objekt** und damit gar nicht unter den Kommentaren; als einziger
+Kommentar bleibt der Status auf «Completed». `comments: 1` kann also einen
+abgeschlossenen Lauf **mit** Befund bezeichnen — wer den Status-Kommentar
+pauschal für «läuft noch» hält, verbucht einen fertigen Befund als laufende
+Prüfung. Gefunden hat das Codex an der Fassung dieses Absatzes, die genau
+diesen Fehler machte.
+
+Den Text lesen, nicht die Zahl — und beim Status-Kommentar auch das Feld
+daneben. Einen unbekannten Text wörtlich zitieren, statt ihn in eine der bekannten Schubladen zu zwingen: Dieser
 Abschnitt musste erst von drei auf vier und dann auf fünf Gründe wachsen, die
 Formen von vier auf sechs, und die 👍-Reaktion stand hier zwei Fassungen lang
 als Tatsache, eine als widerlegt — ehe sie am 29.8. wieder auftauchte.
