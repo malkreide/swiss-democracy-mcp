@@ -52,12 +52,12 @@ Aufzählung ist die Quelle, der Satz verweist auf sie.
 Wächst die Bezugsmenge nicht, bleibt die Zahl richtig; die Regel gilt nicht
 gegen Zahlen überhaupt.
 
-Handgriffe:
+Was dabei leicht übersehen wird — jeweils zu prüfen, ob die Bezugsmenge wächst:
 
 - **Relative Angaben sind auch Zählungen.** «Die Mehrzahl», «die meisten»,
-  «fast alle» hängen genauso an der Aufzählung.
-- **Der Zähler zählt auch, nicht nur der Nenner.** «Zwei der vier» zu «Zwei» zu
-  machen behebt nichts.
+  «fast alle» hängen an derselben Aufzählung wie eine Ziffer.
+- **Ein Bruch hat zwei Zählungen.** Bei «Zwei der vier» kann die eine driften
+  und die andere nicht; welche, hängt davon ab, was dazukommt.
 - **Nicht die Länge messen, den Inhalt lesen.** `grep -c` bestätigt eine Zahl,
   die sachlich falsch ist, wenn ein Listenpunkt etwas anderes beschreibt als
   der Satz behauptet.

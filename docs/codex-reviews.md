@@ -1,9 +1,10 @@
 # Codex-Reviews: was beobachtet wurde
 
 Beobachtungssammlung zum Codex-Review-Bot (`chatgpt-codex-connector[bot]`).
-Die **Handlungsregeln** stehen in `CLAUDE.md`, Abschnitt «Wenn Codex gar nicht
-erst hinsieht»; hier liegen die Belege dazu — Zeitstempel, Einzelfälle und die
-Fassungen, die sich als falsch erwiesen haben.
+Die **Handlungsregeln** stehen in `CLAUDE.md` — zum Prüfer im Abschnitt «Wenn
+Codex gar nicht erst hinsieht», zur Pflege dieser Sammlung unter «Zahlen, die
+eine Aufzählung wiederholen». Hier liegen die Belege dazu: Zeitstempel,
+Einzelfälle und die Fassungen, die sich als falsch erwiesen haben.
 
 Der Sinn der Trennung: `CLAUDE.md` wird beim Arbeitsbeginn gelesen und muss
 kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
