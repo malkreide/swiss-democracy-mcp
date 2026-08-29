@@ -151,7 +151,9 @@ Am 21./22.8. lagen zwischen «ready for review» und Merge mehrfach drei bis fü
 Sekunden. Codex wird beim Umschalten ausgelöst und braucht danach Zeit.
 
 Am 28.8. bei vier PRs: #50 (3 s), #54 (3 s), #55 (4 s), #56 (4 s) — bei rund
-drei Minuten Vorlauf.
+drei Minuten Vorlauf. Am 29.8. kam #63 mit **2 s** dazu (ready 09:43:48, Merge
+09:43:50); dort war ohnehin kein Lauf zu verlieren, weil das Kontingent weg war
+(Abschnitt 6).
 
 **Was diese Messung nicht hergibt:** Sie beginnt erst *nach* dem Umschalten auf
 ready und sagt deshalb nichts darüber, ob ein als Draft gestarteter PR seltener
@@ -204,11 +206,35 @@ Sieben bzw. vierzehn Sekunden nach demselben Aufruf, Fehlschlag und Erfolg.
 Zweifelsfrei ist es trotzdem nicht: Dass ein Draft die automatischen Auslöser
 nicht anlaufen lässt, ist eine Behauptung dieser Sammlung, keine hier gemessene
 Grösse. Gilt sie nicht, kann die Environment-Meldung von der Eröffnung vier
-Sekunden zuvor stammen.
+Sekunden zuvor stammen — und dafür spricht seit dem 29.8. die Beobachtung
+gleich unten. Diese Zeile trägt damit weniger, als sie beim Aufschreiben trug.
 
-**Ein offener Versuch, drei Minuten Aufwand:** Ein Draft-PR **ohne** jeden
-Aufruf. Kommt dort eine Environment-Meldung, stammt sie von der Eröffnung und
-diese Beobachtung zerfällt. Bleibt es still, trägt sie.
+**Der Versuch ist am 29.8. halb gelaufen — und er fiel gegen die Behauptung.**
+PR #64 wurde um 09:52:31 als Draft eröffnet. Elf Sekunden später, um 09:52:42,
+stand die Kontingent-Meldung da, Kommentar-ID `5461650608`. Der einzige
+`@codex review` auf diesem PR trägt dieselbe Sekunde, aber die höhere ID
+`5461650666` — er kam danach, und eine Wirkung geht ihrer Ursache nicht voraus.
+Der PR-Text nennt `@codex` nirgends. Übrig bleibt die Eröffnung.
+
+Halb gelaufen, weil der Versuch einen Draft **ohne** jeden Aufruf verlangte und
+hier acht Sekunden darauf doch einer kam, mit eigener Antwort um 09:52:50. Für
+die Reihenfolge reicht es trotzdem.
+
+**Was es nicht zeigt:** dass eine Draft-Eröffnung einen *Lauf* auslöst.
+Beobachtet ist eine Ausfallmeldung bei erschöpftem Kontingent. Ob der Connector
+auf jedes PR-Ereignis mit dieser Meldung antwortet und den Review dennoch erst
+ab ready startet, ist offen; dafür bräuchte es denselben Versuch bei freiem
+Kontingent. Belegt ist nur: Ein Draft löst *etwas* aus.
+
+**Ein Push auf denselben Draft löste dagegen nichts aus.** Um 09:56:42 ging ein
+zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
+weitere Meldung da. Die beobachtete Obergrenze für Ausfallmeldungen liegt bei
+22 Sekunden, das Fünffache war also verstrichen — und der Connector unterdrückt
+Wiederholungen nicht, er hatte auf diesem PR schon zweimal binnen acht Sekunden
+geantwortet. Beweisend ist ein einzelnes stilles Fenster trotzdem nicht; es
+passt aber zu der Zeile in Abschnitt 8, wonach im Draft-Zustand nach einer
+Korrektur kein Lauf nachkommt. Eröffnung und Push sind hier verschiedene Dinge,
+und nur die Eröffnung hat geantwortet.
 
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
@@ -233,8 +259,9 @@ Viermal geliefert, erstaunlich gleichmässig:
 Einmal gescheitert (#53 um 18:51:30, siehe 4.3). Nach einem Fehlschlag lohnt
 der zweite Versuch.
 
-**Auf einem Draft läuft er an** — #55 ist der Beleg. Nur die automatischen
-Auslöser brauchen den ready-Zustand.
+**Auf einem Draft läuft er an** — #55 ist der Beleg. Dass umgekehrt die
+automatischen Auslöser den ready-Zustand *brauchen*, stand hier lange
+unwidersprochen daneben; seit dem 29.8. ist es fraglich (Abschnitt 4.3).
 
 **Auf einem gemergten PR läuft er an** — #45 war seit 70 Minuten gemergt, #51
 seit knapp 14 Stunden; beide bekamen ihren Review. Geprüft wird dann allerdings
@@ -300,6 +327,50 @@ Minuten, in denen das Kontingent schon weg gewesen sein kann.
 Beobachtungspunkte sind keine Messreihe — die 21 Stunden vor der abweichenden
 Meldung liefen ganz ohne Codex-Auslöser.
 
+### Die zweite Episode am 29.8.2026
+
+Dass sie nicht dieselbe ist wie die vom 21./22.8., ist belegt und nicht bloss
+plausibel: Dazwischen liefen Reviews durch, an diesem Morgen noch in diesem
+Repo. Der letzte gelungene Lauf trägt **07:27:07** — Review-Objekt auf #61 zum
+Commit `2f04077`, der Status-Kommentar nennt «Completed
+2026-08-29T07:27:10.829173Z».
+
+Danach vier Fehlschläge, alle mit derselben Meldung:
+
+| Zeit | PR | Auslöser | Abstand |
+|---|---|---|---|
+| 09:12:25 | #62 | `@codex review` um 09:12:03 | 22 s |
+| 09:29:43 | #62 | Merge um 09:29:40 | 3 s |
+| 09:39:26 | #63 | `@codex review` um 09:39:17 | 9 s |
+| 09:43:51 | #63 | ready 09:43:48, Merge 09:43:50 | 3 s bzw. 1 s |
+| 09:52:42 | #64 | Eröffnung als Draft um 09:52:31 | 11 s |
+| 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
+
+**Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
+Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
+Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
+entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
+
+**Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
+Fehlschlag liegen 40 min 25 s, dichter abgetastet als im August — sechs Punkte
+statt zwei, und die sechs Auslöser sind voneinander unabhängig. Dichter heisst
+trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
+geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
+09:52:50 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
+mehr durch.
+
+**Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
+einen Abruf ohne ChatGPT-Anmeldung mit HTTP 403. Welches Limit griff — rollendes
+Fünf-Stunden-Fenster oder Wochenlimit —, ist deshalb auch für diese Episode
+offen. Die Frage lässt sich ohne Anmeldung nicht am Dashboard klären, wohl aber
+am Verhalten des Bots: Er sagt selbst, dass er nicht kann.
+
+**Eine Sperre bremst die Auslöser nicht.** Zwei der vier Fehlschläge stammen von
+Merges, die während der Sperre stattfanden. Warum diese beiden PRs gerade da
+gemergt wurden, ist von aussen nicht zu sehen und steht deshalb nicht hier.
+Festzuhalten ist nur, dass eine Sperre weitere Versuche nicht verhindert. Ob ein
+abgewiesener Versuch selbst etwas kostet, ist nicht bekannt.
+
 ### Die Meldung hat am 29.8. einen zweiten Satz bekommen
 
 Beobachtet auf PR #62 um 09:12:25, wörtlich:
@@ -314,10 +385,17 @@ Adresse: `chatgpt.com/codex/cloud/settings/usage` — nicht dieselbe wie die fü
 die Environment (`.../environments`) und nicht dieselbe, die der Infokasten
 verlinkt (`.../general`).
 
-Die Antwort kam **22 Sekunden** nach dem Aufruf. Das passt ins Bild: Die
-Ausfallmeldungen kommen nach 4 bis 22 Sekunden, ein echter Lauf braucht zwei
-bis drei Minuten. Wer nach einer halben Minute etwas sieht, sieht keinen
-Review.
+Die Antwort kam **22 Sekunden** nach dem Aufruf — der höchste beobachtete Wert.
+Die Untergrenze liegt tiefer als die vier Sekunden, die hier zuerst standen:
+Die beiden automatischen Auslöser derselben Episode antworteten nach drei
+Sekunden ab Merge (#62) und nach drei Sekunden ab ready beziehungsweise einer
+ab Merge (#63, die beiden Ereignisse liegen zwei Sekunden auseinander). Welches
+der beiden auslöst, trennen diese Beobachtungen nicht — unter beiden Lesarten
+fällt die frühere Grenze.
+
+Beobachtet sind damit 1 bis 22 Sekunden für eine Ausfallmeldung gegen zwei bis
+drei Minuten für einen echten Lauf. Wer nach einer halben Minute etwas sieht,
+sieht keinen Review.
 
 ### Die Korrekturschleife verbraucht das Kontingent
 
