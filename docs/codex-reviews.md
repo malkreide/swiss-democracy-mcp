@@ -354,9 +354,18 @@ Dazu kommt, dass sich die beiden Läufe auf #79 nicht auseinanderhalten lassen:
 Die Statuszeile nannte zuletzt «Draft marked ready» und hatte den manuellen
 Auslöser von 18:32:05 damit überschrieben.
 
-Praktisch heisst das: **Nach einem frühen Merge ist am PR nicht mehr
-abzulesen, ob geprüft wurde.** Der Rückgriff ist ein neuer Aufruf von Hand —
-er läuft auf dem gemergten PR an, prüft dann aber den Merge-Commit.
+**Zugestellt wird aber durchaus.** Auf #80 wurde um 18:48:36 gemergt, und um
+18:48:45 — neun Sekunden danach — erschien ein Review-Objekt mit Befund zum
+Head `836568f`. Ein Ergebnis kann den Merge also überholen; dass auf #60 und
+#79 keines ankam, liegt nicht daran, dass nach dem Schliessen grundsätzlich
+nichts mehr zugestellt würde.
+
+Praktisch heisst das: **Nach einem frühen Merge kann am PR nicht mehr
+ablesbar sein, ob geprüft wurde** — verlassen kann man sich weder darauf noch
+auf das Gegenteil. Wer es wissen muss, sieht nach: `get_reviews` für das
+Objekt, `get_comments` für die Befundlos-Meldung. Steht dort nichts, ist der
+Rückgriff ein neuer Aufruf von Hand — er läuft auf dem gemergten PR an, prüft
+dann aber den Merge-Commit.
 
 ### Beide Wege können funktionieren
 
