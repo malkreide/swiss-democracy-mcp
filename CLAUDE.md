@@ -42,6 +42,33 @@ Handgeschriebene Fixtures kodieren die Annahme des Autors und können sie
 nicht widerlegen. Mindestens eine aufgezeichnete Antwort pro externem
 Endpunkt, mit Aufnahmedatum.
 
+## Zahlen, die eine Aufzählung wiederholen
+
+Eine Zahl im Fliesstext, die eine Liste oder Tabelle daneben zählt, ist eine
+Kopie. **Wächst die Aufzählung, ist die Kopie beim nächsten Eintrag fällig** —
+prüfen oder streichen, nicht nachführen: Die Aufzählung ist die Quelle, der
+Satz verweist auf sie.
+
+Wächst die Bezugsmenge nicht, bleibt die Zahl richtig; die Regel gilt nicht
+gegen Zahlen überhaupt.
+
+Was dabei leicht übersehen wird — jeweils zu prüfen, ob der Zuwachs die Aussage
+trifft:
+
+- **Relative Angaben sind auch Zählungen.** «Die Mehrzahl», «die meisten»,
+  «fast alle» hängen an derselben Aufzählung wie eine Ziffer. Wann sie kippen,
+  hängt am Verhältnis und ist keiner Faustregel zugänglich — nachrechnen oder
+  streichen.
+- **Ein Bruch hat zwei Zählungen.** Bei «Zwei der vier» kann die eine driften
+  und die andere nicht; welche, hängt davon ab, was dazukommt.
+- **Nicht die Länge messen, den Inhalt lesen.** `grep -c` bestätigt eine Zahl,
+  die sachlich falsch ist, wenn ein Listenpunkt etwas anderes beschreibt als
+  der Satz behauptet.
+
+Die Fälle, an denen das gelernt wurde, stehen in
+[`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Zahlen, die eine
+Aufzählung wiederholen».
+
 ## Wenn etwas rot ist
 
 Roter Live-Test: erst die Quelle abfragen, dann einordnen. Nicht aus der
@@ -59,7 +86,7 @@ Spec desselben Endpunkts führt einen als *optional* deklarierten Parameter
 dieselbe Publikation mit 200. Ein Projekt trug sieben Vorgängerpublikationen,
 die der Server als «Quelle nicht erreichbar» wegwarf.
 
-Drei Handgriffe daraus:
+Handgriffe daraus:
 
 - **Die Parameterliste der Spec durchgehen, bevor ein Statuscode eingeordnet
   wird.** «Optional» heisst dort oft «optional für die Mehrheit».
