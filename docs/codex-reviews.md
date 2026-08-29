@@ -10,9 +10,11 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Sieben Fassungen sind daran gescheitert,
-mehr zu erklären als gemessen war — vier am ursprünglichen Abschnitt, drei an
-der stillen Draft-Eröffnung; sie stehen unten als Mahnung.
+entscheidende Vergleich vorliegt. Abschnitt 9 sammelt die Fassungen, die daran
+gescheitert sind, mehr zu erklären als gemessen war — zwei Gruppen, eine zum
+ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Sie stehen dort
+als Mahnung, gezählt wird nirgends: Jede Zahl über sie war bisher nach der
+nächsten Ergänzung falsch.
 
 ---
 
@@ -266,12 +268,13 @@ saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
 darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
-**Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
-genau einen Fall. «Ein Draft löst binnen fünf Minuten sichtbar etwas aus»
-ebenfalls nicht — #65 ist die stille Gegenbeobachtung, mit Zeiten und
-abgefragten Kommentaren oben. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
-wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
-freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
+**Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
+versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
+Ursachen zu machen; Abschnitt 9 zählt sie. Die letzte behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
+wofür es einen kausal zugeordneten Fall bräuchte, den weder #64 noch #65
+hergibt. Was gemessen ist, steht oben und in der Tabelle. Wer mehr will,
+braucht Wiederholungen bei freiem Kontingent, wo ein Lauf und nicht nur eine
+Ausfallmeldung zu sehen wäre.
 
 **Ein Push auf denselben Draft blieb 100 Sekunden lang ohne sichtbare Antwort.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
@@ -483,9 +486,14 @@ Fünf-Stunden-Fenster nicht aus: Es kann sich zwischendurch geöffnet und durch
 neue Auslöser wieder erschöpft haben. Eine lange Reihe von Fehlschlägen belegt
 eine lange Reihe von Fehlschlägen, nicht ihre Ursache.
 
-Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, ist
-das ein bekannter Fehler bei mehreren verbundenen Konten — dann den
-GitHub-Connector in den Codex-Einstellungen trennen und neu verbinden.
+Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, sagt
+das noch nicht, woran es liegt: Ein Draft, eine fehlende Environment und die
+unstete Prüfung aus Abschnitt 3 erzeugen dasselbe Bild. Bekannt ist, dass es
+bei mehreren verbundenen Konten einen Fehler gibt, den ein Trennen und
+Neuverbinden des GitHub-Connectors behebt — aber das ist eine Möglichkeit unter
+mehreren. Wer sofort trennt, kostet unter Umständen eine funktionierende
+Verbindung für eine Diagnose, die er nicht gestellt hat. Vorher die anderen
+Gründe in ihrer Reihenfolge ausschliessen (Abschnitt 2).
 
 ### Die Environment
 
@@ -571,7 +579,7 @@ jeder Runde Behauptungen verloren und keine gewonnen.
 ## 9. Fassungen, die nicht hielten
 
 Der Abschnitt über die schwankenden Antworten (4.3) stand vor seinem Merge
-viermal falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
+mehrfach falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
 mehr, als sie gemessen hatte.
 
 1. **«Der Auslöser feuert nicht, Zeit und Environment sind ausgeschlossen.»**
@@ -592,10 +600,12 @@ Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
 - **«Die 👀 ist die einzige je beobachtete Reaktion»** — widerlegt durch #59
   und #60 (siehe 1).
 
-### Drei Fassungen zur stillen Draft-Eröffnung (4.3)
+### Fassungen zur stillen Draft-Eröffnung (4.3)
 
-Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt, jede von der
-nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
+Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt. Die ersten
+drei wurden je von der nächsten Fassung ersetzt; die vierte nicht — sie wurde
+gestrichen, und an ihrer Stelle steht seither keine Regel mehr. Dieselbe
+Krankheit bei allen vieren: aus Stille auf Ursachen schliessen.
 
 1. **«Der Vergleich steht bei durchgehend gesperrtem Kontingent.»** Für die
    Eröffnung um 10:03:12 war der Kontingentzustand nie beobachtet, und gerade
@@ -609,5 +619,12 @@ nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
    allgemein: Antwortet der Connector nach mehr als 317 Sekunden, sieht #65 im
    Messfenster genauso aus und kann trotzdem verlässlich später antworten.
    Belegt ist nur die Stille *innerhalb* des gemessenen Fensters.
+4. **«‹Ein Draft löst nie etwas aus› ist widerlegt, durch genau einen Fall.»**
+   Der zusammenfassende Absatz, der die drei Korrekturen überlebt hatte. Eine
+   Widerlegung braucht einen kausal zugeordneten Fall; #64 gibt ihn nicht her
+   (die Antwort kam vor dem Aufruf, die Ursache ist offen) und #65 auch nicht
+   (Stille sagt nichts über das Auslösen). Er wurde nicht ersetzt, sondern
+   gestrichen.
 
-Die vierte Fassung nennt die Sekundenzahl und sonst nichts.
+Eine fünfte Fassung gibt es nicht: An der Stelle steht jetzt die Sekundenzahl
+und sonst nichts.
