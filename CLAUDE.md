@@ -42,6 +42,38 @@ Handgeschriebene Fixtures kodieren die Annahme des Autors und können sie
 nicht widerlegen. Mindestens eine aufgezeichnete Antwort pro externem
 Endpunkt, mit Aufnahmedatum.
 
+## Zahlen, die eine Aufzählung wiederholen
+
+Eine Zahl im Fliesstext, die eine Liste oder Tabelle daneben zählt, ist eine
+Kopie. Sie wird beim nächsten Eintrag falsch — nicht irgendwann, sondern sofort.
+Streichen statt nachführen: Die Aufzählung ist die Quelle, der Satz verweist auf
+sie.
+
+Am 29.8.2026 hat das in `docs/codex-reviews.md` eine Review-Runde nach der
+anderen gekostet, und **jede Korrektur erzeugte die nächste:**
+
+| Die Zahl | Warum sie fiel |
+|---|---|
+| «sechs» im Text gegen «sieben» in der Einleitung | zwei Zählstellen für dasselbe Archiv |
+| Überschrift «Drei Fassungen» | beim Beheben war ein vierter Eintrag dazugekommen |
+| «Acht Fassungen» | ein Listenpunkt war die überlebende Fassung, keine gescheiterte |
+| «vier Fehlschläge» über einer Tabelle mit acht Zeilen | Tabelle gewachsen, Prosa nicht |
+| «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
+
+Handgriffe daraus:
+
+- **Der Zähler zählt auch.** «Zwei der vier» zu «Zwei» zu machen behebt nichts.
+  Beide Zahlen hängen an derselben Aufzählung, und dieselbe Ergänzung macht
+  beide falsch. Beim «Zwei Fehlschläge der Tabelle» war die Regel bereits
+  bekannt und wurde trotzdem zur Hälfte angewandt.
+- **Nicht die Länge messen, den Inhalt lesen.** `grep -c` über die Listenpunkte
+  bestätigte «acht» — einer davon beschrieb aber die Fassung, die *stehen
+  geblieben* war. Die mechanische Prüfung schützt gegen Drift und ist blind für
+  Bedeutung.
+- **Beim Ergänzen die Prosa daneben mitlesen**, nicht nur die Liste. Die
+  Mehrzahl der Fälle oben entstand dadurch, dass ein Eintrag dazukam und ein
+  Satz einen Absatz weiter unbemerkt veraltete.
+
 ## Wenn etwas rot ist
 
 Roter Live-Test: erst die Quelle abfragen, dann einordnen. Nicht aus der
