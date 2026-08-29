@@ -127,11 +127,14 @@ ohne dass jemand hineingesehen hat, und am 22.8. noch einmal 43.
   ```
 
   Der Schlusssatz wechselt bei jedem Lauf («Delightful!», «Keep it up!»,
-  «More of your lovely PRs please.», «Keep them coming!»); stabil ist nur der
-  Satz davor. Der
-  Infokasten, den Codex unter jeden Review setzt, behauptet weiterhin eine
-  Reaktion («otherwise it will react with 👍») — am 23.8. kam in sechs Repos
-  die Meldung und in keinem die Reaktion. Der Kasten ist keine Quelle.
+  «More of your lovely PRs please.», «Keep them coming!», «Hooray!»,
+  «Breezy!»), und am 29.8. stand dort statt eines Satzes bloss ein 🚀; stabil
+  ist nur der Satz davor. Zur 👍, die der Infokasten verspricht, siehe weiter
+  unten — es gibt sie, verlassen kann man sich nicht auf sie. Der Kasten
+  bleibt trotzdem eine schlechte Quelle, jetzt aus einem handfesteren Grund:
+  Am 29.8. trugen zwei Kommentare desselben Bots auf demselben PR zwei
+  verschiedene Fassungen davon, eine mit `@codex security review` und der
+  👀/👍-Beschreibung, die andere ohne beides.
 - **Der PR ist ein Draft** — dann laufen die *automatischen* Auslöser nicht an.
   Ein ausdrücklicher Aufruf schon: Am 28.8. lieferte er auf dem Draft #55 nach
   2 min 14 s einen Review. Ein kommentarloser Draft ist also kein Beleg, aber
@@ -176,19 +179,51 @@ Das sind verschiedene Abfragen — `get_reviews` fürs Objekt, `get_comments` f�
 alles andere; wer nur eine nimmt, übersieht den Rest. Genau so ist die
 Limit-Meldung zuerst durchgerutscht.
 
+Seit dem 29.8. gibt es eine sechste Form, und die ist nützlich: Codex legt zu
+Beginn eines Laufs einen Status-Kommentar an, kenntlich am HTML-Marker
+`<!-- codex-pull-request-review-summary -->`, und **aktualisiert ihn an Ort und
+Stelle** von «🔄 Running» auf «✅ Completed». Kein zweiter Kommentar, sondern
+ein `issue_comment.edited` — wer nur auf neue Kommentare achtet, sieht das Ende
+des Laufs nicht. Seine Tabelle nennt als Einzige **beides**: den geprüften
+Commit und den Auslöser («Manual request», «Draft marked ready»). Wer
+auseinanderhalten will, welcher Lauf welchen Stand gesehen hat, liest ihn; die
+Befundlos-Meldung und das Review-Objekt nennen nur den Commit.
+
+Er ist allerdings kein Beleg für eine abgeschlossene Prüfung: Auf «Running»
+steht er auch dann, wenn nie ein Ergebnis folgt.
+
 Der Kommentarzähler allein reicht ohnehin nicht: `comments: 1` kann die
-Befundlos-, die Kontingent- **oder** die Environment-Meldung sein — drei
-gegensätzliche Bedeutungen unter derselben Zahl. Den Text lesen, nicht die Zahl.
-Und einen unbekannten vierten Text wörtlich zitieren, statt ihn in eine der
-bekannten Schubladen zu zwingen: Dieser Abschnitt musste erst von drei auf vier
-und dann auf fünf Gründe wachsen, und die 👍-Reaktion stand hier zwei Fassungen
-lang als Tatsache.
+Befundlos-, die Kontingent-, die Environment-Meldung **oder** der
+Status-Kommentar eines noch laufenden Reviews sein — vier Bedeutungen unter
+derselben Zahl, darunter zwei gegensätzliche und eine, die noch gar nichts
+sagt. Den Text lesen, nicht die Zahl. Und einen unbekannten Text wörtlich
+zitieren, statt ihn in eine der bekannten Schubladen zu zwingen: Dieser
+Abschnitt musste erst von drei auf vier und dann auf fünf Gründe wachsen, die
+Formen von vier auf sechs, und die 👍-Reaktion stand hier zwei Fassungen lang
+als Tatsache, eine als widerlegt — ehe sie am 29.8. wieder auftauchte.
 
 Und ein befundloser Lauf ist kein Freispruch. Am 23.8. lief derselbe Text durch
 42 Reviews: 36 meldeten denselben P2-Befund, 6 die Befundlos-Meldung — gleiche
 Eingabe, gegenteiliges Urteil, alles in denselben neun Minuten. Ein sauberer
 Lauf sagt damit etwas über den Lauf, nicht über den Text. Wer sein Häkchen
 daran hängt, hängt es an einen Münzwurf.
+
+Am 29.8. dasselbe noch einmal, aber an einem einzelnen benannten Fehler statt
+an einer Verteilung — und deshalb schärfer, weil die richtige Antwort bekannt
+ist. In diesem Abschnitt fehlte der `reviewed-by:`-Abfrage das
+`updated:`-Fenster, das die `commenter:`-Abfrage daneben trägt, während der
+Text dazu aufforderte, beide Ergebnisse zusammenzunehmen. Drei Läufe auf
+denselben Defekt, neun Minuten:
+
+| Zeit | Commit | Auslöser | Urteil |
+|---|---|---|---|
+| 07:00:06 | `37b8753` | `@codex review` | befundlos |
+| 07:04:53 | `37b8753` | Draft → ready | **P2, zutreffend** |
+| 07:09:27 | `789e901`, enthält denselben Defekt | `@codex review` | befundlos |
+
+Zwei Freisprüche und ein Treffer für ein und denselben Fehler. Gefunden hat ihn
+nur der Lauf, den niemand mit Absicht angestossen hat — er kam automatisch beim
+Umschalten auf ready.
 
 Portfolio-weit nachsehen — mit **zwei** Abfragen, aus demselben Grund, aus dem
 am einzelnen PR `get_reviews` und `get_comments` beide nötig sind:
@@ -244,6 +279,18 @@ bis fünf Sekunden. Codex wird beim Umschalten von Draft auf ready ausgelöst un
 braucht danach Zeit; wer sofort mergt, hat das Häkchen gesetzt und den Review
 nicht abgewartet.
 
+Es geht schlimmer, und am 29.8. ging es schlimmer. Auf #59 **war der Review
+da**: um 07:04:53 stand der P2-Befund am PR, mit Datei und Zeile. Um 07:06:14
+wurde gemergt — 81 Sekunden später, mit dem befundbehafteten Commit als Head.
+Die Behebung war zu diesem Zeitpunkt noch nicht geschrieben; ihr Commit trägt
+07:06:28. Der Defekt stand damit in `main`, und es brauchte den Nachzügler #60.
+
+Der Unterschied zum Fall darüber ist der Punkt: Dort ging der Prüfer verloren,
+hier hat er geliefert und niemand hat hingesehen. Ein grüner Haken sagt nichts
+darüber, ob jemand den Befund gelesen hat — deshalb steht die Checkliste im
+PR-Template auf «beantwortet oder behoben», nicht auf «Review gelaufen». Zwei
+Minuten zwischen Befund und Merge sind zu wenig, um beides zu tun.
+
 Dritter Weg, und der unangenehmste: Derselbe PR bekommt auf dieselbe Frage
 verschiedene Antworten. Am 28.8.2026 auf PR #53, alles innerhalb von acht
 Minuten:
@@ -266,8 +313,28 @@ verträglich:
 
 Die dritte Zeile könnte zwischen beiden entscheiden — aber genau bei ihr ist
 der Auslöser nicht eindeutig (siehe unten). Was es bräuchte, ist ein Erfolg
-**und** ein Fehlschlag auf demselben zweifelsfrei bestimmten Auslöser. Den gibt
-es bisher nicht.
+**und** ein Fehlschlag auf demselben zweifelsfrei bestimmten Auslöser.
+
+Am 29.8. kam eine Beobachtung dazu, die nahe herankommt. PR #60 wurde um
+07:09:06 als **Draft** eröffnet, um 07:09:10 ging genau ein `@codex review`
+hinaus, und darauf kamen zwei Antworten:
+
+| Zeit | Antwort |
+|---|---|
+| 07:09:17 | «To use Codex here, create an environment for this repo» |
+| 07:09:24 | Lauf startet, Auslöser laut Status-Kommentar «Manual request» |
+
+Sieben bzw. vierzehn Sekunden nach demselben Aufruf, Fehlschlag und Erfolg.
+**Zweifelsfrei ist es trotzdem nicht**, und zwar aus einem Grund, der in diesem
+Abschnitt selbst steht: Dass ein Draft die automatischen Auslöser nicht anlaufen
+lässt, ist eine Behauptung dieses Dokuments, keine hier gemessene Grösse. Gilt
+sie nicht, kann die Environment-Meldung von der Eröffnung vier Sekunden zuvor
+stammen, und es waren wieder zwei Auslöser.
+
+Entscheiden liesse sich das mit einem Draft-PR **ohne** jeden Aufruf: Kommt dort
+eine Environment-Meldung, stammt sie von der Eröffnung und diese Beobachtung
+zerfällt. Bleibt es still, trägt sie. Wer den Abschnitt fortschreibt, hat hier
+einen Versuch, der drei Minuten kostet.
 
 Belastbar ist deshalb nur, was ohne die Ursache auskommt:
 
@@ -320,9 +387,15 @@ Zu PR #51 (ready 04:35:22, gemergt 04:44:00, nichts in 8 min 38 s; manuell um
 18:33:48 → Befundlos-Meldung um 18:36:45) bleibt nach alledem nur die nackte
 Beobachtung. Warum dort nichts kam, ist offen, und zwei Dinge machen es
 unentscheidbar: Ein manueller Lauf mit knapp drei Minuten begrenzt nicht, wie
-lange der automatische Weg vierzehn Stunden früher gebraucht hätte, und der
-Merge beendet den PR — ein noch laufender Job stirbt damit. «Nichts kam an» und
-«nichts wurde ausgelöst» sind von aussen nicht trennbar.
+lange der automatische Weg vierzehn Stunden früher gebraucht hätte, und
+«nichts kam an» ist von aussen nicht von «nichts wurde ausgelöst» zu trennen.
+
+Was hier zwei Fassungen lang als dritter Grund stand — der Merge beende den PR
+und töte einen laufenden Job —, ist als allgemeine Regel widerlegt. Auf #60
+startete am 29.8. um 07:11:27 ein Lauf, um 07:11:53 wurde gemergt, und um
+07:12:44 stand er auf «Completed», gefolgt von der 👍. Ein Lauf kann einen
+Merge also überleben. Ob er es immer tut, ist damit nicht gesagt; für #51
+taugt er jedenfalls nicht mehr als Erklärung.
 
 Der Vorgänger #50 (ready 04:26:01, gemergt 04:26:04) gehört dagegen in die
 Schublade darüber: drei Sekunden erklären ihn vollständig.
@@ -349,15 +422,31 @@ ist beim Schreiben dieses Absatzes passiert. Und sie bleibt nicht liegen: Auf
 weg, nachdem der Review stand. Als nachträglicher Nachweis, dass je einer lief,
 taugt sie damit auch nicht.
 
-Die 👀 ist nebenbei die einzige Reaktion, die je beobachtet wurde. Der
-Infokasten verspricht eine 👍 auf den PR; die kam in sechs Repos am 23.8. nicht
-und auf #51 am 28.8. auch nicht (`reactions.total_count: 0`). Die 👀 sitzt an
-anderer Stelle und bedeutet etwas anderes: gesehen, nicht geprüft.
+Die 👍, die der Infokasten verspricht, **gibt es** — nur nicht verlässlich. Am
+29.8. trugen #59 und #60 nach ihrem befundlosen Lauf je `reactions: {"+1": 1}`
+auf dem PR, und die 👀 war dort wieder verschwunden. In sechs Repos am 23.8.
+und auf #51 am 28.8. kam sie dagegen nicht (`reactions.total_count: 0`). Zwei
+Fassungen dieses Abschnitts führten sie als Tatsache, eine erklärte sie für
+widerlegt; beides ging über die Beobachtungen hinaus.
+
+Und selbst wo sie steht, belegt sie weniger, als sie verspricht: Auf #59 steht
+die 👍 an einem PR, der eineinhalb Stunden zuvor einen zutreffenden P2-Befund
+bekommen hatte. Sie folgt einem Lauf, nicht dem PR. Wer einen Beleg braucht,
+liest die Kommentartexte — die Reaktion taugt dafür in keiner Richtung.
+
+Die 👀 sitzt an anderer Stelle und bedeutet etwas anderes: gesehen, nicht
+geprüft.
 
 **Er wirkt auch auf einem bereits gemergten PR.** #45 war beim manuellen
 Aufruf seit 70 Minuten gemergt, #51 seit knapp 14 Stunden — beide bekamen
 ihren Review. Ein zu früh gemergter PR ist also nicht verloren; der Review
 lässt sich nachholen, solange jemand merkt, dass er fehlt.
+
+Geprüft wird dann allerdings der **Merge-Commit**, nicht der Branch-Stand: Der
+Aufruf auf dem gemergten #59 am 29.8. um 07:07:24 lieferte um 07:09:27 einen
+Review von `789e901`. Für die Frage «ist das, was jetzt in `main` steht, in
+Ordnung?» ist das genau richtig; wer dagegen einen inzwischen gepushten
+Folge-Commit geprüft haben will, bekommt ihn hier nicht.
 
 Und der Umkehrschluss, der hier am teuersten ist: **Bleibt es nach dem
 automatischen Auslöser still, sagt das nichts über die Ursache** — nicht
