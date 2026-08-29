@@ -413,8 +413,12 @@ Fenster beim Ausfall vom 21./22.8. war mit 67 Minuten **enger**, um 38 min 18 s.
 **Das Ende ist auf 1 h 10 min 2 s eingegrenzt** — zwischen dem letzten
 Fehlschlag um 10:45:33 und dem ersten wieder gelungenen Lauf um 11:55:35, den
 der Status-Kommentar auf #66 als «Completed» führt und der einen P2 lieferte.
-Darin unterscheidet sich diese Episode von der ersten, deren Ende ganz offen
-blieb — nicht in der Schärfe des Beginns.
+Auch die erste Episode hat ein eingegrenztes Ende — zwischen der letzten
+Limit-Meldung am 22.8. um 11:03 und der abweichenden Meldung am 23.8. um 08:22,
+also 21 h 19 min, und genau diese Grenze führt der Abschnitt darüber schon als
+obere Schranke. Der belegte Unterschied ist deshalb nicht «offen gegen
+eingegrenzt», sondern die Weite: 1 h 10 min 2 s gegen 21 h 19 min. Beim Beginn
+liegt es umgekehrt.
 
 **Zur Dauer gibt sie trotzdem so wenig her wie die erste.** Zwischen erstem und
 letztem Fehlschlag liegen 1 h 33 min 8 s, dichter abgetastet als im August — die
