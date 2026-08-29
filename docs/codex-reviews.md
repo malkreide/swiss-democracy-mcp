@@ -572,7 +572,7 @@ jeder Runde Behauptungen verloren und keine gewonnen.
 ## 9. Fassungen, die nicht hielten
 
 Der Abschnitt über die schwankenden Antworten (4.3) stand vor seinem Merge
-viermal falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
+mehrfach falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
 mehr, als sie gemessen hatte.
 
 1. **«Der Auslöser feuert nicht, Zeit und Environment sind ausgeschlossen.»**
@@ -593,7 +593,7 @@ Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
 - **«Die 👀 ist die einzige je beobachtete Reaktion»** — widerlegt durch #59
   und #60 (siehe 1).
 
-### Drei Fassungen zur stillen Draft-Eröffnung (4.3)
+### Fassungen zur stillen Draft-Eröffnung (4.3)
 
 Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt, jede von der
 nächsten. Dieselbe Krankheit wie oben: aus Stille auf Ursachen schliessen.
