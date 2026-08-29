@@ -231,9 +231,20 @@ Antwort.
 **Die saubere Replikation misslang — elf Minuten später, im selben Repo.**
 PR #65 wurde um 10:03:12 als Draft eröffnet, diesmal **ohne jeden** `@codex
 review`. Das ist der Versuch, wie er oben verlangt war. Nach 5 min 17 s war
-weder ein Kommentar noch ein Review-Objekt da: das Vierzehnfache der
-beobachteten Obergrenze von 22 Sekunden, und das Kontingent war um 10:00:34
-noch nachweislich gesperrt, die Meldung also fällig gewesen.
+weder ein Kommentar noch ein Review-Objekt da — das Vierzehnfache der
+beobachteten Obergrenze von 22 Sekunden.
+
+**Der Kontingentzustand während dieser 317 Sekunden ist nicht beobachtet — und
+wird auch nicht gebraucht.** Belegt sind Sperren um 10:00:34 und um 10:11:22,
+davor und danach; dass sich das Fenster dazwischen geöffnet haben kann, steht
+in Abschnitt 6 selbst. Beide möglichen Zustände hätten aber etwas Sichtbares
+erzeugt: War gesperrt, wäre die Ausfallmeldung binnen 1 bis 22 Sekunden
+gekommen. War frei, und löst eine Eröffnung aus, wäre binnen zwei bis drei
+Minuten ein Lauf samt Status-Kommentar erschienen. Im Fenster kam keines von
+beidem. Der Schluss steht deshalb unabhängig davon, was das Kontingent gerade
+tat — anders als eine frühere Fassung dieses Absatzes, die eine «durchgehende»
+Sperre voraussetzte und damit genau das behauptete, was die Stille nicht
+hergibt.
 
 Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
 vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
@@ -243,14 +254,15 @@ hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
 oder auf #64 wirkte etwas, das in den Ereignissen nicht sichtbar ist.
 
 **Der Vergleich innerhalb eines PRs macht es noch deutlicher.** #65 lieferte
-beides, acht Minuten auseinander und bei durchgehend gesperrtem Kontingent:
+beides, acht Minuten auseinander, am selben PR:
 
 | Ereignis auf #65 | Antwort |
 |---|---|
 | Eröffnung als Draft 10:03:12 | nach 5 min 17 s nichts |
 | ready 10:11:20 | Meldung nach **2 s** |
 
-Derselbe PR, dieselbe Sperre, derselbe Connector. Dass ready auslöst, ist damit
+Derselbe PR, derselbe Connector. Der Kontingentzustand bei der Eröffnung ist
+offen und trägt hier nach dem Absatz oben auch nichts. Dass ready auslöst, ist
 gut belegt; dass eine Eröffnung es tut, ist es nicht. Die Antwort auf #64 vor
 meinem Aufruf bleibt als Einzelfall stehen und ist nicht erklärt.
 
