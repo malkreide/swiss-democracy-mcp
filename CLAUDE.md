@@ -45,35 +45,25 @@ Endpunkt, mit Aufnahmedatum.
 ## Zahlen, die eine Aufzählung wiederholen
 
 Eine Zahl im Fliesstext, die eine Liste oder Tabelle daneben zählt, ist eine
-Kopie. Sie wird beim nächsten Eintrag falsch — nicht irgendwann, sondern sofort.
-Streichen statt nachführen: Die Aufzählung ist die Quelle, der Satz verweist auf
-sie.
+Kopie. **Wächst die Menge, auf die sie sich bezieht, wird die Kopie mit dem
+nächsten Eintrag falsch** — nicht irgendwann. Streichen statt nachführen: Die
+Aufzählung ist die Quelle, der Satz verweist auf sie.
 
-Am 29.8.2026 hat das in `docs/codex-reviews.md` eine Review-Runde nach der
-anderen gekostet, und **jede Korrektur erzeugte die nächste:**
+Wächst die Bezugsmenge nicht, bleibt die Zahl richtig; die Regel gilt nicht
+gegen Zahlen überhaupt.
 
-| Die Zahl | Warum sie fiel |
-|---|---|
-| «sechs» im Text gegen «sieben» in der Einleitung | zwei Zählstellen für dasselbe Archiv |
-| Überschrift «Drei Fassungen» | beim Beheben war ein vierter Eintrag dazugekommen |
-| «Acht Fassungen» | ein Listenpunkt war die überlebende Fassung, keine gescheiterte |
-| «vier Fehlschläge» über einer Tabelle mit acht Zeilen | Tabelle gewachsen, Prosa nicht |
-| «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
+Handgriffe:
 
-Handgriffe daraus:
+- **Relative Angaben sind auch Zählungen.** «Die Mehrzahl», «die meisten»,
+  «fast alle» hängen genauso an der Aufzählung.
+- **Der Zähler zählt auch, nicht nur der Nenner.** «Zwei der vier» zu «Zwei» zu
+  machen behebt nichts.
+- **Nicht die Länge messen, den Inhalt lesen.** `grep -c` bestätigt eine Zahl,
+  die sachlich falsch ist, wenn ein Listenpunkt etwas anderes beschreibt als
+  der Satz behauptet.
 
-- **Der Zähler zählt auch.** «Zwei der vier» zu «Zwei» zu machen behebt nichts.
-  Beide Zahlen hängen an derselben Aufzählung, und dieselbe Ergänzung macht
-  beide falsch. Beim «Zwei Fehlschläge der Tabelle» war die Regel bereits
-  bekannt und wurde trotzdem zur Hälfte angewandt.
-- **Nicht die Länge messen, den Inhalt lesen.** `grep -c` über die Listenpunkte
-  bestätigte «acht» — einer davon beschrieb aber die Fassung, die *stehen
-  geblieben* war. Die mechanische Prüfung schützt gegen Drift und ist blind für
-  Bedeutung.
-- **Beim Ergänzen die Prosa daneben mitlesen**, nicht nur die Liste. Die
-  Überschrift «Drei Fassungen», die «vier Fehlschläge» und der Zähler «Zwei»
-  wurden alle dadurch falsch, dass ein Eintrag dazukam und ein Satz einen
-  Absatz weiter unbemerkt veraltete.
+Die Fälle, an denen das gelernt wurde, stehen in
+[`docs/codex-reviews.md`](docs/codex-reviews.md), Abschnitt 10.
 
 ## Wenn etwas rot ist
 
@@ -92,7 +82,7 @@ Spec desselben Endpunkts führt einen als *optional* deklarierten Parameter
 dieselbe Publikation mit 200. Ein Projekt trug sieben Vorgängerpublikationen,
 die der Server als «Quelle nicht erreichbar» wegwarf.
 
-Drei Handgriffe daraus:
+Handgriffe daraus:
 
 - **Die Parameterliste der Spec durchgehen, bevor ein Statuscode eingeordnet
   wird.** «Optional» heisst dort oft «optional für die Mehrheit».

@@ -56,7 +56,7 @@ Seine Tabelle nennt als Einzige **beides**: den geprüften Commit *und* den
 Auslöser («Manual request», «Draft marked ready»). Die Befundlos-Meldung und
 das Review-Objekt nennen nur den Commit.
 
-Zwei Vorbehalte:
+Vorbehalte:
 
 - Kein Beleg für eine abgeschlossene Prüfung — auf «Running» steht er auch
   dann, wenn nie ein Ergebnis folgt.
@@ -645,3 +645,35 @@ Krankheit bei allen vieren: aus Stille auf Ursachen schliessen.
 
 Eine fünfte Fassung gibt es nicht: An der Stelle steht jetzt die Sekundenzahl
 und sonst nichts.
+
+---
+
+## 10. Zahlen, die eine Aufzählung wiederholen
+
+Die Handlungsregel steht in `CLAUDE.md`. Hier die Fälle, an denen sie entstand:
+am 29.8.2026 an dieser Datei, eine Review-Runde nach der anderen, und **jede
+Korrektur erzeugte die nächste.**
+
+| Die Zahl | Warum sie fiel |
+|---|---|
+| «sechs» im Text gegen «sieben» in der Einleitung | zwei Zählstellen für dasselbe Archiv |
+| Überschrift «Drei Fassungen» | beim Beheben war ein vierter Eintrag dazugekommen |
+| «Acht Fassungen» | ein Listenpunkt war die überlebende Fassung, keine gescheiterte |
+| «vier Fehlschläge» über einer Tabelle mit acht Zeilen | Tabelle gewachsen, Prosa nicht |
+| «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
+| «die Mehrzahl der Fälle oben» | im Abschnitt, der die Regel aufschrieb |
+
+Die letzte Zeile ist die lehrreichste: Sie entstand beim Aufräumen der anderen.
+Ich hatte drei absolute Zählungen entfernt und dabei eine relative eingebaut —
+«Zahl» als Ziffer gelesen statt als Aussage über eine Menge.
+
+Die Überschrift «Drei Fassungen», die «vier Fehlschläge» und der Zähler «Zwei»
+wurden alle dadurch falsch, dass ein Eintrag dazukam und ein Satz einen Absatz
+weiter unbemerkt veraltete. Wer eine Aufzählung ergänzt, liest die Prosa daneben
+mit, nicht nur die Liste.
+
+**Was die Fälle nicht hergeben:** dass jede Ergänzung jede Zahl falsch macht.
+Kommt zu einer Tabelle mit Fehlschlägen ein erfolgreicher Fall hinzu, bleibt die
+Zahl der Fehlschläge richtig. Entscheidend ist, ob die Bezugsmenge der Zahl
+wächst — deshalb steht die Regel in `CLAUDE.md` mit dieser Einschränkung und
+nicht als Verbot von Zahlen.
