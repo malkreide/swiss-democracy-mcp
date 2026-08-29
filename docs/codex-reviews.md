@@ -592,6 +592,26 @@ Fassungen des Abschnitts sind am 28.8. zwei ungeprüft in `main` gelandet, und
 bestritten, danach ein befundloser Lauf auf dem aktuellen Head. Der Text hat in
 jeder Runde Behauptungen verloren und keine gewonnen.
 
+**Befund und Merge in derselben gemessenen Sekunde.** Auf #76 ging das
+Review-Objekt zu Head `65519e8` um 17:20:46 UTC ein; der Merge trägt denselben
+Sekundenwert. Was das **nicht** hergibt: einen Abstand von null, und nicht
+einmal die Reihenfolge — feiner ist hinter dem Proxy nicht zu messen. Was es
+hergibt: dass hier keine nutzbare Reaktionszeit nachweisbar ist. Eine Warnung
+auf dem PR stand gut eine halbe Minute später und kam zu spät; der Befund («die
+letzte Zeile» einer wachsenden Tabelle) stand damit in `main` und brauchte #78.
+Die Checkliste «kein offener Befund beim Merge» blieb unabgehakt und stimmte
+damit. Neben den 28 Sekunden vom 28.8. und den 81 Sekunden auf #59 ist das der
+Fall, in dem Aufpassen nichts mehr ausrichtet — wer sicher sein will, wartet
+das Ergebnis ab.
+
+**Der «Abstand null» kam nach seiner Streichung zurück.** Auf `0bd7f78` als
+Befund entfernt, auf `cff9ee5` beim Kürzen desselben Absatzes unbemerkt wieder
+eingebaut und im Folge-Commit erneut gestrichen. Daraus ein Handgriff, der sonst
+nirgends steht: **Wer eine Stelle strafft, prüft, ob die kürzere Fassung eine
+Behauptung zurückholt, die ein Review schon entfernt hat.** Beim Kürzen sucht
+man nach Wörtern, nicht nach Aussagen — und die Aussage ist das, was der Befund
+getroffen hatte.
+
 ---
 
 ## 9. Fassungen, die nicht hielten
@@ -664,9 +684,10 @@ Korrektur erzeugte die nächste.**
 | «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
 | «die Mehrzahl der Fälle oben» | im Abschnitt, der die Regel aufschrieb |
 
-Die letzte Zeile ist die lehrreichste: Sie entstand beim Aufräumen der anderen.
-Ich hatte drei absolute Zählungen entfernt und dabei eine relative eingebaut —
-«Zahl» als Ziffer gelesen statt als Aussage über eine Menge.
+Am lehrreichsten ist «die Mehrzahl der Fälle oben»: Diese Zeile entstand beim
+Aufräumen der anderen. Ich hatte drei absolute Zählungen entfernt und dabei eine
+relative eingebaut — «Zahl» als Ziffer gelesen statt als Aussage über eine
+Menge.
 
 Die Überschrift «Drei Fassungen», die «vier Fehlschläge» und der Zähler «Zwei»
 wurden alle dadurch falsch, dass ein Eintrag dazukam und ein Satz einen Absatz
@@ -689,3 +710,14 @@ ersten unpassenden Eintrag» ist falsch, sobald die Aufzählung klein ist — zw
 von drei werden zwei von vier, und die Mehrzahl ist weg. Die Fassung, die
 hielt, gibt den Zeitpunkt gar nicht an. Wer eine Regel über Zahlen schreibt,
 will sie präzisieren und präzisiert sie falsch.
+
+**Der Abschnitt hat seine eigene Regel mehrfach verletzt, und nicht nur mit
+Zahlen.** Eine relative Zählung («die Mehrzahl der Fälle oben»), ein Verweis auf
+eine Abschnittsnummer statt auf einen Titel, und ein Verweis auf «die letzte
+Zeile» einer Tabelle, die ausdrücklich fortgeschrieben werden soll. Nur die
+Zählung ist eine Zahl, die beiden Verweise sind Positionen; die Regel dazu steht
+in `CLAUDE.md`. Dass sie dort als Prüfauftrag steht und nicht als Vorhersage,
+liegt an diesen Gegenbeispielen: Ein Abschnitt hinter dem verwiesenen lässt
+dessen Nummer stehen, einer davor verschiebt sie; eine Zeile mitten in der
+Tabelle lässt «die letzte Zeile» stehen, eine am Ende nicht. Ansehen kann man
+es keinem von beiden.

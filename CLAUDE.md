@@ -65,6 +65,12 @@ trifft:
   die sachlich falsch ist, wenn ein Listenpunkt etwas anderes beschreibt als
   der Satz behauptet.
 
+Dasselbe gilt für **Positionen**: eine Abschnittsnummer, ein «oben», ein «die
+letzte Zeile». Sie sind zu prüfen, sobald sich die Ordnung ändert — daraufhin,
+ob die Änderung sie trifft. Ein Abschnitt hinter dem verwiesenen lässt dessen
+Nummer stehen, einer davor verschiebt sie. Wo ein Titel eindeutig ist, nimm ihn
+statt der Nummer.
+
 Die Fälle, an denen das gelernt wurde, stehen in
 [`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Zahlen, die eine
 Aufzählung wiederholen».
@@ -343,7 +349,10 @@ schlechtes, sondern keines.
 Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
 einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
 Behebung landete in einem Nachzügler. Und am 29.8. lagen auf #59 zwischen
-Befund und Merge 81 Sekunden; der Defekt stand damit in `main`.
+Befund und Merge 81 Sekunden; der Defekt stand damit in `main`. Auf #76 fielen
+beide in dieselbe gemessene Sekunde — auf eine nutzbare Reaktionszeit ist also
+nicht zu bauen. Wer den Review anfordert und weiterarbeitet, statt ihn
+abzuwarten, verlässt sich auf eine Frist, die er nicht kennt.
 
 ## Wenn zwei Agenten dasselbe tun
 
