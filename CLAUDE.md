@@ -345,6 +345,12 @@ einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
 Behebung landete in einem Nachzügler. Und am 29.8. lagen auf #59 zwischen
 Befund und Merge 81 Sekunden; der Defekt stand damit in `main`.
 
+Der Abstand kann auch null sein: Auf #76 wurde in **derselben Sekunde** gemergt,
+in der das Review-Objekt einging (17:20:46 UTC). Eine Warnung, die 35 Sekunden
+später auf dem PR stand, kam zu spät; die Checkliste «kein offener Befund beim
+Merge» blieb unabgehakt und stimmte damit. Wer den Review anfordert und
+weiterarbeitet, statt ihn abzuwarten, hat keine Frist — er hat Glück oder keins.
+
 ## Wenn zwei Agenten dasselbe tun
 
 Vor dem Anlegen eines Branches mit vorgegebenem Namen prüfen, ob es ihn schon

@@ -664,9 +664,10 @@ Korrektur erzeugte die nächste.**
 | «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
 | «die Mehrzahl der Fälle oben» | im Abschnitt, der die Regel aufschrieb |
 
-Die letzte Zeile ist die lehrreichste: Sie entstand beim Aufräumen der anderen.
-Ich hatte drei absolute Zählungen entfernt und dabei eine relative eingebaut —
-«Zahl» als Ziffer gelesen statt als Aussage über eine Menge.
+Am lehrreichsten ist «die Mehrzahl der Fälle oben»: Diese Zeile entstand beim
+Aufräumen der anderen. Ich hatte drei absolute Zählungen entfernt und dabei eine
+relative eingebaut — «Zahl» als Ziffer gelesen statt als Aussage über eine
+Menge.
 
 Die Überschrift «Drei Fassungen», die «vier Fehlschläge» und der Zähler «Zwei»
 wurden alle dadurch falsch, dass ein Eintrag dazukam und ein Satz einen Absatz
@@ -689,3 +690,12 @@ ersten unpassenden Eintrag» ist falsch, sobald die Aufzählung klein ist — zw
 von drei werden zwei von vier, und die Mehrzahl ist weg. Die Fassung, die
 hielt, gibt den Zeitpunkt gar nicht an. Wer eine Regel über Zahlen schreibt,
 will sie präzisieren und präzisiert sie falsch.
+
+**Der Abschnitt hat seine eigene Regel mehrfach verletzt, und nicht nur mit
+Zahlen.** Eine relative Zählung («die Mehrzahl der Fälle oben»), ein Verweis auf
+eine Abschnittsnummer statt auf einen Titel, und ein Verweis auf «die letzte
+Zeile» einer Tabelle, die ausdrücklich fortgeschrieben werden soll. Nur die
+Zählung ist eine Zahl, die beiden Verweise sind Positionen. Die Regel steht deshalb über
+Zahlen, greift aber weiter: **Jede Kopie einer Ordnung, die sich ändern darf,
+veraltet mit ihr** — eine Nummer, ein «oben», ein «letzte» so gut wie eine
+Ziffer.
