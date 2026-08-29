@@ -345,6 +345,7 @@ Danach vier Fehlschläge, alle mit derselben Meldung:
 | 09:43:51 | #63 | ready 09:43:48, Merge 09:43:50 | 3 s bzw. 1 s |
 | 09:52:42 | #64 | Eröffnung als Draft um 09:52:31 | 11 s |
 | 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
+| 10:00:34 | #64 | ready 10:00:32, **ohne** Merge | 2 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
 Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
@@ -352,11 +353,11 @@ Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
 entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
 
 **Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 40 min 25 s, dichter abgetastet als im August — sechs Punkte
-statt zwei, und die sechs Auslöser sind voneinander unabhängig. Dichter heisst
+Fehlschlag liegen 48 min 9 s, dichter abgetastet als im August — sieben Punkte
+statt zwei, und die sieben Auslöser sind voneinander unabhängig. Dichter heisst
 trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
 geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
-09:52:50 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
+10:00:34 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
 mehr durch.
 
 **Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
@@ -393,7 +394,13 @@ ab Merge (#63, die beiden Ereignisse liegen zwei Sekunden auseinander). Welches
 der beiden auslöst, trennen diese Beobachtungen nicht — unter beiden Lesarten
 fällt die frühere Grenze.
 
-Beobachtet sind damit 1 bis 22 Sekunden für eine Ausfallmeldung gegen zwei bis
+**Der saubere Fall kam um 10:00:32.** #64 wurde auf ready umgeschaltet, ohne
+Merge dahinter; zwei Sekunden später stand die Meldung da. Hier ist der Auslöser
+eindeutig, weil kein zweites Ereignis danebenliegt. Die Untergrenze stützt sich
+deshalb auf diesen Fall und nicht auf die mehrdeutige Sekunde aus #63 — die
+bleibt stehen, trägt aber nichts.
+
+Beobachtet sind damit 2 bis 22 Sekunden für eine Ausfallmeldung gegen zwei bis
 drei Minuten für einen echten Lauf. Wer nach einer halben Minute etwas sieht,
 sieht keinen Review.
 
