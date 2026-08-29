@@ -11,9 +11,10 @@ kurz sein. Diese Datei wird gelesen, wenn jemand eine der Regeln anzweifelt,
 fortschreiben will oder wissen muss, wie belastbar sie ist.
 
 **Wer hier etwas ergänzt:** Eine Erklärung gehört erst hinein, wenn der
-entscheidende Vergleich vorliegt. Abschnitt 9 führt die Fassungen, die daran
-gescheitert sind, mehr zu erklären als gemessen war — in zwei Gruppen, eine zum
-ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Die erste Gruppe
+entscheidende Vergleich vorliegt. «Fassungen, die nicht hielten» führt die, die
+daran gescheitert sind, mehr zu erklären als gemessen war — in zwei Gruppen,
+eine zum ursprünglichen Abschnitt und eine zur stillen Draft-Eröffnung. Die
+erste Gruppe
 schliesst mit der Fassung, die stehen geblieben ist; sie gehört nicht zu den
 gescheiterten und steht dort, weil der Unterschied zu ihnen der Punkt ist.
 
@@ -161,7 +162,7 @@ Sekunden. Codex wird beim Umschalten ausgelöst und braucht danach Zeit.
 Am 28.8. bei vier PRs: #50 (3 s), #54 (3 s), #55 (4 s), #56 (4 s) — bei rund
 drei Minuten Vorlauf. Am 29.8. kam #63 mit **2 s** dazu (ready 09:43:48, Merge
 09:43:50); dort war ohnehin kein Lauf zu verlieren, weil das Kontingent weg war
-(Abschnitt 6).
+(«Kontingent und Environment»).
 
 **Was diese Messung nicht hergibt:** Sie beginnt erst *nach* dem Umschalten auf
 ready und sagt deshalb nichts darüber, ob ein als Draft gestarteter PR seltener
@@ -244,16 +245,18 @@ beobachteten Obergrenze von 22 Sekunden.
 
 **Weiter als diese 317 Sekunden trägt die Beobachtung nicht.** Löst eine
 Eröffnung aus und antwortet der Connector erst später — oder scheitert er vor
-dem sichtbaren Ergebnis —, sieht das im Messfenster genauso aus. Abschnitt 5
-hält für #51 fest, warum sich das von aussen nicht trennen lässt: «nichts kam
-an» ist nicht «nichts wurde ausgelöst». Der Kontingentzustand während der
-317 Sekunden ist ebenfalls nicht beobachtet; belegt sind Sperren um 10:00:34
+dem sichtbaren Ergebnis —, sieht das im Messfenster genauso aus. «Der manuelle
+Aufruf: was belegt ist» hält für #51 fest, warum sich das von aussen nicht
+trennen lässt: «nichts kam an» ist nicht «nichts wurde ausgelöst». Der
+Kontingentzustand während der 317 Sekunden ist ebenfalls nicht beobachtet;
+belegt sind Sperren um 10:00:34
 und um 10:11:22, davor und danach.
 
 **Was #65 hergibt, in einem Satz:** Auf eine Draft-Eröffnung kam binnen
 317 Sekunden keine sichtbare Antwort. Nicht mehr — weder über das Auslösen noch
 über spätere Antworten noch über das Kontingent. Drei frühere Fassungen dieses
-Absatzes behaupteten jeweils mehr; sie stehen in Abschnitt 9.
+Absatzes behaupteten jeweils mehr; sie stehen unter «Fassungen, die nicht
+hielten».
 
 Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
 vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts. Ob
@@ -276,7 +279,8 @@ ist nicht erklärt.
 
 **Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
 versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
-Ursachen zu machen; Abschnitt 9 zählt sie. Die letzte behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
+Ursachen zu machen; «Fassungen, die nicht hielten» zählt sie. Die letzte
+behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
 wofür es einen kausal zugeordneten Fall bräuchte, den weder #64 noch #65
 hergibt. Was gemessen ist, steht oben und in der Tabelle. Wer mehr will,
 braucht Wiederholungen bei freiem Kontingent, wo ein Lauf und nicht nur eine
@@ -288,10 +292,11 @@ weitere Meldung da. Die beobachtete Obergrenze für Ausfallmeldungen liegt bei
 22 Sekunden, das Fünffache war also verstrichen — und der Connector unterdrückt
 Wiederholungen nicht, er hatte auf diesem PR schon zweimal binnen acht Sekunden
 geantwortet. Beweisend ist ein einzelnes stilles Fenster trotzdem nicht; es
-passt aber zu der Zeile in Abschnitt 8, wonach im Draft-Zustand nach einer
-Korrektur kein Lauf nachkommt. Eröffnung und Push sind hier verschiedene Dinge,
-und nur nach der Eröffnung wurde etwas sichtbar. Was jeweils ausgelöst wurde,
-sagt auch dieser Absatz nicht — aus demselben Grund wie oben.
+passt aber zu der Zeile unter «Zum Verfahren für Doku-PRs», wonach im
+Draft-Zustand nach einer Korrektur kein Lauf nachkommt. Eröffnung und Push sind
+hier verschiedene Dinge, und nur nach der Eröffnung wurde etwas sichtbar. Was
+jeweils ausgelöst wurde, sagt auch dieser Absatz nicht — aus demselben Grund wie
+oben.
 
 **Vermutlich eine Fussangel:** Die dritte Zeile oben kam zehn Sekunden nach
 einem Kommentar, der `@codex review` in einer Tabelle bloss *zitierte*, und
@@ -313,12 +318,13 @@ Viermal geliefert, erstaunlich gleichmässig:
 | #53 | 3 min 1 s |
 | #55 (Draft!) | 2 min 14 s |
 
-Einmal gescheitert (#53 um 18:51:30, siehe 4.3). Nach einem Fehlschlag lohnt
-der zweite Versuch.
+Einmal gescheitert (#53 um 18:51:30, siehe den Abschnitt über die schwankenden
+Antworten). Nach einem Fehlschlag lohnt der zweite Versuch.
 
 **Auf einem Draft läuft er an** — #55 ist der Beleg. Dass umgekehrt die
 automatischen Auslöser den ready-Zustand *brauchen*, stand hier lange
-unwidersprochen daneben; seit dem 29.8. ist es fraglich (Abschnitt 4.3).
+unwidersprochen daneben; seit dem 29.8. ist es fraglich (siehe den Abschnitt
+über die schwankenden Antworten).
 
 **Auf einem gemergten PR läuft er an** — #45 war seit 70 Minuten gemergt, #51
 seit knapp 14 Stunden; beide bekamen ihren Review. Geprüft wird dann allerdings
@@ -506,12 +512,14 @@ eine lange Reihe von Fehlschlägen, nicht ihre Ursache.
 
 Zeigt das Dashboard freies Kontingent, während Reviews weiter scheitern, sagt
 das noch nicht, woran es liegt: Ein Draft, eine fehlende Environment und die
-unstete Prüfung aus Abschnitt 3 erzeugen dasselbe Bild. Bekannt ist, dass es
-bei mehreren verbundenen Konten einen Fehler gibt, den ein Trennen und
+unstete Prüfung aus «Ein Ergebnis sagt etwas über den Lauf, nicht über den
+Text» erzeugen dasselbe Bild. Bekannt ist, dass es bei mehreren verbundenen
+Konten einen Fehler gibt, den ein Trennen und
 Neuverbinden des GitHub-Connectors behebt — aber das ist eine Möglichkeit unter
 mehreren. Wer sofort trennt, kostet unter Umständen eine funktionierende
 Verbindung für eine Diagnose, die er nicht gestellt hat. Vorher die anderen
-Gründe in ihrer Reihenfolge ausschliessen (Abschnitt 2).
+Gründe in ihrer Reihenfolge ausschliessen (siehe die Gründe fürs Schweigen und
+ihre Reihenfolge).
 
 ### Die Environment
 
@@ -565,7 +573,8 @@ sagt über den heutigen Stand nichts. Und aus der Abfrage fällt nur die 25; die
 sie als 41 − 25 ausrechnet, zählt jeden befundlosen Review als Absage.
 
 Nicht mit der anderen Zahl desselben Tages verrechnen: Die 25 zählt Repos, die
-42 aus Abschnitt 3 zählt Reviews.
+42 aus «Ein Ergebnis sagt etwas über den Lauf, nicht über den Text» zählt
+Reviews.
 
 ---
 
@@ -616,7 +625,7 @@ getroffen hatte.
 
 ## 9. Fassungen, die nicht hielten
 
-Der Abschnitt über die schwankenden Antworten (4.3) stand vor seinem Merge
+Der Abschnitt über die schwankenden Antworten stand vor seinem Merge
 mehrfach falsch da. Jede Fassung scheiterte an derselben Sache: Sie erklärte
 mehr, als sie gemessen hatte.
 
@@ -634,11 +643,12 @@ mehr, als sie gemessen hatte.
 
 Zwei weitere Sätze sind später gefallen, beide aus demselben Grund:
 
-- **«Der Merge tötet einen laufenden Job»** — widerlegt durch #60 (siehe 5).
+- **«Der Merge tötet einen laufenden Job»** — widerlegt durch #60, siehe «Der
+  manuelle Aufruf: was belegt ist».
 - **«Die 👀 ist die einzige je beobachtete Reaktion»** — widerlegt durch #59
-  und #60 (siehe 1).
+  und #60, siehe die Formen, in denen sich ein Lauf zeigt.
 
-### Fassungen zur stillen Draft-Eröffnung (4.3)
+### Fassungen zur stillen Draft-Eröffnung
 
 Am 29.8. in vier Review-Runden binnen sechzehn Minuten abgeräumt. Die ersten
 drei wurden je von der nächsten Fassung ersetzt; die vierte nicht — sie wurde
@@ -652,7 +662,8 @@ Krankheit bei allen vieren: aus Stille auf Ursachen schliessen.
    gilt also unabhängig davon.»** Die Fallunterscheidung übersieht den dritten
    Ausgang — ein Trigger, der angenommen wird und unsichtbar scheitert — und
    setzt voraus, dass jeder Lauf einen Status-Kommentar hinterlässt. Beides
-   unbelegt, und den dritten Ausgang hält Abschnitt 5 für #51 längst fest.
+   unbelegt, und den dritten Ausgang hält «Der manuelle Aufruf: was belegt
+   ist» für #51 längst fest.
 3. **«Eine Eröffnung erzeugt nicht verlässlich eine sichtbare Antwort.»** Zu
    allgemein: Antwortet der Connector nach mehr als 317 Sekunden, sieht #65 im
    Messfenster genauso aus und kann trotzdem verlässlich später antworten.
