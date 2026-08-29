@@ -266,12 +266,13 @@ saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
 darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
-**Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
-genau einen Fall. «Ein Draft löst binnen fünf Minuten sichtbar etwas aus»
-ebenfalls nicht — #65 ist die stille Gegenbeobachtung, mit Zeiten und
-abgefragten Kommentaren oben. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
-wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
-freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
+**Eine zusammenfassende Regel steht hier nicht mehr.** Sechs Fassungen sind
+daran gescheitert, aus zwei Zeitreihen eine Aussage über Ursachen zu machen;
+die letzte behauptete noch, «ein Draft löst nie etwas aus» sei widerlegt —
+wofür es einen kausal zugeordneten Fall bräuchte, den weder #64 noch #65
+hergibt. Was gemessen ist, steht oben und in der Tabelle. Wer mehr will,
+braucht Wiederholungen bei freiem Kontingent, wo ein Lauf und nicht nur eine
+Ausfallmeldung zu sehen wäre.
 
 **Ein Push auf denselben Draft blieb 100 Sekunden lang ohne sichtbare Antwort.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
