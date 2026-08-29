@@ -56,9 +56,9 @@ Was dabei leicht übersehen wird — jeweils zu prüfen, ob der Zuwachs die Auss
 trifft:
 
 - **Relative Angaben sind auch Zählungen.** «Die Mehrzahl», «die meisten»,
-  «fast alle» hängen an derselben Aufzählung wie eine Ziffer — aber anders:
-  Ein Zuwachs, der zu ihnen passt, lässt sie stehen (drei von fünf werden vier
-  von sechs), der erste unpassende kippt sie.
+  «fast alle» hängen an derselben Aufzählung wie eine Ziffer. Wann sie kippen,
+  hängt am Verhältnis und ist keiner Faustregel zugänglich — nachrechnen oder
+  streichen.
 - **Ein Bruch hat zwei Zählungen.** Bei «Zwei der vier» kann die eine driften
   und die andere nicht; welche, hängt davon ab, was dazukommt.
 - **Nicht die Länge messen, den Inhalt lesen.** `grep -c` bestätigt eine Zahl,

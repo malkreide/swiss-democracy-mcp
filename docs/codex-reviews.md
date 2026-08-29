@@ -677,6 +677,15 @@ mit, nicht nur die Liste.
 Kommt zu einer Tabelle mit Fehlschlägen ein erfolgreicher Fall hinzu, bleibt die
 Zahl der Fehlschläge richtig. Entscheidend ist, ob der Zuwachs die Aussage
 trifft: Eine Ziffer fällt, sobald er in ihre Bezugsmenge gehört; eine relative
-Angabe erst, wenn er das Verhältnis kippt — «die Mehrzahl» übersteht jeden
-passenden Zuwachs und fällt mit dem ersten unpassenden. Deshalb steht die Regel
-in `CLAUDE.md` als Prüfauftrag und nicht als Verbot von Zahlen.
+Angabe an einem Punkt, den nur das Verhältnis verrät. Deshalb
+steht die Regel in `CLAUDE.md` als Prüfauftrag und nicht als Verbot von Zahlen.
+
+**Der Kipppunkt ist die hartnäckigste Stelle des Abschnitts.** Fassung um
+Fassung wollte angeben, *wann* eine relative Angabe fällt — «mit dem nächsten
+Eintrag», «sobald die Bezugsmenge wächst», «mit dem ersten unpassenden» —, und
+jede war mit einem Zahlenbeispiel zu widerlegen; die späteren entstanden beim
+Beheben der jeweils vorigen. Auch die vorsichtige Umkehrung fiel: «nicht beim
+ersten unpassenden Eintrag» ist falsch, sobald die Aufzählung klein ist — zwei
+von drei werden zwei von vier, und die Mehrzahl ist weg. Die Fassung, die
+hielt, gibt den Zeitpunkt gar nicht an. Wer eine Regel über Zahlen schreibt,
+will sie präzisieren und präzisiert sie falsch.
