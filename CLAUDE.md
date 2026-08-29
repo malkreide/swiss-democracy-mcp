@@ -113,7 +113,7 @@ eine bekannte Schublade zu zwingen.
 | Grund | Erkennbar an |
 |---|---|
 | Kein Befund | Befundlos-Meldung als Issue-Kommentar |
-| PR ist Draft | meist gar nichts — aber am 29.8. kam auf eine Draft-Eröffnung eine Ausfallmeldung; «ein Draft löst nichts aus» trägt nicht mehr |
+| PR ist Draft | meist gar nichts; am 29.8. kam auf *eine* Draft-Eröffnung doch eine Ausfallmeldung, auf die nächste wieder nicht — worauf ein Draft antwortet, ist offen |
 | Kontingent weg | «You have reached your Codex usage limits for code reviews.» |
 | Environment fehlt | «To use Codex here, create an environment for this repo.» |
 | Environment-Meldung trotz Prüfbarkeit | dieselbe Meldung, aber der nächste Aufruf läuft durch |

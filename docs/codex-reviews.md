@@ -214,7 +214,8 @@ PR #64 wurde um 09:52:31 als Draft eröffnet. Elf Sekunden später, um 09:52:42,
 stand die Kontingent-Meldung da, Kommentar-ID `5461650608`. Der einzige
 `@codex review` auf diesem PR trägt dieselbe Sekunde, aber die höhere ID
 `5461650666` — er kam danach, und eine Wirkung geht ihrer Ursache nicht voraus.
-Der PR-Text nennt `@codex` nirgends. Übrig bleibt die Eröffnung.
+Der PR-Text nennt `@codex` nirgends. Als Ursache blieb damit die Eröffnung —
+bis der saubere Versuch elf Minuten später das Gegenteil zeigte.
 
 Halb gelaufen, weil der Versuch einen Draft **ohne** jeden Aufruf verlangte und
 hier acht Sekunden darauf doch einer kam, mit eigener Antwort um 09:52:50. Für
@@ -224,7 +225,28 @@ die Reihenfolge reicht es trotzdem.
 Beobachtet ist eine Ausfallmeldung bei erschöpftem Kontingent. Ob der Connector
 auf jedes PR-Ereignis mit dieser Meldung antwortet und den Review dennoch erst
 ab ready startet, ist offen; dafür bräuchte es denselben Versuch bei freiem
-Kontingent. Belegt ist nur: Ein Draft löst *etwas* aus.
+Kontingent. Belegt ist nur: Auf diesem einen Draft kam vor jedem Aufruf eine
+Antwort.
+
+**Die saubere Replikation misslang — elf Minuten später, im selben Repo.**
+PR #65 wurde um 10:03:12 als Draft eröffnet, diesmal **ohne jeden** `@codex
+review`. Das ist der Versuch, wie er oben verlangt war. Nach 5 min 17 s war
+weder ein Kommentar noch ein Review-Objekt da: das Vierzehnfache der
+beobachteten Obergrenze von 22 Sekunden, und das Kontingent war um 10:00:34
+noch nachweislich gesperrt, die Meldung also fällig gewesen.
+
+Damit fällt die Zuschreibung, nicht die Beobachtung. Auf #64 kam eine Antwort
+vor meinem Aufruf — die Kommentar-IDs sind monoton, daran ändert #65 nichts.
+Aber eine Eröffnung, die auf #65 nichts auslöst, kann auf #64 nicht die
+hinreichende Ursache gewesen sein. Übrig bleiben zwei Lesarten, zwischen denen
+hier nichts entscheidet: Der Connector antwortet auf Eröffnungen nur manchmal,
+oder auf #64 wirkte etwas, das in den Ereignissen nicht sichtbar ist.
+
+**Was also stehen bleibt:** «Ein Draft löst nie etwas aus» ist widerlegt, durch
+genau einen Fall. «Ein Draft löst etwas aus» ist damit nicht belegt — #65 ist
+der Gegenbeleg. Wer sich auf eines von beiden verlässt, verlässt sich auf zu
+wenig. Der Versuch bleibt offen und braucht Wiederholungen, am besten bei
+freiem Kontingent, wo ein Lauf und nicht nur eine Ausfallmeldung zu sehen wäre.
 
 **Ein Push auf denselben Draft löste dagegen nichts aus.** Um 09:56:42 ging ein
 zweiter Commit auf #64 hinaus; 100 Sekunden später stand immer noch keine
@@ -345,6 +367,7 @@ Danach vier Fehlschläge, alle mit derselben Meldung:
 | 09:43:51 | #63 | ready 09:43:48, Merge 09:43:50 | 3 s bzw. 1 s |
 | 09:52:42 | #64 | Eröffnung als Draft um 09:52:31 | 11 s |
 | 09:52:50 | #64 | `@codex review` um 09:52:42 | 8 s |
+| 10:00:34 | #64 | ready 10:00:32, **ohne** Merge | 2 s |
 
 **Der Beginn ist auf 1 h 45 min 18 s eingegrenzt** — zwischen dem letzten
 Erfolg um 07:27:07 und dem ersten Fehlschlag um 09:12:25. Das ist die engste
@@ -352,11 +375,11 @@ Eingrenzung in dieser Sammlung; beim Ausfall vom 21./22.8. war schon das
 entsprechende Fenster 67 Minuten breit, und das Ende blieb ganz offen.
 
 **Zur Dauer gibt sie so wenig her wie die erste.** Zwischen erstem und letztem
-Fehlschlag liegen 40 min 25 s, dichter abgetastet als im August — sechs Punkte
-statt zwei, und die sechs Auslöser sind voneinander unabhängig. Dichter heisst
+Fehlschlag liegen 48 min 9 s, dichter abgetastet als im August — sieben Punkte
+statt zwei, und die sieben Auslöser sind voneinander unabhängig. Dichter heisst
 trotzdem nicht lückenlos: Zwischen zwei Fehlschlägen kann sich das Fenster
 geöffnet und durch den nächsten Auslöser wieder geschlossen haben. Was nach
-09:52:50 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
+10:00:34 geschah, steht hier nicht — bis zum Ende der Sitzung ging kein Lauf
 mehr durch.
 
 **Das Dashboard blieb zu.** `chatgpt.com/codex/cloud/settings/usage` beantwortet
@@ -393,7 +416,13 @@ ab Merge (#63, die beiden Ereignisse liegen zwei Sekunden auseinander). Welches
 der beiden auslöst, trennen diese Beobachtungen nicht — unter beiden Lesarten
 fällt die frühere Grenze.
 
-Beobachtet sind damit 1 bis 22 Sekunden für eine Ausfallmeldung gegen zwei bis
+**Der saubere Fall kam um 10:00:32.** #64 wurde auf ready umgeschaltet, ohne
+Merge dahinter; zwei Sekunden später stand die Meldung da. Hier ist der Auslöser
+eindeutig, weil kein zweites Ereignis danebenliegt. Die Untergrenze stützt sich
+deshalb auf diesen Fall und nicht auf die mehrdeutige Sekunde aus #63 — die
+bleibt stehen, trägt aber nichts.
+
+Beobachtet sind damit 2 bis 22 Sekunden für eine Ausfallmeldung gegen zwei bis
 drei Minuten für einen echten Lauf. Wer nach einer halben Minute etwas sieht,
 sieht keinen Review.
 
