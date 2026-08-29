@@ -592,15 +592,25 @@ Fassungen des Abschnitts sind am 28.8. zwei ungeprüft in `main` gelandet, und
 bestritten, danach ein befundloser Lauf auf dem aktuellen Head. Der Text hat in
 jeder Runde Behauptungen verloren und keine gewonnen.
 
-**Die Frist kann auch null sein.** Auf #76 ging das Review-Objekt zu Head
-`65519e8` um 17:20:46 UTC ein; der Merge trägt denselben Sekundenwert. Welches
-zuerst kam, geben Sekunden nicht her — feiner ist es hinter dem Proxy nicht zu
-messen. Eine Warnung auf dem PR stand gut eine halbe Minute später und kam zu
-spät: Der Befund («die letzte Zeile» einer wachsenden Tabelle) stand damit in
-`main` und brauchte #78. Die Checkliste «kein offener Befund beim Merge» blieb
-unabgehakt und stimmte damit. Neben den 28 Sekunden vom 28.8. und den 81
-Sekunden auf #59 ist das der Fall, der zeigt: Aufpassen hilft hier nicht mehr,
-nur noch Warten.
+**Befund und Merge in derselben gemessenen Sekunde.** Auf #76 ging das
+Review-Objekt zu Head `65519e8` um 17:20:46 UTC ein; der Merge trägt denselben
+Sekundenwert. Was das **nicht** hergibt: einen Abstand von null, und nicht
+einmal die Reihenfolge — feiner ist hinter dem Proxy nicht zu messen. Was es
+hergibt: dass hier keine nutzbare Reaktionszeit nachweisbar ist. Eine Warnung
+auf dem PR stand gut eine halbe Minute später und kam zu spät; der Befund («die
+letzte Zeile» einer wachsenden Tabelle) stand damit in `main` und brauchte #78.
+Die Checkliste «kein offener Befund beim Merge» blieb unabgehakt und stimmte
+damit. Neben den 28 Sekunden vom 28.8. und den 81 Sekunden auf #59 ist das der
+Fall, in dem Aufpassen nichts mehr ausrichtet — wer sicher sein will, wartet
+das Ergebnis ab.
+
+**Der «Abstand null» kam nach seiner Streichung zurück.** Auf `0bd7f78` als
+Befund entfernt, auf `cff9ee5` beim Kürzen desselben Absatzes unbemerkt wieder
+eingebaut und im Folge-Commit erneut gestrichen. Daraus ein Handgriff, der sonst
+nirgends steht: **Wer eine Stelle strafft, prüft, ob die kürzere Fassung eine
+Behauptung zurückholt, die ein Review schon entfernt hat.** Beim Kürzen sucht
+man nach Wörtern, nicht nach Aussagen — und die Aussage ist das, was der Befund
+getroffen hatte.
 
 ---
 

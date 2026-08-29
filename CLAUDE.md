@@ -349,9 +349,10 @@ schlechtes, sondern keines.
 Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
 einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
 Behebung landete in einem Nachzügler. Und am 29.8. lagen auf #59 zwischen
-Befund und Merge 81 Sekunden; der Defekt stand damit in `main`. Auf #76 trugen
-beide denselben Sekundenwert — wer den Review anfordert und weiterarbeitet,
-statt ihn abzuwarten, hat also keine knappe Frist, sondern keine.
+Befund und Merge 81 Sekunden; der Defekt stand damit in `main`. Auf #76 fielen
+beide in dieselbe gemessene Sekunde — auf eine nutzbare Reaktionszeit ist also
+nicht zu bauen. Wer den Review anfordert und weiterarbeitet, statt ihn
+abzuwarten, verlässt sich auf eine Frist, die er nicht kennt.
 
 ## Wenn zwei Agenten dasselbe tun
 
