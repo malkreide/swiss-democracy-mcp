@@ -386,19 +386,34 @@ Fehlschlag des Kommandos vom Befund «nicht enthalten» unterscheiden:
 
 ```bash
 git fetch --prune origin                        # sonst prüfst du von gestern
-sha=$(git rev-parse "origin/claude/<name>")     # genau diesen Stand
-git merge-base --is-ancestor "$sha" "origin/<default>"
-git push --force-with-lease="refs/heads/claude/<name>:$sha" \
-         origin ":refs/heads/claude/<name>"
+sha=$(git rev-parse --verify -q "origin/claude/<name>")  # genau diesen Stand
+git merge-base --is-ancestor "$sha" "origin/<default>" 2>/dev/null; rc=$?
+case $rc in
+  0) git push --force-with-lease="refs/heads/claude/<name>:$sha" \
+              origin ":refs/heads/claude/<name>" ;;
+  1) echo "nicht gemergt — Finger weg" ;;
+  *) echo "Prüfung fehlgeschlagen (Status $rc) — Finger weg" ;;
+esac
 ```
 
-Drei Dinge, die einzeln nicht genügen:
+Was einzeln nicht genügt:
 
 - **Ohne `fetch`** prüfst du `origin/claude/<name>`, eine zwischengespeicherte
   Kopie. Ist sie veraltet und der alte Stand gemergt, meldet die Prüfung
   «gefahrlos», während der Branch längst neue Arbeit trägt.
 - **Ohne Lease** bleibt zwischen Prüfung und Löschen ein Fenster; wandert der
   Branch darin weiter, löscht du die neuen Commits mit.
+- **Ohne das `case`** hängt gar nichts zusammen. `--is-ancestor` liefert 1 für
+  «nicht enthalten», aber ein Block untereinander geschriebener Zeilen löscht
+  trotzdem: An einem lokalen Bare-Repo nachgestellt, Exit-Status 1 und
+  `- [deleted] claude/offen` in derselben Ausgabe. Status 1 heisst «nicht
+  gemergt», alles über 1 heisst «Prüfung kaputt» — beides ist ein Grund, die
+  Finger zu lassen, und beides muss den Push verhindern. Ein fehlender Branch
+  läuft von selbst in den Fehlerzweig: `rev-parse --verify -q` liefert einen
+  leeren Wert, und `--is-ancestor` bricht darauf mit 128 ab.
+- **Ohne `exit`.** Der Block ist zum Kopieren gedacht, auch in eine
+  interaktive Shell — ein `|| exit 1` beendet dort die Sitzung des Lesers,
+  statt bloss den Handgriff abzubrechen.
 - **Ohne die festgehaltene `$sha`** sichert der Lease das Falsche. Er verlangt
   laut `git push -h` nur, dass der *alte Wert des Refs* dem übergebenen Wert
   entspricht — dass dieser Wert der geprüfte ist, stellt er nicht sicher. Wer

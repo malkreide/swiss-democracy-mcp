@@ -91,6 +91,25 @@ Branch bleibt stehen; mit dem aktuellen SHA wird gelöscht. Das Fetch allein
 genügt nicht — zwischen Prüfung und Löschen bleibt sonst ein Fenster, das nur
 der Lease schliesst.
 
+**Bausteine prüfen ist nicht dieselbe Prüfung wie die Anweisung prüfen.** Der
+Lease war einzeln gegengeprüft, in beide Richtungen, und trug trotzdem nichts:
+Die vier Zeilen der Regel standen unverbunden untereinander, und `--is-ancestor`
+liefert für einen ungemergten Branch zwar 1, hält den `push` darunter aber nicht
+auf. Nachgestellt an einem lokalen Bare-Repo — Exit-Status 1 und
+`- [deleted] claude/offen` in derselben Ausgabe. Gefunden hat es ein Prüfer, der
+genau das tat, was ich unterlassen hatte: den Block ausführen, den ein Leser
+kopiert.
+
+Daraus der Handgriff, der in dieser Sammlung sonst fehlt: **Die Gegenprobe
+gehört an das Ding, das benutzt wird — als Ganzes, nicht Zeile für Zeile.** Wer
+Bausteine testet und aus ihnen auf das Ganze schliesst, prüft die eigene
+Konstruktion und nicht die Anweisung.
+
+Diese Regel hat es dreimal gebraucht, bis sie hielt — Frische, Bindung des
+geprüften Werts, Verkettung —, und nach jeder Korrektur stand die Behauptung im
+Raum, jetzt sei sie vollständig. Die Behauptung war jedes Mal das Problem, nicht
+die Lücke.
+
 **Ein veralteter Remote-Tracking-Ref ist kein Branch.** Was diese Erhebung
 auslöste, war ein `origin/claude/…` im lokalen Klon, das ohne `--prune` stehen
 blieb, obwohl GitHub den Branch beim Merge längst gelöscht hatte. Es erklärte
