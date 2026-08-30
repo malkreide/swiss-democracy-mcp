@@ -42,6 +42,13 @@ Handgeschriebene Fixtures kodieren die Annahme des Autors und können sie
 nicht widerlegen. Mindestens eine aufgezeichnete Antwort pro externem
 Endpunkt, mit Aufnahmedatum.
 
+**Dasselbe gilt für eine Absicherung: erst messen, was ohne sie geschieht.**
+Fällt der Fall schon woanders, sichert sie nichts und bringt bloss ihre eigene
+Angriffsfläche mit — eine Absicherung, die man entfernen kann, ohne dass sich
+etwas ändert, ist derselbe Fall wie ein Test, der ohne die Implementierung grün
+bleibt. Ein Beispiel steht in
+[`docs/branch-hygiene.md`](docs/branch-hygiene.md).
+
 ## Zahlen, die eine Aufzählung wiederholen
 
 Eine Zahl im Fliesstext, die eine Liste oder Tabelle daneben zählt, ist eine
