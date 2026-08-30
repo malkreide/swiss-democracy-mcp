@@ -110,6 +110,29 @@ geprüften Werts, Verkettung —, und nach jeder Korrektur stand die Behauptung 
 Raum, jetzt sei sie vollständig. Die Behauptung war jedes Mal das Problem, nicht
 die Lücke.
 
+**Eine überflüssige Absicherung hat ihre eigene Angriffsfläche.** Beim Gattern
+der Löschregel stand `sha=$(git rev-parse …) || exit 1` da, um den Fall «Branch
+existiert nicht» abzufangen. Der Fall war bereits abgedeckt: `rev-parse
+--verify -q` liefert dann einen leeren Wert, und `--is-ancestor` bricht darauf
+mit 128 ab — also im Fehlerzweig, der ohnehin nicht löscht. Die Zeile sicherte
+nichts und brachte einen neuen Defekt mit: in eine interaktive Shell kopiert,
+beendet `exit 1` die Sitzung des Lesers statt des Handgriffs.
+
+Die Form ist eine andere als «Lücke übersehen»: eine Absicherung ergänzt,
+ohne zu messen, was ohne sie geschieht. Der Handgriff dagegen ist billig, hier ein
+einziger Aufruf:
+
+```bash
+git merge-base --is-ancestor "" origin/main; echo $?   # 128
+```
+
+**Wofür der Fall nicht taugt.** Ich hatte die Form zuerst breiter behauptet:
+dass auch der Lease «etwas gesichert habe, das schon sicher war». Das stimmt
+nicht. Ohne Lease bleibt das Fenster zwischen Prüfung und Löschen offen — er
+war nötig und nur nicht hinreichend. Zwei aufeinanderfolgende Fehler sahen sich
+ähnlich und waren es nicht; belegt ist **ein** Fall, und aus einem Fall wird
+hier keine Regel über Absicherungen im Allgemeinen.
+
 **Ein veralteter Remote-Tracking-Ref ist kein Branch.** Was diese Erhebung
 auslöste, war ein `origin/claude/…` im lokalen Klon, das ohne `--prune` stehen
 blieb, obwohl GitHub den Branch beim Merge längst gelöscht hatte. Es erklärte
