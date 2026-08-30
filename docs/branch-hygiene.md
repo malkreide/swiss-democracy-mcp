@@ -74,8 +74,16 @@ sonst nur P2 hervorbrachte. Behoben durch ein `git fetch --prune` davor **und**
 einen Lease am Löschen selbst:
 
 ```bash
-git push --force-with-lease=refs/heads/claude/<name>:<sha> origin :refs/heads/claude/<name>
+sha=$(git rev-parse "origin/claude/<name>")
+git push --force-with-lease="refs/heads/claude/<name>:$sha" origin ":refs/heads/claude/<name>"
 ```
+
+Die festgehaltene `$sha` ist nicht Kosmetik: Ein zweiter Befund auf demselben
+PR zeigte, dass der Lease laut `git push -h` nur verlangt, der *alte Wert des
+Refs* möge dem übergebenen Wert entsprechen. Wird er erst beim Löschen aus dem
+Tracking-Ref aufgelöst und hat ein Hintergrund-Fetch diesen inzwischen
+fortgeschrieben, passt der Lease auf den neuen, ungeprüften Stand — und das
+Löschen gelingt.
 
 An einem lokalen Bare-Repo gegengeprüft: Mit veraltetem erwartetem SHA lehnt
 der Server mit `! [rejected] (delete) -> feature (stale info)` ab und der

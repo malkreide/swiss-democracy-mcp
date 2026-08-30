@@ -385,25 +385,28 @@ Branch im Default-Branch enthalten ist — auf **frisch geholten** Refs, und den
 Fehlschlag des Kommandos vom Befund «nicht enthalten» unterscheiden:
 
 ```bash
-git fetch --prune origin        # sonst prüfst du einen Stand von gestern
-git merge-base --is-ancestor origin/claude/<name> origin/<default>
+git fetch --prune origin                        # sonst prüfst du von gestern
+sha=$(git rev-parse "origin/claude/<name>")     # genau diesen Stand
+git merge-base --is-ancestor "$sha" "origin/<default>"
+git push --force-with-lease="refs/heads/claude/<name>:$sha" \
+         origin ":refs/heads/claude/<name>"
 ```
 
-`origin/claude/<name>` ist eine zwischengespeicherte Kopie. Ist sie veraltet
-und der alte Stand gemergt, meldet die Prüfung «gefahrlos», während der Branch
-längst neue Arbeit trägt — sie löscht dann genau das, wovor sie schützen soll.
+Drei Dinge, die einzeln nicht genügen:
 
-Zwischen Prüfung und Löschen bleibt ein Fenster. Das schliesst erst der Lease,
-der den erwarteten Stand mitschickt:
+- **Ohne `fetch`** prüfst du `origin/claude/<name>`, eine zwischengespeicherte
+  Kopie. Ist sie veraltet und der alte Stand gemergt, meldet die Prüfung
+  «gefahrlos», während der Branch längst neue Arbeit trägt.
+- **Ohne Lease** bleibt zwischen Prüfung und Löschen ein Fenster; wandert der
+  Branch darin weiter, löscht du die neuen Commits mit.
+- **Ohne die festgehaltene `$sha`** sichert der Lease das Falsche. Er verlangt
+  laut `git push -h` nur, dass der *alte Wert des Refs* dem übergebenen Wert
+  entspricht — dass dieser Wert der geprüfte ist, stellt er nicht sicher. Wer
+  ihn erst beim Löschen aus dem Tracking-Ref auflöst, segnet einen Stand ab,
+  den nie jemand geprüft hat.
 
-```bash
-git push --force-with-lease=refs/heads/claude/<name>:<sha> \
-         origin :refs/heads/claude/<name>
-```
-
-Ist der Branch inzwischen weitergewandert, lehnt der Server mit `(stale info)`
-ab, statt zu löschen. An einem lokalen Bare-Repo gegengeprüft, in beide
-Richtungen.
+Ist der Branch weitergewandert, lehnt der Server mit `(stale info)` ab, statt
+zu löschen — an einem lokalen Bare-Repo gegengeprüft, in beide Richtungen.
 
 Nach Namensmuster zu löschen ist der Fehler: Am 30.8.2026 trugen 40 Repos des
 Portfolios einen `claude/codex-env-reason`, in keinem war er gemergt. Die
