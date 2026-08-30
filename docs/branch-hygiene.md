@@ -119,8 +119,9 @@ nichts und brachte einen neuen Defekt mit: in eine interaktive Shell kopiert,
 beendet `exit 1` die Sitzung des Lesers statt des Handgriffs.
 
 Die Form ist eine andere als «Lücke übersehen»: eine Absicherung ergänzt,
-ohne zu messen, was ohne sie geschieht. Der Handgriff dagegen ist billig, hier ein
-einziger Aufruf:
+ohne zu messen, was ohne sie geschieht. Der Handgriff dagegen steht in
+`CLAUDE.md` unter «Tests», wo die Gegenprobe ohnehin verlangt wird — hier
+kostete er einen einzigen Aufruf:
 
 ```bash
 git merge-base --is-ancestor "" origin/main; echo $?   # 128
