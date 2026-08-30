@@ -47,7 +47,7 @@ Ancestry-Prüfung ist das Einzige, was ihn heraushält; die Namen tun es nicht.
 - **Den heutigen Stand.** Die Zahlen sind eine Momentaufnahme. Vor einer
   Löschaktion ist jeder Branch erneut zu prüfen, nicht die Liste zu glauben.
 
-## Zwei Fallen aus derselben Erhebung
+## Fallen aus derselben Erhebung
 
 **Ein fehlgeschlagener Aufruf ist keine Messung.** Beim Prüfen eines
 Branches, den ein `git fetch --prune` lokal gerade entfernt hatte, lief
@@ -61,6 +61,27 @@ in den `||`-Zweig — nicht weil der Branch offen war, sondern weil
 Ausgabe las sich wie ein Befund. Dieselbe Klasse wie der 403, der als
 Fund-Fehlschlag verpackt ist: Entscheidend ist nicht, welchen Zweig ein
 Kommando nimmt, sondern ob es überhaupt geantwortet hat.
+
+**Eine Prüfung auf einem zwischengespeicherten Ref schützt nicht.** Die erste
+Fassung der Regel in `CLAUDE.md` prüfte die Ancestry gegen
+`origin/claude/<name>` — ohne vorher zu holen. Ist diese Kopie veraltet und
+der alte Stand gemergt, meldet die Prüfung «gefahrlos», während der Branch
+inzwischen neue Commits trägt. Die Regel hätte dann genau das gelöscht, wovor
+sie schützen soll, und widersprach dabei dem Absatz unten in dieser Datei.
+
+Gefunden von einem Codex-Review auf #83 — als einziger P1 einer Serie, die
+sonst nur P2 hervorbrachte. Behoben durch ein `git fetch --prune` davor **und**
+einen Lease am Löschen selbst:
+
+```bash
+git push --force-with-lease=refs/heads/claude/<name>:<sha> origin :refs/heads/claude/<name>
+```
+
+An einem lokalen Bare-Repo gegengeprüft: Mit veraltetem erwartetem SHA lehnt
+der Server mit `! [rejected] (delete) -> feature (stale info)` ab und der
+Branch bleibt stehen; mit dem aktuellen SHA wird gelöscht. Das Fetch allein
+genügt nicht — zwischen Prüfung und Löschen bleibt sonst ein Fenster, das nur
+der Lease schliesst.
 
 **Ein veralteter Remote-Tracking-Ref ist kein Branch.** Was diese Erhebung
 auslöste, war ein `origin/claude/…` im lokalen Klon, das ohne `--prune` stehen
