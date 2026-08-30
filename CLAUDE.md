@@ -386,8 +386,8 @@ Fehlschlag des Kommandos vom Befund «nicht enthalten» unterscheiden:
 
 ```bash
 git fetch --prune origin                        # sonst prüfst du von gestern
-sha=$(git rev-parse "origin/claude/<name>") || exit 1   # genau diesen Stand
-git merge-base --is-ancestor "$sha" "origin/<default>"; rc=$?
+sha=$(git rev-parse --verify -q "origin/claude/<name>")  # genau diesen Stand
+git merge-base --is-ancestor "$sha" "origin/<default>" 2>/dev/null; rc=$?
 case $rc in
   0) git push --force-with-lease="refs/heads/claude/<name>:$sha" \
               origin ":refs/heads/claude/<name>" ;;
@@ -408,7 +408,12 @@ Was einzeln nicht genügt:
   trotzdem: An einem lokalen Bare-Repo nachgestellt, Exit-Status 1 und
   `- [deleted] claude/offen` in derselben Ausgabe. Status 1 heisst «nicht
   gemergt», alles über 1 heisst «Prüfung kaputt» — beides ist ein Grund, die
-  Finger zu lassen, und beides muss den Push verhindern.
+  Finger zu lassen, und beides muss den Push verhindern. Ein fehlender Branch
+  läuft von selbst in den Fehlerzweig: `rev-parse --verify -q` liefert einen
+  leeren Wert, und `--is-ancestor` bricht darauf mit 128 ab.
+- **Ohne `exit`.** Der Block ist zum Kopieren gedacht, auch in eine
+  interaktive Shell — ein `|| exit 1` beendet dort die Sitzung des Lesers,
+  statt bloss den Handgriff abzubrechen.
 - **Ohne die festgehaltene `$sha`** sichert der Lease das Falsche. Er verlangt
   laut `git push -h` nur, dass der *alte Wert des Refs* dem übergebenen Wert
   entspricht — dass dieser Wert der geprüfte ist, stellt er nicht sicher. Wer
