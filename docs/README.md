@@ -32,6 +32,7 @@ evidence behind them.
 | File | Contents |
 |---|---|
 | [`codex-reviews.md`](codex-reviews.md) | What was observed about the Codex review bot: the forms a run takes, why it stays silent, and the claims that turned out to be wrong |
+| [`branch-hygiene.md`](branch-hygiene.md) | The portfolio-wide branch survey: which `claude/*` branches are merged leftovers, which still carry unmerged work, and why a name is not a merge status |
 
 They are in German because `CLAUDE.md` is, and because they are read together
 with it.
