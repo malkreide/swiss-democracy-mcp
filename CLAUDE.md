@@ -380,6 +380,18 @@ git ls-remote --heads origin claude/<name> | wc -l
 Steht dort `1`, arbeitet jemand anderes daran — mit Schreibrecht auf denselben
 Ref.
 
+**Ein Branch-Name ist kein Merge-Status.** Vor dem Löschen prüfen, ob der
+Branch im Default-Branch enthalten ist — und den Fehlschlag des Kommandos vom
+Befund «nicht enthalten» unterscheiden:
+
+```bash
+git merge-base --is-ancestor origin/claude/<name> origin/<default>
+```
+
+Nach Namensmuster zu löschen ist der Fehler: Am 30.8.2026 trugen 40 Repos des
+Portfolios einen `claude/codex-env-reason`, in keinem war er gemergt. Die
+Erhebung steht in [`docs/branch-hygiene.md`](docs/branch-hygiene.md).
+
 Ein PR mit leerem Diff wird geschlossen, nicht gemergt. Der Test ist
 `get_files` auf dem PR: kommt `[]` zurück, ändert er nichts. Ein grüner Check
 sagt dazu nichts — die CI prüft den Head, nicht die Differenz zur Basis.
