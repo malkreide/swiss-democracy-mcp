@@ -645,16 +645,21 @@ Fall, in dem Aufpassen nichts mehr ausrichtet — wer sicher sein will, wartet
 das Ergebnis ab.
 
 **Umschalten auf ready ist hier die Merge-Entscheidung.** Der ready-Auslöser
-startet einen Lauf, der zwei bis drei Minuten braucht. Gemessen wurde
-stattdessen:
+startet einen Lauf; sein Ergebnis kam in diesen drei Fällen erst nach dem
+Merge:
 
-| PR | ready | Merge | Abstand |
-|---|---|---|---|
-| #83 | 18:13:32 | 18:13:33 | 1 s |
-| #84 | 18:22:00 | 18:22:02 | 2 s |
-| #86 | 03:41:18 | 03:41:21 | 3 s |
+| PR | ready | Merge | Abstand | Ergebnis des ready-Laufs |
+|---|---|---|---|---|
+| #83 | 18:13:32 | 18:13:33 | 1 s | 18:14:35, 62 s nach dem Merge |
+| #84 | 18:22:00 | 18:22:02 | 2 s | 18:23:40, 98 s danach |
+| #86 | 03:41:18 | 03:41:21 | 3 s | 03:42:50, 89 s danach |
 
-Bei diesen Abständen ist der Merge immer vor dem Ergebnis da. **Was das kostet,
+Die Ergebniszeiten stammen aus der Statuszeile des jeweiligen Laufs mit
+Auslöser «Draft marked ready». **Nicht mit den zwei bis drei Minuten der
+manuellen Aufrufe verrechnen:** Diese ready-Läufe brauchten 62 bis 98 Sekunden
+ab dem Umschalten, der auf #79 gemessene 92. Der Abstand von ein bis drei
+Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
+Fälle ist die Reihenfolge damit nicht behauptet. **Was das kostet,
 ist an #83 gemessen:** Dort lag seit 18:05:51 ein P1 offen — die Löschregel
 löschte ungemergte Branches, an einem Bare-Repo nachgestellt —, und der Merge
 um 18:13:33 nahm ihn mit nach `main`. Behoben erst in #84.
@@ -672,8 +677,11 @@ befundlos genannt hatte.
 **Was dabei wie ein übergangener Fix aussieht, ist keiner.** Auf #85 schien der
 Merge einen bereits gepushten Fix übersprungen zu haben: Befund 18:42:49, Merge
 18:43:04, Fix `509894d`. Die Zeitstempel widerlegen das — der Fix-Commit trägt
-**18:43:48** und entstand 44 Sekunden **nach** dem Merge. Gemergt wurde, während
-die Behebung noch geschrieben wurde.
+**18:43:48**, also 44 Sekunden **nach** dem Merge. Weiter trägt das
+Committer-Datum nicht: Ob die Änderung da schon fertig im Arbeitsverzeichnis
+lag und nur noch nicht committed war, sagt es nicht, und über den
+Push-Zeitpunkt sagt es gar nichts. Belegt ist allein, dass der Merge keinen
+vorhandenen Commit übergehen konnte.
 
 Das ist derselbe Fehlschluss, den «Fassungen, die nicht hielten» für #59/#60
 festhält, und er ist auf demselben Repo ein zweites Mal unterlaufen —
