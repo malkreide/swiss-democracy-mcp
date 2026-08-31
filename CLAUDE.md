@@ -42,12 +42,14 @@ Handgeschriebene Fixtures kodieren die Annahme des Autors und können sie
 nicht widerlegen. Mindestens eine aufgezeichnete Antwort pro externem
 Endpunkt, mit Aufnahmedatum.
 
-**Dasselbe gilt für eine Absicherung: erst messen, was ohne sie geschieht.**
-Fällt der Fall schon woanders, sichert sie nichts und bringt bloss ihre eigene
-Angriffsfläche mit — eine Absicherung, die man entfernen kann, ohne dass sich
-etwas ändert, ist derselbe Fall wie ein Test, der ohne die Implementierung grün
-bleibt. Ein Beispiel steht in
-[`docs/branch-hygiene.md`](docs/branch-hygiene.md).
+**Dasselbe Messen lohnt bei einer Absicherung: Was geschieht ohne sie?** Fällt
+der Fall schon woanders, sichert sie nichts und bringt bloss ihre eigene
+Angriffsfläche mit. Das ist an **einem** Fall belegt — ein `|| exit 1`, das
+einen bereits abgedeckten Fall abfangen sollte und dafür beim Kopieren die
+Shell des Lesers beendete ([`docs/branch-hygiene.md`](docs/branch-hygiene.md)).
+Der Handgriff steht hier, weil das Messen einen einzigen Aufruf kostet, nicht
+weil Absicherungen verdächtig wären: Der Lease im selben Ablauf war nötig und
+nur nicht hinreichend.
 
 ## Zahlen, die eine Aufzählung wiederholen
 
