@@ -686,7 +686,7 @@ Abschnitt einträgt, wurde am 31.8. zwei Sekunden nach dem Umschalten gemergt:
 | 04:07:35 | Lauf startet auf `567e2ce`, Auslöser «Draft marked ready» | Statuszeile, Fassung von 04:07:38 |
 | 04:09:48 | P2-Befund zu `567e2ce` | Review-Objekt |
 
-Was hier zum ersten Mal gemessen nebeneinander steht:
+Was der Ablauf hergibt:
 
 - **Der Merge hält einen betätigten Auslöser nicht an.** Der ready-Lauf
   startete sieben Sekunden *nach* dem Merge. Dass ein Lauf einen Merge
@@ -695,14 +695,15 @@ Was hier zum ersten Mal gemessen nebeneinander steht:
   die schärfere Fassung von «der Rückweg fehlt».
 - **Der Befund kam 140 Sekunden nach dem Merge** und stand damit in `main`.
   Behoben im Folge-PR, dieselbe Reihenfolge wie bei #59/#60 und #85/#86.
-- **Die Überschreibung der Statuszeile ist reproduziert.** Die Zeile mit
+- **Die Überschreibung der Statuszeile, zum dritten Mal.** Die Zeile mit
   «Manual request» verschwand, als der ready-Lauf die Tabelle belegte — nicht
   danebengestellt, ersetzt. Beide Startzeiten stehen oben nur, weil die
   Webhook-Ereignisse die frühere Fassung konserviert haben; auf dem PR selbst
-  ist sie nicht mehr zu sehen. Auf #79 war das eine Einzelbeobachtung, und
-  genau sie war es, mit der ein Befund hier einen falschen Satz von mir
-  widerlegte. Jetzt ist sie unter denselben Bedingungen ein zweites Mal
-  aufgetreten.
+  ist sie nicht mehr zu sehen. Am Verhalten ist damit nichts neu: Dasselbe
+  steht unter «Die sechs Formen, in denen sich ein Lauf zeigt» für #61, wo der
+  ready-Lauf um 07:19:51 den manuellen von 07:18:38 verdrängte, und unter «Der
+  manuelle Aufruf: was belegt ist» für #79. Der Fall zählt als weiterer Beleg,
+  nicht als neuer Befund — und er führt vor, was die Überschreibung kostet.
 
 Was der Fall **nicht** hergibt: welcher der beiden Läufe den Befund von
 04:09:48 lieferte. Das Review-Objekt nennt den Commit, nicht den Auslöser;
