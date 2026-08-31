@@ -656,8 +656,10 @@ Merge:
 
 Die Ergebniszeiten stammen aus der Statuszeile des jeweiligen Laufs mit
 Auslöser «Draft marked ready». **Nicht mit den zwei bis drei Minuten der
-manuellen Aufrufe verrechnen:** Diese ready-Läufe brauchten 62 bis 98 Sekunden
-ab dem Umschalten, der auf #79 gemessene 92. Der Abstand von ein bis drei
+manuellen Aufrufe verrechnen:** Diese ready-Läufe brauchten **63 bis 100
+Sekunden ab dem Umschalten** — die Zahlen in der Tabelle sind die Abstände zum
+Merge und ein bis zwei Sekunden kleiner. Der ready-Lauf auf #79 brauchte 92,
+also dasselbe Feld. Der Abstand von ein bis drei
 Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
 Fälle ist die Reihenfolge damit nicht behauptet. **Was das kostet,
 ist an #83 gemessen:** Dort lag seit 18:05:51 ein P1 offen — die Löschregel
