@@ -175,11 +175,13 @@ werden muss.
 
 Am 29.8. auf #59: Um 07:04:53 stand der P2-Befund am PR, mit Datei und Zeile.
 Um 07:06:14 wurde gemergt — 81 Sekunden später, mit dem befundbehafteten
-Commit als Head. Die Behebung existierte da noch nicht; ihr Commit trägt
-07:06:28. Weiter trägt das Committer-Datum nicht — ob die Änderung schon fertig
-im Arbeitsverzeichnis lag, sagt es nicht. Belegt ist allein, dass der Merge
-keinen vorhandenen Commit übergehen konnte. Der Defekt stand damit in `main`,
-und es brauchte den Nachzügler #60.
+Commit als Head. Der Fix-Commit existierte da noch nicht; er trägt 07:06:28.
+Weiter trägt das Committer-Datum nicht — ob die Behebung schon fertig im
+Arbeitsverzeichnis lag, sagt es nicht. Belegt ist allein, dass der Merge keinen
+vorhandenen Commit übergehen konnte. Den Abschnitt trägt ohnehin nicht die
+Entstehungszeit der Behebung, sondern der Befund selbst: Er stand 81 Sekunden
+lang offen am PR, mit Datei und Zeile, und der Merge nahm ihn mit. Der Defekt
+stand damit in `main`, und es brauchte den Nachzügler #60.
 
 Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
 er geliefert und niemand hat hingesehen. Deshalb steht die Checkliste im
