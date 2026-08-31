@@ -175,8 +175,11 @@ werden muss.
 
 Am 29.8. auf #59: Um 07:04:53 stand der P2-Befund am PR, mit Datei und Zeile.
 Um 07:06:14 wurde gemergt — 81 Sekunden später, mit dem befundbehafteten
-Commit als Head. Die Behebung war da noch nicht geschrieben; ihr Commit trägt
-07:06:28. Der Defekt stand damit in `main`, und es brauchte den Nachzügler #60.
+Commit als Head. Die Behebung existierte da noch nicht; ihr Commit trägt
+07:06:28. Weiter trägt das Committer-Datum nicht — ob die Änderung schon fertig
+im Arbeitsverzeichnis lag, sagt es nicht. Belegt ist allein, dass der Merge
+keinen vorhandenen Commit übergehen konnte. Der Defekt stand damit in `main`,
+und es brauchte den Nachzügler #60.
 
 Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
 er geliefert und niemand hat hingesehen. Deshalb steht die Checkliste im
@@ -670,6 +673,45 @@ um 18:13:33 nahm ihn mit nach `main`. Behoben erst in #84.
 to convert the pull request to draft». Wer umschaltet, hat einen Auslöser
 betätigt, den er nicht mehr anhält.
 
+**#87 hat den Befund beim eigenen Merge vorgeführt.** Der PR, der diesen
+Abschnitt einträgt, wurde am 31.8. zwei Sekunden nach dem Umschalten gemergt:
+
+| Zeit (UTC) | Ereignis | Quelle |
+|---|---|---|
+| 04:06:22 | Lauf startet auf `567e2ce`, Auslöser «Manual request» | Statuszeile, Fassung von 04:06:24 |
+| 04:07:26 | Umschalten auf ready | `pull_request.ready_for_review` |
+| 04:07:28 | gemergt | `merged_at` |
+| 04:07:35 | Lauf startet auf `567e2ce`, Auslöser «Draft marked ready» | Statuszeile, Fassung von 04:07:38 |
+| 04:09:48 | P2-Befund zu `567e2ce` | Review-Objekt |
+
+Was hier zum ersten Mal gemessen nebeneinander steht:
+
+- **Der Merge hält einen betätigten Auslöser nicht an.** Der ready-Lauf
+  startete sieben Sekunden *nach* dem Merge. Dass ein Lauf einen Merge
+  überlebt, hält der Abschnitt «Der manuelle Aufruf: was belegt ist» schon
+  fest; dass einer danach überhaupt erst anläuft, ist der Fall daneben — und
+  die schärfere Fassung von «der Rückweg fehlt».
+- **Der Befund kam 140 Sekunden nach dem Merge** und stand damit in `main`.
+  Behoben im Folge-PR, dieselbe Reihenfolge wie bei #59/#60 und #85/#86.
+- **Die Überschreibung der Statuszeile ist reproduziert.** Die Zeile mit
+  «Manual request» verschwand, als der ready-Lauf die Tabelle belegte — nicht
+  danebengestellt, ersetzt. Beide Startzeiten stehen oben nur, weil die
+  Webhook-Ereignisse die frühere Fassung konserviert haben; auf dem PR selbst
+  ist sie nicht mehr zu sehen. Auf #79 war das eine Einzelbeobachtung, und
+  genau sie war es, mit der ein Befund hier einen falschen Satz von mir
+  widerlegte. Jetzt ist sie unter denselben Bedingungen ein zweites Mal
+  aufgetreten.
+
+Was der Fall **nicht** hergibt: welcher der beiden Läufe den Befund von
+04:09:48 lieferte. Das Review-Objekt nennt den Commit, nicht den Auslöser;
+beide Läufe sassen auf `567e2ce`. Aus dem jeweiligen Start ergäbe sich eine
+Dauer von 206 Sekunden für den manuellen und 133 für den ready-Lauf; beide
+liegen über der Spanne, die für ihre Art bisher gemessen ist, und keine der
+beiden ist damit ausgeschlossen. Die Statuszeile, die es entscheiden könnte,
+führt nur noch einen der beiden.
+Der Fall ist damit dieselbe Sackgasse wie #79, diesmal von Anfang an
+protokolliert.
+
 Daraus der Handgriff: **Bei Änderungen an Regeldateien nicht umschalten, ohne
 den Lauf abzuwarten.** Auf #85 war genau dieser ready-Lauf derjenige, der den
 Befund brachte — 15 Sekunden nachdem ein anderer Lauf denselben Commit
@@ -684,11 +726,16 @@ lag und nur noch nicht committed war, sagt es nicht, und über den
 Push-Zeitpunkt sagt es gar nichts. Belegt ist allein, dass der Merge keinen
 vorhandenen Commit übergehen konnte.
 
-Das ist derselbe Fehlschluss, den «Fassungen, die nicht hielten» für #59/#60
-festhält, und er ist auf demselben Repo ein zweites Mal unterlaufen —
-ausgerechnet im PR-Text von #86, der die Behebung trug. Der Handgriff dagegen
-steht schon dort und gilt unverändert: **Commit-Datum gegen `merged_at` halten,
-bevor man dem Merge etwas zuschreibt.**
+Das ist derselbe Fehlschluss wie in «Der Review ist da, und niemand sieht hin»
+zu #59, und er ist auf demselben Repo ein zweites Mal unterlaufen —
+ausgerechnet im PR-Text von #86, der die Behebung trug. **Eine frühere Fassung
+verwies hier auf «Fassungen, die nicht hielten»; dort ist er nie festgehalten
+worden.** Der Verweis behauptete damit eine Korrektur, die es nicht gab, und
+deckte zugleich zu, dass die #59-Stelle den Fehlschluss selbst beging und
+unbemerkt trug. Beide Stellen sind jetzt auf die Existenzaussage eingeschränkt.
+Der Handgriff: **Commit-Datum gegen `merged_at` halten, bevor man dem Merge
+etwas zuschreibt** — und mehr als «der Commit existierte noch nicht» trägt es
+nicht.
 
 **Der «Abstand null» kam nach seiner Streichung zurück.** Auf `0bd7f78` als
 Befund entfernt, auf `cff9ee5` beim Kürzen desselben Absatzes unbemerkt wieder
