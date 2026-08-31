@@ -171,21 +171,26 @@ Nachlässigkeit, Bedienführung oder etwas Drittes sind von aussen nicht zu
 unterscheiden. Belastbar ist allein, dass vor dem Merge zusätzlich umgeschaltet
 werden muss.
 
-### 4.2 Der Review ist da, und niemand sieht hin
+### 4.2 Der Review ist da, der Merge geht trotzdem durch
 
 Am 29.8. auf #59: Um 07:04:53 stand der P2-Befund am PR, mit Datei und Zeile.
 Um 07:06:14 wurde gemergt — 81 Sekunden später, mit dem befundbehafteten
 Commit als Head. Der Fix-Commit existierte da noch nicht; er trägt 07:06:28.
 Weiter trägt das Committer-Datum nicht — ob die Behebung schon fertig im
 Arbeitsverzeichnis lag, sagt es nicht. Belegt ist allein, dass der Merge keinen
-vorhandenen Commit übergehen konnte. Den Abschnitt trägt ohnehin nicht die
-Entstehungszeit der Behebung, sondern der Befund selbst: Er stand 81 Sekunden
-lang offen am PR, mit Datei und Zeile, und der Merge nahm ihn mit. Der Defekt
-stand damit in `main`, und es brauchte den Nachzügler #60.
+vorhandenen Commit übergehen konnte. Der Defekt stand in `main`, und es
+brauchte den Nachzügler #60.
+
+**Was von aussen messbar ist, ist der Zustand, nicht die Aufmerksamkeit.**
+Belegt ist: Beim Merge war der Befund weder beantwortet noch im Head behoben.
+Ob niemand hingesehen hat oder jemand gelesen und sich dagegen entschieden
+hat, ist an denselben Zeitstempeln nicht zu unterscheiden — eine frühere
+Fassung behauptete hier das Erste und konnte es nie belegen.
 
 Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
-er geliefert und niemand hat hingesehen. Deshalb steht die Checkliste im
-PR-Template auf «beantwortet oder behoben», nicht auf «Review gelaufen».
+er geliefert und der Merge ging trotzdem durch. Deshalb steht die Checkliste
+im PR-Template auf «beantwortet oder behoben», nicht auf «Review gelaufen» —
+sie fragt genau den Zustand ab, der messbar ist.
 
 ### 4.3 Derselbe PR bekommt auf dieselbe Frage verschiedene Antworten
 
@@ -729,8 +734,9 @@ lag und nur noch nicht committed war, sagt es nicht, und über den
 Push-Zeitpunkt sagt es gar nichts. Belegt ist allein, dass der Merge keinen
 vorhandenen Commit übergehen konnte.
 
-Das ist derselbe Fehlschluss wie in «Der Review ist da, und niemand sieht hin»
-zu #59, und er ist auf demselben Repo ein zweites Mal unterlaufen —
+Das ist derselbe Fehlschluss wie in «Der Review ist da, der Merge geht
+trotzdem durch» zu #59, und er ist auf demselben Repo ein zweites Mal
+unterlaufen —
 ausgerechnet im PR-Text von #86, der die Behebung trug. **Eine frühere Fassung
 verwies hier auf «Fassungen, die nicht hielten»; dort ist er nie festgehalten
 worden.** Der Verweis behauptete damit eine Korrektur, die es nicht gab, und
