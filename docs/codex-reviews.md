@@ -364,6 +364,19 @@ Dazu kommt, dass sich die beiden Läufe auf #79 nicht auseinanderhalten lassen:
 Die Statuszeile nannte zuletzt «Draft marked ready» und hatte den manuellen
 Auslöser von 18:32:05 damit überschrieben.
 
+**Auf #88 dann ohne diesen Vorbehalt.** Am 31.8. war der ready-Lauf der einzige
+im Fenster, und seine Zeile blieb unüberschrieben: ready 04:43:45, Start
+04:43:50, Merge 04:43:53, «Completed» um 04:46:12 — 139 Sekunden nach dem
+Merge. Angekommen ist nichts: kein Review-Objekt zu `1466fd7`, und die einzige
+Befundlos-Meldung trägt 04:29:23, liegt damit **vor** dem Start dieses Laufs
+und gehört zum manuellen Aufruf davor. Dieselbe Prüfung wie bei #60, nur dass
+hier kein zweiter Lauf danebensteht, der die Zuordnung zerreden könnte.
+
+Das klärt aber nur, *welcher* Lauf kein Ergebnis lieferte, nicht warum. Ob er
+nichts fand oder ob nach dem Schliessen nichts mehr zugestellt wird, ist auch
+hier nicht zu unterscheiden — die Frage darüber bleibt offen, und eine saubere
+Zuordnung beantwortet sie nicht.
+
 **Zugestellt wird aber durchaus.** Auf #80 wurde um 18:48:36 gemergt, und um
 18:48:45 — neun Sekunden danach — erschien ein Review-Objekt mit Befund zum
 Head `836568f`. Ein Ergebnis kann den Merge also überholen; dass auf #60 und
@@ -670,7 +683,12 @@ manuellen Aufrufe verrechnen:** Diese ready-Läufe brauchten **63 bis 100
 Sekunden ab dem Umschalten** — die Zahlen in der Tabelle sind die Abstände zum
 Merge und ein bis zwei Sekunden kleiner. Der Abstand von ein bis drei
 Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
-Fälle ist die Reihenfolge damit nicht behauptet. **Was das kostet,
+Fälle ist die Reihenfolge damit nicht behauptet. **Die Spanne ist auch kein
+Deckel:** Der ready-Lauf auf #88 stand am 31.8. um 04:43:50 auf «Running» und
+um 04:46:12 auf «Completed», also 142 Sekunden reine Laufzeit. Das ist aus der
+Statuszeile des Laufs gemessen und damit ab seinem Start, während die 63 bis
+100 Sekunden ab dem Umschalten laufen — einem Zeitpunkt wenige Sekunden davor.
+In beiden Bezugsrahmen liegt der Wert über der Spanne. **Was das kostet,
 ist an #83 gemessen:** Dort lag seit 18:05:51 ein P1 offen — die Löschregel
 löschte ungemergte Branches, an einem Bare-Repo nachgestellt —, und der Merge
 um 18:13:33 nahm ihn mit nach `main`. Behoben erst in #84.
