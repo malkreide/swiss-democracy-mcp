@@ -377,6 +377,19 @@ nichts fand oder ob nach dem Schliessen nichts mehr zugestellt wird, ist auch
 hier nicht zu unterscheiden — die Frage darüber bleibt offen, und eine saubere
 Zuordnung beantwortet sie nicht.
 
+**Und gleich noch einmal auf #89,** dem PR, der den #88-Fall eintrug. Sein
+ready-Auslöser um 05:11:16 startete einen Lauf, gemergt wurde 05:11:19, und um
+05:12:27 stand er auf «Completed» — 68 Sekunden nach dem Merge. Wieder kam
+nichts an: `get_reviews` leer, und die einzige Befundlos-Meldung trägt 04:55:50
+und gehört zum manuellen Aufruf davor. Auch hier stand kein zweiter Lauf
+daneben.
+
+Die Laufzeit ist diesmal **nicht** zu haben: Die Statuszeile zeigt nur noch
+«Completed», ihre «Running»-Fassung ist überschrieben, und kein Ereignis hat
+sie festgehalten. Belegt sind Auslöser und Ende, nicht der Start — dass für
+#88 eine Dauer dasteht und hier keine, liegt nicht an den Läufen, sondern
+daran, welche Fassung der Zeile zufällig konserviert wurde.
+
 **Zugestellt wird aber durchaus.** Auf #80 wurde um 18:48:36 gemergt, und um
 18:48:45 — neun Sekunden danach — erschien ein Review-Objekt mit Befund zum
 Head `836568f`. Ein Ergebnis kann den Merge also überholen; dass auf #60 und
