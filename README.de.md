@@ -147,9 +147,23 @@ aus der jeweils anderen Aera wird abgewiesen.
 Beide Revisionen sind in
 [`tests/test_protocol_version.py`](tests/test_protocol_version.py) gepinnt und
 werden gegen das installierte SDK geprueft; ein Dependabot-Bump von `mcp` kann
-also keine der beiden still verschieben. Dieser Server baut keine ASGI-App, durch die sich ein `initialize`
-schicken liesse; das Gate sichert deshalb die SDK-Konstanten statt einer
-gemessenen Antwort — die schwaechere Form, benannt statt verschwiegen.
+also keine der beiden still verschieben. Daneben schickt
+[`tests/test_server_identity.py`](tests/test_server_identity.py) echte Anfragen
+durch die zusammengebaute ASGI-App: ein Pro-Request-Envelope wird mit der
+Werkzeugliste beantwortet, und ein `initialize`, das die moderne Revision
+anbietet, bekommt weiterhin die Handshake-Obergrenze zurueck. Die Konstanten
+sagen, WELCHE Revisionen das SDK kennt; die Messung sagt, welche dieser Server
+ausliefert.
+
+**Server-Identitaet.** In der Handshake-Aera steht `serverInfo` genau einmal, in
+der `initialize`-Antwort. Die moderne Aera hat keinen Handshake und stempelt die
+Identitaet stattdessen auf **jede** Antwort, als
+`_meta["io.modelcontextprotocol/serverInfo"]`. `Implementation.version` ist im
+Schema ein Pflichtfeld, das das SDK mit `""` vorfuellt, wenn der Konstruktor es
+auslaesst — eine nicht gesetzte Version ist also keine Luecke, sondern ein Wert
+auf dem Draht, und einer, den eine gruene Suite nicht zeigt. Dieser Server
+uebergibt seine Paketversion ausdruecklich; `test_server_identity.py` misst sie
+auf beiden Draehten, mit einem blanken `MCPServer` als Negativkontrolle.
 
 Zu beachten: `LATEST_PROTOCOL_VERSION` im SDK ist ein Alias auf die **moderne**
 Aera, nicht auf die Handshake-Aera — wer nur dagegen pinnt, laesst genau die

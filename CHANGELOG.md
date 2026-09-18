@@ -6,7 +6,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **`serverInfo.version` war leer — auf jeder Antwort, in beiden Ären.** Der
+  Server meldete jedem Aufrufer `{"name": "swiss_democracy_mcp", "version": ""}`,
+  obwohl das Paket seine Version kennt.
+
+  Ursache: `Implementation.version` ist im Schema ein *Pflichtfeld*, und
+  `MCPServer` füllt es mit `""` vor, wenn der Aufruf `version=` auslässt. Ein
+  Pflichtfeld, das sich selbst befriedigt, fällt nirgends auf — die Suite war
+  vollständig grün (beim Fund 103 Tests), während der Leerwert produktiv auf
+  dem Draht stand.
+
+  Unter Spec 2026-07-28 wiegt das schwerer als davor. Die Handshake-Ära nennt
+  `serverInfo` einmal, in der `initialize`-Antwort; die moderne Ära hat keinen
+  Handshake und stempelt die Identität stattdessen als
+  `_meta["io.modelcontextprotocol/serverInfo"]` auf **jede** Antwort (Spec
+  #3002). Der Leerwert war dort nicht eine Auskunft, sondern jede.
+
+  Gemessen durch die zusammengebaute ASGI-App, vorher und nachher. `title` und
+  `website_url` fahren im selben Stempel mit und sind jetzt ebenfalls gesetzt.
+
+### Added
+
+- **`tests/test_server_identity.py`** — der gemessene Teil, den die
+  Protokoll-Zusicherungen bisher nicht hatten. Echte Anfragen durch den
+  zusammengebauten ASGI-Stack belegen, dass der Pro-Request-Envelope von
+  2026-07-28 wirklich bedient wird (Werkzeugliste, `server/discover`), dass der
+  Identitäts-Stempel die Paketversion trägt, und dass ein `initialize`, das die
+  moderne Revision anbietet, weiterhin die Handshake-Obergrenze zurückbekommt.
+  Ein blanker `MCPServer` dient als Negativkontrolle: er stempelt `""`.
+
+  Jede neue Zusicherung wurde einzeln neutralisiert; die Gegenprobe deckte auf,
+  dass `title` zunächst von keinem Test gehalten wurde, und hat die Zeile
+  nachgezogen.
+
 ### Changed
+
+- **`REPOSITORY_URL` ist jetzt eine Quelle.** Die Repo-Adresse stand zweimal im
+  Code — im User-Agent und (neu) in `Implementation.websiteUrl`. Der User-Agent
+  leitet sich jetzt daraus ab; ein Test hält fest, dass die Ableitung dieselbe
+  Zeichenkette ergibt wie das Literal davor.
+
+- **Falsche Begründung in Doku und Test korrigiert.** `README.md`,
+  `README.de.md` und `tests/test_protocol_version.py` behaupteten, dieses Repo
+  baue keine ASGI-App, durch die sich ein `initialize` schicken liesse, und
+  begründeten damit die konstantenbasierte Form der Protokoll-Zusicherungen.
+  Das stimmte nicht: `_build_http_app` gibt es, und `test_cors.py` schickt seit
+  jeher echte Anfragen hindurch.
 
 - **BRECHEND: `MCP_CORS_ORIGINS` stand auf `"*"`.** Jede Website im Netz durfte
   diesen Server aus dem Browser eines Besuchers aufrufen, und niemand hatte das

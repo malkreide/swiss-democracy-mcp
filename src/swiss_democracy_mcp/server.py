@@ -64,7 +64,11 @@ SRGSSR_TOKEN_URL = f"{SRGSSR_BASE}/oauth/v1/accesstoken"
 POLIS_BASE = f"{SRGSSR_BASE}/polis/v1"
 
 TIMEOUT = 30.0
-USER_AGENT = f"swiss-democracy-mcp/{__version__} (github.com/malkreide/swiss-democracy-mcp)"
+# Eine Quelle für die Repo-Adresse: sie steht im User-Agent, den jede
+# ausgehende Anfrage trägt, und in `Implementation.websiteUrl`, das Spec
+# 2026-07-28 auf jede Antwort stempelt. Zwei Literale wären zwei Wahrheiten.
+REPOSITORY_URL = "https://github.com/malkreide/swiss-democracy-mcp"
+USER_AGENT = f"swiss-democracy-mcp/{__version__} ({REPOSITORY_URL.removeprefix('https://')})"
 
 # ---------------------------------------------------------------------------
 # Settings (audit findings ARCH-004 / SEC-013 / ARCH-005)
@@ -667,8 +671,28 @@ CACHE_HINTS = {
     "server/discover": CacheHint(ttl_ms=LIST_CACHE_TTL_MS, scope="public"),
 }
 
+# `Implementation.version` ist im Schema ein PFLICHTFELD, und `MCPServer` füllt
+# es mit `""` vor, wenn der Aufruf es auslässt. Ein Pflichtfeld, das sich selbst
+# befriedigt, fällt nirgends auf: eine vollständig grüne Suite, und trotzdem
+# meldete dieser Server jedem Aufrufer `version: ""` — in BEIDEN Ären, gemessen
+# durch die zusammengebaute ASGI-App.
+#
+# Unter 2026-07-28 wiegt das schwerer als davor. Die Handshake-Ära nennt
+# `serverInfo` einmal in der `initialize`-Antwort; die moderne Ära hat keinen
+# Handshake und stempelt die Identität stattdessen als
+# `_meta["io.modelcontextprotocol/serverInfo"]` auf JEDE Antwort (Spec #3002).
+# Der Leerwert war dort also nicht eine Auskunft, sondern jede.
+#
+# `title` und `website_url` fahren im selben Stempel mit. Sie sind optional —
+# `exclude_none=True` lässt Ungesetztes weg —, aber sie sind genau das, wofür
+# der Stempel da ist, und beide Werte gibt es im Repo bereits.
+# `description` bleibt aus: `instructions` sagt dasselbe ausführlicher, und
+# eine zweite Fassung desselben Texts driftet.
 mcp = MCPServer(
     "swiss_democracy_mcp",
+    version=__version__,
+    title="Swiss Democracy MCP",
+    website_url=REPOSITORY_URL,
     cache_hints=CACHE_HINTS,
     lifespan=_lifespan,
     instructions=(
