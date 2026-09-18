@@ -851,8 +851,9 @@ Draft, bis wieder ein Lauf durchgeht.
 ### Die Episode vom 18.9.2026
 
 Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
-«Vier Runden an einem kurzen Test»). Der fünfte Aufruf lief auf die Sperre, und
-sie hielt über alle weiteren Versuche:
+«Vier Runden an einem kurzen Test»). Der nächste Aufruf auf demselben PR lief
+auf die Sperre, und jeder weitere Versuch lief ebenso auf sie — auch die
+anderer PRs —, bis Stunden später wieder einer durchlief:
 
 | Zeit (UTC) | PR | Auslöser |
 |---|---|---|
@@ -863,24 +864,43 @@ sie hielt über alle weiteren Versuche:
 | 06:46 | #99 | `@codex review` |
 | 06:51 | #99 | Draft → ready |
 | 07:04 | #100 | `@codex review` |
+| 07:06 | #100 | Draft → ready |
 | 07:32:49 | #98 | `@codex review` auf dem bereits gemergten PR |
+| 07:48 | #101 | `@codex review` |
+| 08:51 | #101 | `@codex review` |
 
-**Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Der Eintrag
-«Draft → ready» auf #99 ist der Lauf, den das Umschalten selbst anstösst —
+**Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
+mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
 dieselbe Meldung, kein Ergebnis. Umschalten ist also kein Weg an einer
-stehenden Sperre vorbei. Für die übrigen Auslöser (PR-Eröffnung, `@codex security review`) ist
-das nicht gemessen.
+stehenden Sperre vorbei. Für die übrigen Auslöser (PR-Eröffnung,
+`@codex security review`) ist das nicht gemessen.
 
 Ein Zusammenhang zwischen den gelieferten Läufen und der Sperre ist **nicht
 belegt** — was sonst noch auf das Konto ging, ist von hier aus nicht zu sehen.
 Belegt ist die Reihenfolge: erst Ergebnisse, dann Fehlschläge.
 
-**Wann sie fiel, geben diese Messpunkte nicht her.** Sie belegen Zeitpunkte, an
-denen sie stand, und keinen, an dem sie fiel; eine Dauer daraus abzuleiten wäre
-erfunden. Das ist dieselbe Lage wie beim GitHub-Rate-Limit in `CLAUDE.md`, wo
-gesperrte Zeitpunkte ebenfalls keine Frist ergeben. Die Tabelle ist
-fortzuschreiben, solange die Sperre hält — Sätze daneben, die ihre Zeilen oder
-ihre Spanne zählen, veralten damit.
+**Sie ist wieder aufgegangen, und das grenzt den Zeitpunkt ein.** Um 08:51 wies
+sie noch ab. Um 09:54:12 lief ein Aufruf auf demselben PR an, und um 09:57:00
+stand die Befundlos-Meldung zu Commit `42f7517` da — das erste Ergebnis seit
+06:35. Sie fiel also zwischen diesen beiden Zeitpunkten; wo genau, geben die
+Messpunkte nicht her, weil dazwischen niemand nachfragte.
+
+Eine Dauer folgt daraus nicht, und auch keine Untergrenze dafür. **Die Tabelle
+ist eine Punktmessung:** Jede Zeile belegt eine Absage in ihrem Augenblick,
+keine Strecke bis zur nächsten. Bei einem rollenden Fenster kann sich das
+Kontingent zwischen zwei Zeilen geöffnet und durch Aktivität, die von hier aus
+nicht zu sehen ist, wieder erschöpft haben — «Wie das Kontingent funktioniert»
+hält das für die Episode vom 29.8. schon fest. Ob über die ganze Reihe dieselbe
+Sperre stand, ist damit offen.
+
+Was 08:51 und 09:54 eingrenzen, ist deshalb ein **Endpunkt** und keine Spanne:
+der Zeitpunkt, an dem zuletzt eine aufging. Warum dort — abgelaufenes
+Fünf-Stunden-Fenster, etwas anderes —, ist von hier aus nicht zu sehen. Wer aus
+einer Episode eine Wartezeit ableitet, hat sie erfunden: dieselbe Lage wie beim
+GitHub-Rate-Limit in `CLAUDE.md`, nur mit einem Endpunkt mehr.
+
+Die Tabelle ist fortzuschreiben, solange eine Sperre hält — Sätze daneben, die
+ihre Zeilen oder ihre Spanne zählen, veralten damit.
 
 **Auch der Rückgriff auf einem gemergten PR fällt darunter.** Die beiden
 #98-Aufrufe um 06:44:08 und 07:32:49 galten dem Merge-Commit `2e80539`, dessen
