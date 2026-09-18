@@ -60,6 +60,18 @@ Beide Male war der Aufruf selbst eine Thread-Antwort. Ob die Form dem Auslöser
 folgt, ist damit nicht belegt, sondern naheliegend — und ob die Environment-
 Meldung ebenso kann, ist gar nicht beobachtet.
 
+**Zwei weitere Fälle am selben Tag, beide gleichsinnig.** Auf #108 kamen zwei
+Befundlos-Meldungen um 11:01:23 und 11:09:16 als Thread-Antworten, und beide
+Aufrufe waren selbst Thread-Antworten. Vier gleichsinnige Beobachtungen also —
+und immer noch kein Fall, der die Vermutung widerlegen könnte: Ein befundlos
+endender Lauf, der aus einem *Issue-Kommentar* angestossen wurde, ist nie
+daraufhin nachgesehen worden, wo seine Meldung landete. Alle vier stammen
+zudem aus diesem Repo.
+
+Für die Praxis ändert das nichts — die dritte Abfrage ist ohnehin zu fahren.
+Es verschiebt nur die Erwartung: Wer aus einem Thread heraus anfordert, sucht
+die Antwort zuerst dort.
+
 ### Der Schlusssatz der Befundlos-Meldung wechselt
 
 Beobachtet: «Swish!», «Delightful!», «Keep it up!», «More of your lovely PRs
@@ -117,6 +129,28 @@ Vorbehalte:
   Lauf vom ready-Lauf, aber nicht zwei manuelle voneinander. Auf #95 trugen
   beide «Manual request» — was das für die Zuordnung heisst, steht unter «Der
   manuelle Aufruf: was belegt ist».
+
+  **Am 18.9. gab die Commit-Spalte gar nichts mehr her.** Auf #108 sassen zwei
+  Läufe auf demselben `e3141f6`, und die Zeile trug sie nacheinander:
+
+  | Zeit (UTC) | Status | Commit | Auslöser |
+  |---|---|---|---|
+  | 10:59:08 | 🔄 Running | `e3141f6` | Manual request |
+  | 11:01:25 | ✅ Completed | `e3141f6` | Manual request |
+  | 11:01:49 | 🔄 Running | `e3141f6` | **Draft marked ready** |
+  | 11:04:56 | ✅ Completed | `e3141f6` | Draft marked ready |
+
+  Im Fall auf dem gemergten #93 trennte der Auslöser-Name zwei Läufe, deren
+  Commits sich ohnehin unterschieden. Hier ist er das Einzige, was sie trennt.
+
+  Zur Sackgasse von #79 und #87 wurde es trotzdem nicht — und der Unterschied
+  liegt nicht am Commit: Auf #87 sassen beide Läufe ebenfalls auf einem und
+  demselben, und dort blieb die Zuordnung offen. Er liegt daran, dass die
+  beiden Läufe hier **nicht überlappten**. Der manuelle stand rund 24 Sekunden vor dem Start des
+  ready-Laufs auf «Completed», und jeder stellte sein eigenes Ergebnis zu: eine
+  Befundlos-Meldung um 11:01:23, ein Review-Objekt um 11:04:52. Was die
+  Zuordnung in jenen Fällen unmöglich machte, war die Gleichzeitigkeit, nicht
+  der geteilte Commit.
 
   Wer wissen muss, was geprüft wurde, liest deshalb das Ergebnis, nicht die
   Statuszeile.
@@ -202,6 +236,25 @@ Ergebnisse zusammenzunehmen. Drei Läufe auf denselben Defekt, neun Minuten:
 
 Zwei Freisprüche und ein Treffer für ein und denselben Fehler. Gefunden hat ihn
 nur der Lauf, den niemand mit Absicht angestossen hat.
+
+**Am 18.9. auf #108 derselbe Ablauf noch einmal**, an einer Regeldatei:
+
+| Zeit | Commit | Auslöser | Urteil |
+|---|---|---|---|
+| 11:01:23 | `e3141f6` | `@codex review` | befundlos |
+| 11:04:52 | `e3141f6` | Draft → ready | **P2, zutreffend** |
+
+Derselbe Ausgang: Der Befund kam aus dem Lauf, den niemand mit Absicht
+angestossen hat. Mit dem Fall auf #85 unter «Zum Verfahren für Doku-PRs» sind
+das drei Paare, in denen ein Lauf einen Commit befundlos nannte und ein
+zweiter auf **demselben** Commit einen zutreffenden Befund lieferte. Die
+Abstände — 15 Sekunden, 287 und 209 — geben dabei keine Spanne her, sondern
+zeigen nur, dass der Abstand nichts erklärt.
+
+**Neu ist der dritte Fall in einem Punkt: Er kostete nichts.** Am 29.8. stand
+der Defekt in `main`, als der ready-Lauf ihn fand; auf #85 ebenso. Am 18.9.
+war der Lauf abgewartet worden, die Behebung ging in denselben PR, der
+Folge-PR entfiel.
 
 ---
 
@@ -1195,6 +1248,10 @@ Was der Ablauf hergibt:
   ready-Lauf um 07:19:51 den manuellen von 07:18:38 verdrängte, und unter «Der
   manuelle Aufruf: was belegt ist» für #79. Der Fall zählt als weiterer Beleg,
   nicht als neuer Befund — und er führt vor, was die Überschreibung kostet.
+  Ein vierter kam am 18.9. auf #108 dazu; er steht unter «Die sechs Formen, in
+  denen sich ein Lauf zeigt», weil er zeigt, woran die Zuordnung in solchen
+  Fällen wirklich scheitert — nicht am geteilten Commit, sondern daran, ob die
+  Läufe einander überlappen.
 
 Was der Fall **nicht** hergibt: welcher der beiden Läufe den Befund von
 04:09:48 lieferte. Das Review-Objekt nennt den Commit, nicht den Auslöser;
@@ -1210,6 +1267,19 @@ Daraus der Handgriff: **Bei Änderungen an Regeldateien nicht umschalten, ohne
 den Lauf abzuwarten.** Auf #85 war genau dieser ready-Lauf derjenige, der den
 Befund brachte — 15 Sekunden nachdem ein anderer Lauf denselben Commit
 befundlos genannt hatte.
+
+**Am 18.9. ist er zum ersten Mal befolgt und dabei gemessen worden.** Auf
+#108, ebenfalls einer Regeldatei, nannte ein manueller Lauf `e3141f6` um
+11:01:23 befundlos. Statt zu mergen, wurde umgeschaltet und der ausgelöste
+Lauf abgewartet; er fand um 11:04:52 einen zutreffenden P2 auf demselben
+Commit. Die Behebung ging in denselben PR.
+
+Was der Fall **nicht** hergibt: dass der ready-Lauf gründlicher sei. Dreimal
+war er der findende, und dreimal ist «Ein Ergebnis sagt etwas über den Lauf,
+nicht über den Text» die einfachere Erklärung — die Läufe streuen, und der
+ready-Lauf ist bei diesem Verfahren bloss derjenige, der zuletzt kommt. Der
+Handgriff verlangt nicht, ihn für besser zu halten, sondern nur, keinen Lauf
+ungelesen zu lassen.
 
 **Was dabei wie ein übergangener Fix aussieht, ist keiner.** Auf #85 schien der
 Merge einen bereits gepushten Fix übersprungen zu haben: Befund 18:42:49, Merge
