@@ -353,6 +353,23 @@ Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und
 **nach jeder Korrekturrunde erneut anfordern**, auf dem neuen Head. Auf ready
 geht es, wenn ein Lauf auf dem aktuellen Head nichts mehr findet.
 
+**Das Umschalten löst selbst einen Lauf aus, und damit endet das Verfahren
+nicht.** Er prüft denselben Head und kann anders urteilen als der, den du
+abgewartet hast — ein befundloser Lauf ist kein Freispruch, das gilt auch für
+deinen. Vor dem Merge steht deshalb eine Wahl, und beide Zweige verlangen
+etwas: ihn abwarten, oder den offenen Ausgang ausdrücklich in Kauf nehmen und
+das hinschreiben. Stillschweigend darüber hinweggehen ist keiner von beiden.
+
+**Auf die Zustellung nach dem Merge ist dabei nicht zu bauen.** Ein Lauf, der
+erst nach dem Schliessen endet, kann sein Ergebnis auch gar nicht mehr
+abliefern; dann steht auf dem PR nur «Completed», und ob er etwas fand, ist
+nicht mehr zu erfahren. «Abwarten, bis es doch noch kommt» ist also keine
+Strategie. Wer es wissen muss, ruft den Review auf dem gemergten PR neu auf —
+er läuft dort an und prüft dann den Merge-Commit.
+
+Am 18.9. lagen auf #92 zwischen dem Start des ready-Laufs und dem Merge
+17 Sekunden. Sein Urteil ist bis heute nicht zu haben.
+
 Das ist ein Abbruchkriterium, kein Gütesiegel: Derselbe Text kann in der
 nächsten Runde wieder einen Befund tragen, und irgendwo muss die Schleife
 enden. Sie endet aus praktischen Gründen, nicht weil der Stand bewiesen sauber
