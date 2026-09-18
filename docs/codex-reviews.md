@@ -18,6 +18,11 @@ erste Gruppe
 schliesst mit der Fassung, die stehen geblieben ist; sie gehört nicht zu den
 gescheiterten und steht dort, weil der Unterschied zu ihnen der Punkt ist.
 
+Eine dritte Gruppe steht daneben und gehört nicht zu den beiden: «Vier
+Fassungen, die kein Review getroffen hat». Sie erklärten nicht zu viel, sie
+rechneten falsch — und niemand hat es bemerkt, weil während ihrer Entstehung
+kein Lauf mehr durchging.
+
 Eine Gesamtzahl steht hier nicht. Am 29.8. wurde sie in drei aufeinander
 folgenden Review-Runden dreimal korrigiert: «sechs» gegen «sieben» an zwei
 Stellen, dann eine Überschrift mit «drei» über vier Einträgen, dann «acht»,
@@ -1674,6 +1679,54 @@ Krankheit bei allen vieren: aus Stille auf Ursachen schliessen.
 
 Eine fünfte Fassung gibt es nicht: An der Stelle steht jetzt die Sekundenzahl
 und sonst nichts.
+
+### Vier Fassungen, die kein Review getroffen hat (18.9.2026)
+
+Alles oben in diesem Abschnitt ist von einem Review abgeräumt worden. Am
+Nachmittag des 18.9. lief das Kontingent leer, und die Arbeit ging weiter. Was
+danach falsch war, fiel nicht bei einer Kontrolle auf, sondern beim
+Weiterarbeiten — jedes Mal, weil der nächste Nachtrag zufällig dieselben Zahlen
+noch einmal anfasste.
+
+| # | Was falsch war | Wobei es auffiel |
+|---|---|---|
+| 1 | «122 Sekunden» zwischen Befund und Merge auf #110 | beim Zusammenstellen des nächsten Nachtrags, **vor** dem Merge |
+| 2 | «93 Sekunden» als Eingrenzung des Zugehens | beim Nachrechnen für den nächsten Nachtrag, **nach** dem Merge |
+| 3 | dieselbe Zahl stand an **zwei** Stellen; korrigiert war eine | beim Auflösen eines Merge-Konflikts |
+| 4 | drei Merge-Zeiten (#112, #113, #114) | beim Zusammenführen zweier Fassungen |
+
+**Zwei Klassen, und beide haben ihre Regel neben sich stehen.**
+
+*Die Benachrichtigung statt der Primärquelle.* Fall 1 und Fall 4 sind zusammen
+vier Zeitangaben, genommen aus den Ankunftszeiten der Webhook-Meldungen statt
+aus `created_at`, `submitted_at` oder dem Committer-Datum. Die Abweichung
+beträgt ein bis vier Sekunden — klein genug, um nicht aufzufallen, gross
+genug, um eine Spanne zu verfälschen. **Drei davon stammen aus dieser Sitzung,
+eine aus einer anderen**, die unabhängig an derselben Datei arbeitete. Der
+Griff zur Benachrichtigung ist offenbar der naheliegende: Sie liegt vor, die
+Primärquelle kostet eine Abfrage.
+
+*Die Halbkorrektur.* Fall 3 ist der vierte an diesem Tag, an dem eine
+zurückgenommene Aussage an der gemeldeten Stelle verschwand und anderswo
+stehen blieb — zweimal im PR-Text, während der Diff bereits korrigiert war,
+einmal in einem Querverweis zwölfhundert Zeilen entfernt, einmal in der
+Einleitung über der Tabelle, in der die Zahl richtiggestellt worden war. Der
+Handgriff dagegen kostet einen Aufruf: **nach jeder Rücknahme den Volltext
+nach der zurückgenommenen Aussage durchsuchen, den PR-Text eingeschlossen.**
+Er stand nach dem zweiten Fall schon fest und wurde beim dritten und vierten
+nicht angewandt.
+
+**Was der Abschnitt nicht hergibt: dass Weiterarbeiten eine Prüfung ersetzt.**
+Alle vier fielen zufällig auf, weil der nächste Nachtrag dieselbe Stelle
+berührte. Wie viele Fehler derselben Art unberührt blieben, ist unbekannt —
+und aus vier Funden folgt keine Fundrate. Belegt ist allein, dass sie den
+Punkt überlebt haben, an dem sie hätten auffallen sollen.
+
+**Alle vier betreffen Zahlen** — drei einen falschen Wert, einer einen
+richtigen an der falschen Stelle. «Zahlen, die eine Aufzählung wiederholen»
+steht seit Wochen in derselben Datei. Die Regel zu kennen, hat nicht gereicht;
+ihre Anwendung kostet beim Schreiben eine Abfrage, und genau die wurde jedes
+Mal gespart.
 
 ---
 
