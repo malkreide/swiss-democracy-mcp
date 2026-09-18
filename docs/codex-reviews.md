@@ -503,6 +503,53 @@ saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
 darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
+**Ein dritter Draft am 18.9. — und diesmal trennt der Wortlaut.** #115 wurde
+als Draft eröffnet; um 13:58:10 stand eine Kontingent-Meldung da, neun Sekunden
+vor dem ersten `@codex review` (IDs `5731051064` vor `5731052982`, dieselbe
+monotone Ordnung wie auf #64). Um 13:58:31 kam die Antwort auf diesen Aufruf.
+Die beiden lauten **verschieden**:
+
+| Zeit (UTC) | Auslöser | Wortlaut |
+|---|---|---|
+| 13:58:10 | Eröffnung als Draft | «You have reached your Codex usage limits.» |
+| 13:58:31 | `@codex review` | «…usage limits **for code reviews**.» |
+
+Derselbe PR, dasselbe Konto, 21 Sekunden auseinander. Wie sich die kurze und
+die lange Fassung über jenen Nachmittag verteilen, führt die Tabelle unter
+«Die Nachmittagssperre desselben Tages»; sie ist die Quelle, hier steht nur
+der Einzelfall.
+
+**Was das hergibt:** Die Absage nach der Eröffnung war ihrem eigenen Wortlaut
+nach *keine* Absage eines Code-Reviews. Die Eröffnung erreicht damit einen
+anderen Pfad als das Umschalten — der erste Anhaltspunkt dafür in dieser
+Sammlung, und er stammt aus dem Text der Meldung, nicht aus einer Zeitreihe.
+
+**Was es nicht hergibt**, und das bleibt die offene Frage dieses Abschnitts:
+dass eine Eröffnung einen *Lauf* auslöst. Sie löst etwas aus, das bei
+erschöpftem Kontingent eine Meldung erzeugt; was daraus bei freiem Kontingent
+würde, ist weiterhin ungemessen — und genau das verlangt der Absatz oben.
+
+**Sechs Minuten später dasselbe, und ohne die Schwäche des ersten Falls.** #117
+wurde um 14:08 als Draft eröffnet; um 14:08:10 stand die Meldung da, wieder
+**ohne** «for code reviews». Auf #115 folgte neun Sekunden später ein Aufruf,
+und die Zuordnung hing an der Reihenfolge der Kommentar-IDs. Auf #117 gab es
+keinen Aufruf: **Die Meldung war der einzige Kommentar auf dem PR.** Ein
+konkurrierender Auslöser existiert hier nicht.
+
+Damit sind es zwei Eröffnungen mit der kurzen Fassung. Der dritte Fall der
+kurzen Fassung gehört nicht hierher — er hing an einem Kommentar, der die
+Zeichenfolge zitierte, und steht bei der Nachmittagssperre.
+
+Die Zuordnung der Meldung zur Eröffnung bleibt trotzdem ein Schluss aus der
+Reihenfolge, nicht aus einem Feld: Die Meldung nennt ihren Auslöser nicht, und
+die Statuszeile, die als Einzige eine Auslöser-Spalte führt, entsteht bei einer
+Absage gar nicht. Auf #117 ist der Schluss nur deshalb stärker, weil kein
+anderer Kandidat im Zeitraum liegt.
+
+Drei der vier beobachteten Eröffnungen haben eine Meldung erzeugt (#64, #115,
+#117), eine nicht (#65). Auch das ist keine Regel — und die drei liegen alle in
+Sperrzeiten, bei freiem Kontingent ist keine einzige gemessen.
+
 **Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
 versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
 Ursachen zu machen; «Fassungen, die nicht hielten» zählt sie. Die letzte
@@ -1171,23 +1218,41 @@ Am Nachmittag ging die Sperre ein zweites Mal zu. Dazwischen lag ein offenes
 Fenster: Von 12:50 bis 13:18 liefen fünf
 Läufe an drei PRs an (12:50:48 auf #110, 13:01:52, 13:04:40 und 13:09:07 auf
 #111, 13:15:13 auf #112), und der letzte lieferte um 13:18:22 zwei Befunde.
-Der nächste Aufruf, 93 Sekunden später, lief auf die Sperre:
+Der nächste Aufruf lief auf die Sperre:
 
-| Zeit (UTC) | PR | Auslöser |
-|---|---|---|
-| 13:19:55 | #112 | Aufruf als Antwort im Review-Thread |
-| 13:45:17 | #112 | Draft → ready |
-| 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR |
-| 13:51:08 | #113 | `@codex review` |
-| 13:51:48 | #113 | Draft → ready |
-| 13:52:39 | #114 | `@codex review` |
-| 13:53:36 | #114 | Draft → ready |
-| 13:55:49 | #114 | Kommentar, der die Zeichenfolge nur zitiert |
+| Zeit (UTC) | PR | Auslöser | Wortlaut |
+|---|---|---|---|
+| 13:19:55 | #112 | Aufruf als Antwort im Review-Thread | mit «for code reviews» |
+| 13:45:17 | #112 | Draft → ready | mit |
+| 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR | mit |
+| 13:51:08 | #113 | `@codex review` | mit |
+| 13:51:48 | #113 | Draft → ready | mit |
+| 13:52:39 | #114 | `@codex review` | mit |
+| 13:53:36 | #114 | Draft → ready | mit |
+| 13:55:49 | #114 | Kommentar, der die Zeichenfolge nur zitiert | **ohne** |
+| 13:58:10 | #115 | **Eröffnung als Draft** | **ohne** |
+| 13:58:31 | #115 | `@codex review` | mit |
+| 14:01:51 | #115 | Draft → ready | mit |
+| 14:08:10 | #117 | **Eröffnung als Draft** | **ohne** |
 
-**Das Zugehen ist hier auf 93 Sekunden eingegrenzt** — 13:18:22 lieferte noch
-ein Ergebnis, 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht
-her: Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
+**Die Spalte «Wortlaut» trennt drei Zeilen von den übrigen neun.** Keiner der
+drei Auslöser ist eine ausdrückliche Review-Anforderung: zweimal die Eröffnung
+als Draft, einmal ein Kommentar, der die Zeichenfolge nur zitiert. Was daraus
+folgt und was nicht, steht weiter unten bei der kurzen Fassung und unter
+«Fassungen zur stillen Draft-Eröffnung».
+
+**Das Zugehen ist auf 282 Sekunden eingegrenzt** — um 13:15:13 lief noch ein
+Lauf an, um 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht her:
+Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
 *fällt*, sagt auch diese Episode nicht; gemessen ist nur, wann sie zuging.
+
+**Eine frühere Fassung nannte hier 93 Sekunden** und stützte sich auf die
+Zustellung um 13:18:22. Das war falsch: Eine Zustellung belegt, dass der Lauf
+**vorher** anlief, nicht dass das Kontingent im Augenblick der Zustellung noch
+offen war. Die obere Grenze muss deshalb am letzten *Start* hängen, nicht am
+letzten Ergebnis. Der Fehler stand keine Stunde in `main` und ist nicht durch
+einen Review aufgefallen, sondern beim Nachrechnen für den nächsten Nachtrag —
+dieselbe Klasse wie die Zeitstempel unten.
 
 **Zwei Läufe hatten unmittelbar zuvor Befunde geliefert, die eingearbeitet
 werden mussten.** Das ist dasselbe Muster wie unter «Die Korrekturschleife
@@ -1198,18 +1263,26 @@ Runden häufen sich dort, wo ein Text viele Befunde trägt.
 Tabelle, der umgeschaltet wurde. Umschalten ist kein Weg an ihr vorbei; die
 Vormittagsepisode zeigt es einmal, diese Episode an jedem betroffenen PR.
 
-**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:50, #113 um
-13:52:24 und #114 um 14:01:37, jeder mit einem Head, für den kein Ergebnis
-vorlag. Wie am Vormittag hat ein Mensch entschieden, und wie dort stand die
-Lage vorher als Kommentar auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
+**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:48, #113 um
+13:52:23, #114 um 14:01:36 und #115 um 14:01:53, jeder mit einem Head, für den
+kein Ergebnis vorlag; auf #115 lag die Absage **zwei Sekunden** vor dem Merge.
+
+Die vier Zeitangaben stammen aus dem Committer-Datum der Merge-Commits.
+Frühere Fassungen nannten 13:45:50, 13:52:24 und 14:01:37 und hatten damit die
+Ankunftszeiten der Webhook-Meldungen genommen — drei Abweichungen von einer
+bis zwei Sekunden, aus zwei unabhängig entstandenen Fassungen. Der Griff zur
+Benachrichtigung statt zur Primärquelle ist offenbar der naheliegende, auch
+wenn die Regel danebensteht. Wie am Vormittag
+hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
+auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
 durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
 
 Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
 Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
-gelesen hat.
+gelesen hat. Für #115, der diesen Abschnitt einträgt, gilt dasselbe.
 
-**Die letzte Absage der Tabelle lautet anders als alle vorigen.** Auf #114 um
-13:55:49:
+**Drei Absagen der Tabelle lauten anders als die übrigen neun.** Die erste
+davon auf #114 um 13:55:49:
 
 ```
 You have reached your Codex usage limits. You can see your limits in the
@@ -1225,10 +1298,26 @@ limits» —, nicht auf den vollen Satz. Das ist dieselbe Regel wie «Den Text
 lesen, nicht die Zahl», eine Ebene tiefer: auch ein bekannter Text kommt in
 Fassungen.
 
-**Warum sie anders lautet, ist offen.** Es liegt ein einziger Fall vor. Dass
-gerade der unabsichtliche Auslöser die kurze Fassung bekam, ist eine
-Beobachtung und keine Erklärung; eine Zuordnung «kurze Fassung ↔ anderer
-Auslösertyp» wäre aus n = 1 erfunden.
+**Warum sie anders lautet, ist offen — aber nicht mehr aus einem Fall.** Diese
+Zeile stand zuerst als Einzelfall hier, und der Satz daneben sagte, eine
+Zuordnung «kurze Fassung ↔ anderer Auslösertyp» wäre aus n = 1 erfunden. Zwei
+weitere Fälle kamen binnen zwölf Minuten dazu, aus einer zweiten Sitzung am
+selben Repo: #115 um 13:58:10 und #117 um 14:08:10, beide nach einer
+**Eröffnung als Draft**, beide ohne den Zusatz.
+
+Damit stehen sich gegenüber: drei kurze Fassungen, deren Auslöser **keine**
+ausdrückliche Review-Anforderung war (zweimal Eröffnung, einmal ein Zitat der
+Zeichenfolge), und neun lange, deren Auslöser eine war (Aufruf im Thread,
+Aufruf als Issue-Kommentar, Umschalten auf ready).
+
+**Eine Erklärung ist das immer noch nicht.** Drei zu neun ist keine Zuordnung,
+sondern eine Verteilung; gemessen ist, was die Meldung sagt, nicht warum. Was
+sich sagen lässt: Die kurze Fassung ist bisher nie nach einer ausdrücklichen
+Anforderung aufgetreten — und ein Gegenfall wäre eine einzige Absage, die das
+umkehrt.
+
+**Alle zwölf liegen in Sperrzeiten.** Ob dieselben Auslöser bei freiem
+Kontingent überhaupt etwas erzeugen, ist an keiner der Zeilen gemessen.
 
 **Diese Absage war nicht angefordert — der dritte Fall für die Fussangel.**
 Der Kommentar von 13:55:41 hielt fest, dass auf #114 kein Ergebnis vorliegt,
