@@ -51,8 +51,10 @@ statt eines Satzes bloss ein 🚀. Stabil ist nur der Satz davor.
 Kenntlich am HTML-Marker `<!-- codex-pull-request-review-summary -->`. Codex
 legt ihn zu Beginn eines Laufs an und **aktualisiert ihn an Ort und Stelle**
 von «🔄 Running» auf «✅ Completed» — kein zweiter Kommentar, sondern ein
-`issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht das Ende des
-Laufs nicht.
+`issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht diesen
+Wechsel nicht. **Welcher** Lauf damit endete, ist allerdings eine eigene Frage
+— «Der manuelle Aufruf: was belegt ist» hält fest, warum die Zeile das nicht
+beantwortet.
 
 Seine Tabelle nennt als Einzige **beides**: einen Commit *und* den Auslöser
 («Manual request», «Draft marked ready»). Die Befundlos-Meldung und das
@@ -90,6 +92,11 @@ Vorbehalte:
   und Stelle überschrieben und führt immer nur den letzten Lauf. Ein
   Codex-Review auf #94 hat den Vergleich denn auch zunächst zwei
   verschiedenen Läufen zugeordnet.
+
+  Der Name ist dabei notwendig und nicht hinreichend: Er trennt den manuellen
+  Lauf vom ready-Lauf, aber nicht zwei manuelle voneinander. Auf #95 trugen
+  beide «Manual request» — was das für die Zuordnung heisst, steht unter «Der
+  manuelle Aufruf: was belegt ist».
 
   Wer wissen muss, was geprüft wurde, liest deshalb das Ergebnis, nicht die
   Statuszeile.
@@ -427,23 +434,63 @@ Geliefert hat er in dieser Spanne:
 | #51 | 2 min 57 s |
 | #53 | 3 min 1 s |
 | #93 (gemergt!) | 3 min 25 s |
+| #95, erster Aufruf | 2 min 34 s |
+| #95, zweiter Aufruf (gemergt!) | 2 min 16 s |
 
 **Die Spanne ist keine Zusage.** Sie reicht von 2 min 14 s bis 3 min 25 s; wer
 bei drei Minuten aufhört nachzusehen, verpasst den längsten gemessenen Lauf.
 Eine frühere Fassung nannte die Werte «erstaunlich gleichmässig» und CLAUDE.md
 sprach von «zwei bis drei Minuten» — beides stammte aus der Zeit, als die
-Tabelle vier Zeilen hatte. Woran das Ende zu erkennen ist, ist deshalb nicht
-die Uhr, sondern die Statuszeile — **aber nur, solange kein weiterer Auslöser
-dazwischenkommt.** Sie springt von «🔄 Running» auf «✅ Completed» und führt
-dabei immer nur den letzten Lauf: Auf #94 überschrieb der ready-Lauf um
-05:51:36 die Zeile der manuellen Runde von 05:50:54, bevor für diese ein
-Ergebnis oder ein «Completed» feststellbar war; ihr Ausgang ist seither offen.
-Steht dort ein anderer Auslöser-Name als der eigene, sagt die Zeile über den
-eigenen Lauf nichts — dieselbe Bedingung, die die Arbeitsanweisung in
-`CLAUDE.md` nennt.
+Tabelle vier Zeilen hatte.
 
-Ob dann auch ein Ergebnis vorliegt, ist die nächste Frage — der Vorbehalt
-«✅ Completed belegt kein zugestelltes Ergebnis» hält sie fest.
+**Eine verlässliche Endmarke gibt es nicht.** Die Uhr taugt nicht dafür, und
+die Statuszeile auch nicht. Eine frühere Fassung hat sie dafür ausgegeben,
+«solange kein weiterer Auslöser dazwischenkommt» — die Bedingung greift zu
+kurz, weil sie nur nach vorn schaut. Die Zeile springt zwar von «🔄 Running»
+auf «✅ Completed», führt dabei aber immer nur den letzten Lauf, den der
+Connector geschrieben hat, und das muss nicht der eigene sein: nicht, wenn ein
+späterer ihn überschreibt — auf #94 verdrängte der ready-Lauf um 05:51:36 die
+manuelle Runde von 05:50:54, bevor für diese überhaupt ein «Completed»
+feststand, und ihr Ausgang ist seither offen —, und nicht, wenn ein früherer
+noch dasteht. Ein «✅ Completed» unter dem eigenen Auslöser-Namen kann deshalb
+einem fremden Lauf gehören.
+
+**Der Auslöser-Name schliesst aus, er weist nicht zu.** Steht dort ein anderer
+Name als der eigene, gehört die Zeile einem anderen Lauf und sagt über den
+eigenen nichts. **Welchem, sagt sie nicht.** Es kann ein späterer sein, der die
+eigene Zeile überschrieben hat — auf #79 hat ein ready-Lauf den manuellen so
+verdrängt. Es kann ebenso gut ein früherer sein, der noch dasteht, weil der
+eigene Lauf noch gar nicht angefangen hat: Auf #98 lagen zwischen dem Aufruf um
+06:27:19 und dem Start um 06:27:33 vierzehn Sekunden. Wer aus dem fremden Namen
+«meiner ist überholt» liest, hat sich eine Reihenfolge erfunden, die die Zeile
+nicht hergibt.
+
+Steht dort derselbe Name, ist damit nichts gewonnen: Zwei manuelle Aufrufe
+hintereinander tragen beide «Manual request», und der zweite überschreibt den
+ersten, ohne dass die Prüfung auf den Namen anschlägt. Auf #95 lief der erste
+am 18.9. um 05:59:23, der zweite — nach dem Merge — um 06:15:06;
+die Zeile führte um 06:17:25 «✅ Completed» unter «Manual request» und meinte
+den zweiten.
+
+Die Commit-Spalte trennt die beiden erst recht nicht: Sie stand zu diesem
+Zeitpunkt auf `af463f8`, dem Branch-Stand — also ausgerechnet auf dem Commit,
+den der **erste** Lauf geprüft hatte, während der zweite den Merge-Commit
+`1879444` prüfte. Wer die Zeile dem eigenen Lauf zuschreiben wollte, hätte
+beide Spalten für sich gehabt und trotzdem den falschen Lauf vor sich.
+
+Zuzuweisen wäre die Zeile nur, wenn auszuschliessen wäre, dass sie einem
+anderen Lauf gehört — einem späteren, der sie überschrieben hat, oder einem
+früheren, der noch steht. Ein sichtbarer Auslöser lässt sich aus den
+Kommentaren lesen; ein unsichtbar angestossener Lauf grundsätzlich nicht —
+daran ist auf #93 das Entscheidungsverfahren gescheitert. Die Zeile taugt
+deshalb zum Ausschliessen und nicht zum Zuweisen — dieselbe Bedingung, die die
+Arbeitsanweisung in `CLAUDE.md` nennt.
+
+**Was bleibt, ist das zugestellte Ergebnis.** Es trägt den geprüften Commit und
+steht als eigener Eintrag, den kein späterer Lauf überschreibt. Bleibt es aus,
+ist das kein Urteil, sondern ein offener Ausgang — der Vorbehalt «✅ Completed
+belegt kein zugestelltes Ergebnis» hält genau das fest. Wer wartet, wartet
+folglich auf das Ergebnis und nicht auf die Zeile.
 
 Einmal gescheitert (#53 um 18:51:30, siehe den Abschnitt über die schwankenden
 Antworten). Nach einem Fehlschlag lohnt der zweite Versuch.
@@ -539,10 +586,15 @@ dann aber den Merge-Commit.
 
 Automatisch hat geliefert (#45 um 08:55:43, ohne jeden vorherigen Kommentar auf
 dem PR) und versagt (#53 um 18:43:41); von Hand hat geliefert (#45, #51, #53,
-#55, #93) und versagt (#53 um 18:51:30). Über den *Einfluss* des Wegs sagt das
-nichts: Bei 1 Fehlschlag von 2 gegen 1 von 5 wäre ein Unterschied mit diesen
-Zahlen nicht zu sehen — der Nenner ist mit #93 gewachsen, die Aussage hält das
-aus.
+#55, #93, #95 zweimal) und versagt (#53 um 18:51:30). Über den *Einfluss* des
+Wegs sagt das nichts: Je ein gemessener Fehlschlag auf beiden Seiten, und auf
+beiden Seiten zu wenige Versuche, als dass ein Unterschied sichtbar würde.
+
+Eine Quote stand hier und ist gestrichen. Sie nannte einen Nenner, den die
+Aufzählung daneben schon widerlegte, und eine spätere Fassung schrieb dazu, der
+Nenner sei gewachsen — ohne die Zahl anzufassen. Genau der Fall aus «Zahlen,
+die eine Aufzählung wiederholen»: Die Aufzählung ist die Quelle, und wer die
+Kopie bloss kommentiert, hat sie nicht geprüft.
 
 ### Fälle, die weniger taugen, als sie aussehen
 
@@ -981,7 +1033,8 @@ und sonst nichts.
 
 Die Handlungsregel steht in `CLAUDE.md`. Hier die Fälle, an denen sie entstand:
 am 29.8.2026 an dieser Datei, eine Review-Runde nach der anderen, und **jede
-Korrektur erzeugte die nächste.**
+Korrektur erzeugte die nächste.** Der Fall mit dem kommentierten Nenner kam am
+18.9. dazu.
 
 | Die Zahl | Warum sie fiel |
 |---|---|
@@ -991,6 +1044,14 @@ Korrektur erzeugte die nächste.**
 | «vier Fehlschläge» über einer Tabelle mit acht Zeilen | Tabelle gewachsen, Prosa nicht |
 | «Zwei Fehlschläge der Tabelle» | Nenner entfernt, Zähler stehen gelassen |
 | «die Mehrzahl der Fälle oben» | im Abschnitt, der die Regel aufschrieb |
+| «1 Fehlschlag von 5» neben einer längeren Aufzählung | Nenner kommentiert statt geprüft |
+
+**Eine Kopie zu kommentieren ist nicht, sie zu prüfen.** Der Nenner
+«1 Fehlschlag von 5» stand unter «Beide Wege können funktionieren» neben einer
+Aufzählung, die ihn schon überholt hatte. Die Fassung danach schrieb daneben,
+der Nenner sei gewachsen, und liess die Ziffer stehen: Der Satz war damit
+richtig *über* die Zahl, und die Zahl blieb falsch. Das ist die bequemste Form
+des Fehlers, weil sie wie Sorgfalt aussieht.
 
 Am lehrreichsten ist «die Mehrzahl der Fälle oben»: Diese Zeile entstand beim
 Aufräumen der anderen. Ich hatte drei absolute Zählungen entfernt und dabei eine
