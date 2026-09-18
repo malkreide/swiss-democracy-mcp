@@ -353,6 +353,28 @@ Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und
 **nach jeder Korrekturrunde erneut anfordern**, auf dem neuen Head. Auf ready
 geht es, wenn ein Lauf auf dem aktuellen Head nichts mehr findet.
 
+**Das Umschalten löst selbst einen Lauf aus.** Er prüft denselben Head und kann
+anders urteilen als der, den du abgewartet hast; ein befundloser Lauf ist kein
+Freispruch, auch der eigene nicht. Bei Regeldateien — alles, wonach später
+gearbeitet wird — ist er abzuwarten: Auf #85 brachte genau dieser Lauf den
+Befund, 15 Sekunden nach einem befundlosen. Ein Fehler in einer Regel pflanzt
+sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum Einzelfall.
+
+**Ein vollständiges Entscheidungsverfahren steht hier bewusst nicht.** Der
+Auslöser kann sichtbar ohne Lauf beantwortet werden, er kann schweigen, und ein
+Lauf kann «✅ Completed» zeigen, ohne ein Ergebnis zu liefern — was davon
+vorliegt und was sich daraus **nicht** schliessen lässt, steht in
+[`docs/codex-reviews.md`](docs/codex-reviews.md). Aus keinem dieser Fälle folgt
+«nichts gefunden».
+
+Warum hier kein Verfahren steht, ist gemessen und nicht behauptet: Auf PR #93
+sind neun Review-Runden über neun Fassungen eines solchen Verfahrens gelaufen,
+und jede trug einen Befund — zuletzt den, dass sich ein unsichtbar
+angestossener Lauf grundsätzlich nicht ausschliessen lässt und ein Tor, das ihn
+verlangt, deshalb weder zu erfüllen noch zu widerlegen ist. Wer vor dieser Lage
+steht, entscheidet sie nicht über eine Regel, sondern mit einem Menschen — und
+schreibt hin, was offen blieb.
+
 Das ist ein Abbruchkriterium, kein Gütesiegel: Derselbe Text kann in der
 nächsten Runde wieder einen Befund tragen, und irgendwo muss die Schleife
 enden. Sie endet aus praktischen Gründen, nicht weil der Stand bewiesen sauber
