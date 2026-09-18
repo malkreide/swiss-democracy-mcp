@@ -386,8 +386,8 @@ Fassung behauptete hier das Erste und konnte es nie belegen.
 
 **Am 18.9. auf #110 dasselbe.** Der Lauf lieferte um 12:54:18 vier P2-Befunde
 zu `e257321`; gemergt wurde um 12:56:22, **124 Sekunden später**, auf
-demselben Commit. Die Behebung war um 12:58:00 committet — 98 Sekunden nach
-dem Merge — und brauchte den Nachzügler #111. Der Absatz darüber gilt hier
+demselben Commit. Die Behebung lag um 13:00:27 als Commit vor — 245 Sekunden
+nach dem Merge — und brauchte den Nachzügler #111. Der Absatz darüber gilt hier
 genauso: Belegt ist der Zustand beim Merge, nicht, ob jemand hingesehen hat.
 
 **Neu ist, was derselbe Tag danebenlegt.** Elf Minuten nach dem Merge von #110
@@ -396,8 +396,17 @@ ein Befund vor dem Merge — und ging anders aus:
 
 | | Befund | Merge | Fenster | Behebung committet |
 |---|---|---|---|---|
-| #110 | 12:54:18 | 12:56:22 | 124 s | 12:58:00, also 222 s nach dem Befund |
+| #110 | 12:54:18 | 12:56:22 | 124 s | 13:00:27, also 369 s nach dem Befund |
 | #111 | 13:07:19 | 13:09:14 | 115 s | 13:08:20, also 61 s nach dem Befund |
+
+**Die Spalte «Behebung committet» führt Committer-Daten.** Eine frühere Fassung
+nahm für #110 das **Autoren**datum 12:58:00 und rechnete daraus 222 statt 369
+Sekunden — der Fix-Commit `f7eb98e` war wegen eines Rebase erst um 13:00:27
+committet. Das Autorendatum sagt, wann die Änderung geschrieben wurde; im Repo
+liegt sie zu dem Zeitpunkt noch nicht. Wo eine Spalte «committet» heißt, gehört
+das Committer-Datum hinein. Für #111 fallen beide zusammen (`ec3c4bf`, beide
+13:08:20), die Zeile bleibt also, wie sie war — gegengeprüft, nicht
+angenommen.
 
 Die Fenster sind fast gleich lang; verschieden ist, was die Behebung brauchte.
 **Woran das lag, ist nicht gemessen** — naheliegend ist der Prüfaufwand (vier
@@ -405,8 +414,8 @@ Befunde gegen zwei, und beim zweiten Mal war die Stelle schon bearbeitet),
 belegt ist es nicht.
 
 Was die zwei Zeilen trotzdem hergeben: **Bei fast gleich langem Fenster war
-die Behebung einmal rechtzeitig fertig und einmal nicht** — 61 gegen 222
-Sekunden, also mehr als das Dreifache. Der Abstand zwischen Befund und Merge
+die Behebung einmal rechtzeitig fertig und einmal nicht** — 61 gegen 369
+Sekunden, also das Sechsfache. Der Abstand zwischen Befund und Merge
 sagt für sich genommen nichts darüber, ob eine Behebung hineinpasst; das hängt
 daran, wie lange sie dauert, und diese Dauer schwankte hier stark. Woran sie
 hing, ist nicht gemessen.
