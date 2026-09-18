@@ -328,6 +328,51 @@ Ob niemand hingesehen hat oder jemand gelesen und sich dagegen entschieden
 hat, ist an denselben Zeitstempeln nicht zu unterscheiden — eine frühere
 Fassung behauptete hier das Erste und konnte es nie belegen.
 
+**Am 18.9. auf #110 dasselbe.** Der Lauf lieferte um 12:54:18 vier P2-Befunde
+zu `e257321`; gemergt wurde um 12:56:22, **124 Sekunden später**, auf
+demselben Commit. Die Behebung war um 12:58:00 committet — 98 Sekunden nach
+dem Merge — und brauchte den Nachzügler #111. Der Absatz darüber gilt hier
+genauso: Belegt ist der Zustand beim Merge, nicht, ob jemand hingesehen hat.
+
+**Neu ist, was derselbe Tag danebenlegt.** Elf Minuten nach dem Merge von #110
+wiederholte sich die Lage auf #111 — dieselbe Datei, derselbe Prüfer, wieder
+ein Befund vor dem Merge — und ging anders aus:
+
+| | Befund | Merge | Fenster | Behebung committet |
+|---|---|---|---|---|
+| #110 | 12:54:18 | 12:56:22 | 124 s | 12:58:00, also 222 s nach dem Befund |
+| #111 | 13:07:19 | 13:09:14 | 115 s | 13:08:20, also 61 s nach dem Befund |
+
+Die Fenster sind fast gleich lang; verschieden ist, was die Behebung brauchte.
+**Woran das lag, ist nicht gemessen** — naheliegend ist der Prüfaufwand (vier
+Befunde gegen zwei, und beim zweiten Mal war die Stelle schon bearbeitet),
+belegt ist es nicht.
+
+Was die zwei Zeilen trotzdem hergeben: **Bei fast gleich langem Fenster war
+die Behebung einmal rechtzeitig fertig und einmal nicht** — 61 gegen 222
+Sekunden, also mehr als das Dreifache. Der Abstand zwischen Befund und Merge
+sagt für sich genommen nichts darüber, ob eine Behebung hineinpasst; das hängt
+daran, wie lange sie dauert, und diese Dauer schwankte hier stark. Woran sie
+hing, ist nicht gemessen.
+
+Für die Praxis folgt daraus genau eines, und es ist negativ: **Auf «schnell
+reagieren» lässt sich nicht bauen, weil die benötigte Zeit vorher nicht
+bekannt ist.** Ein Ersatz für «das Ergebnis abwarten» ist es damit nicht.
+
+Was sie **nicht** hergeben: eine Dauer des Fensters. Zwei Werte sind keine
+Spanne, und beide hängen daran, wann jemand auf «Merge» drückt — das ist keine
+Eigenschaft des Prüfers, sondern eine des Vorgehens.
+
+**Eine Beobachtung fällt dabei ab, ohne Empfehlung.** Meldet ein Push auf einen
+Branch, den es vorher gab, `* [new branch]`, dann fehlte der Ziel-Ref im
+Augenblick des Pushes — er ist zwischendurch gelöscht worden. Mehr sagt die
+Zeile nicht: Ein Merge mit automatischer Branch-Löschung erzeugt sie, eine
+Löschung von Hand ebenso, andere Automatisierung auch. Auf #110 war sie die
+erste Spur davon, dass der PR längst zu war und die Behebung an einem Branch
+ohne offenen PR hing — bemerkt wurde es aber erst, als der PR-Zustand
+abgefragt wurde. **Wer aus der Zeile auf einen Merge schliesst, rät; wer sie
+zum Anlass nimmt nachzusehen, verliert nichts.**
+
 Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
 er geliefert und der Merge ging trotzdem durch. Deshalb steht die Checkliste
 im PR-Template auf «beantwortet oder behoben», nicht auf «Review gelaufen» —
@@ -1219,9 +1264,12 @@ hergibt: dass hier keine nutzbare Reaktionszeit nachweisbar ist. Eine Warnung
 auf dem PR stand gut eine halbe Minute später und kam zu spät; der Befund («die
 letzte Zeile» einer wachsenden Tabelle) stand damit in `main` und brauchte #78.
 Die Checkliste «kein offener Befund beim Merge» blieb unabgehakt und stimmte
-damit. Neben den 28 Sekunden vom 28.8. und den 81 Sekunden auf #59 ist das der
-Fall, in dem Aufpassen nichts mehr ausrichtet — wer sicher sein will, wartet
-das Ergebnis ab.
+damit. Neben den 28 Sekunden vom 28.8., den 81 Sekunden auf #59 und den 124
+auf #110 ist das der Fall, in dem Aufpassen nichts mehr ausrichtet — wer sicher
+sein will, wartet das Ergebnis ab. Wogegen diese Abstände zu halten sind, ist
+erst am 18.9. danebengemessen worden: Wie lange eine geprüfte Behebung
+tatsächlich braucht, steht unter «Der Review ist da, der Merge geht trotzdem
+durch».
 
 **Umschalten auf ready ist hier die Merge-Entscheidung.** Der ready-Auslöser
 startet einen Lauf; sein Ergebnis kam in diesen drei Fällen erst nach dem
