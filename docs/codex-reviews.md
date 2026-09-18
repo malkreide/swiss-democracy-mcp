@@ -278,11 +278,13 @@ Abstände waren 15 Sekunden, 287 und 209 — drei Messwerte, mehr nicht. Ob der
 Abstand etwas ausmacht, ist daran nicht zu prüfen: Alle drei gingen gleich
 aus, ein Gegenfall fehlt.
 
-**Neu ist der dritte Fall in einem Punkt: Auf den Befund folgte kein Merge.**
-In den beiden früheren lag er rechtzeitig vor und wurde überfahren — auf #59
-um 07:04:53, 81 Sekunden vor dem Merge; auf #85 um 18:42:49, 15 Sekunden
-davor. Beide brauchten einen Folge-PR. Am 18.9. war der Lauf abgewartet, die
-Behebung ging in denselben PR.
+**Neu ist der dritte Fall in einem Punkt: Gemergt wurde erst die behobene
+Fassung.** In den beiden früheren lag der Befund rechtzeitig vor und wurde
+überfahren — auf #59 um 07:04:53, 81 Sekunden vor dem Merge; auf #85 um
+18:42:49, 15 Sekunden davor. Beide brauchten einen Folge-PR. Am 18.9. war der
+Lauf abgewartet, die Behebung ging in denselben PR, und gemergt wurde dieser
+dann auch: `16fdd89` über den Merge-Commit `2c60fb6`. Der fehlerhafte Stand
+kam gar nicht erst nach `main`.
 
 Der Unterschied liegt damit nicht am Prüfer, sondern am Umgang mit seinem
 Ergebnis. Es ist derselbe Befund wie unter «Der Review ist da, der Merge geht
@@ -1282,9 +1284,11 @@ Was der Ablauf hergibt:
   manuelle Aufruf: was belegt ist» für #79. Der Fall zählt als weiterer Beleg,
   nicht als neuer Befund — und er führt vor, was die Überschreibung kostet.
   Ein vierter kam am 18.9. auf #108 dazu; er steht unter «Die sechs Formen, in
-  denen sich ein Lauf zeigt», weil er zeigt, woran die Zuordnung in solchen
-  Fällen wirklich scheitert — nicht am geteilten Commit, sondern daran, ob die
-  Läufe einander überlappen.
+  denen sich ein Lauf zeigt». Dort scheiterte die Zuordnung **nicht**, obwohl
+  die Zeile genauso überschrieben wurde — weil jeder der beiden Läufe sein
+  eigenes Ergebnis zustellte. Das ist der Unterschied zu diesem Fall: nicht
+  der geteilte Commit, den beide haben, und auch keine belegte Gleichzeitigkeit,
+  sondern die fehlenden Ergebnisse.
 
 Was der Fall **nicht** hergibt: welcher der beiden Läufe den Befund von
 04:09:48 lieferte. Das Review-Objekt nennt den Commit, nicht den Auslöser;
