@@ -52,8 +52,21 @@ _GATE = _ROOT / "scripts" / "check_ruff_pin.py"
 #
 # Der Lookbehind grenzt den Namen ab, sonst liest `xruff==0.16.3` oder
 # `my-ruff==0.16.3` als ruff und macht ein fremdes Paket zur Drift.
+#
+# Gefangen wird der ganze Versions-Ausdruck, nicht nur sein Ziffernanfang.
+# `ruff==0.16.5.*`, `ruff==0.16.5+corp1` und `ruff==0.16.5-1` sind gueltige
+# Anforderungen, die etwas anderes waehlen als den exakten Pin — ein
+# Wildcard-, Local- oder Post-Release. Eine Fassung, die davon nur `0.16.5`
+# las, verglich den Praefix mit dem Pin, fand ihn gleich und liess die Doku
+# durch, obwohl ihr zu folgen ein anderes ruff installiert.
+#
+# Der Punkt ist dabei nicht am Zeichen zu erkennen, sondern am folgenden:
+# In `Install ruff==0.16.5.` schliesst er den Satz, in `ruff==0.16.5.*`
+# gehoert er zur Anforderung. Deshalb endet der Fang auf einer
+# alphanumerischen Stelle oder `*` — das Backtracking trennt beide Faelle,
+# ohne dass hier eine Liste von Satzzeichen stuende.
 _IN_DOKU = re.compile(
-    r"(?<![\w-])ruff\s*==\s*([0-9][0-9a-zA-Z.]*[0-9a-zA-Z]|[0-9])",
+    r"(?<![\w-])ruff\s*==\s*([0-9][0-9a-zA-Z.*+!_-]*[0-9a-zA-Z*]|[0-9])",
     re.IGNORECASE,
 )
 
@@ -74,6 +87,14 @@ _SCHREIBWEISEN = [
     ("RUFF==0.16.3", ["0.16.3"]),
     ("ruff == 0.16.3", ["0.16.3"]),
     ("Ruff  ==  0.16.3", ["0.16.3"]),
+    # Anforderungen, die NICHT den exakten Pin waehlen. Der ganze Ausdruck
+    # muss herauskommen, sonst vergleicht der Abgleich nur den Praefix und
+    # haelt sie faelschlich fuer den Pin.
+    ("ruff==0.16.5.*", ["0.16.5.*"]),
+    ("ruff==0.16.5+corp1", ["0.16.5+corp1"]),
+    ("ruff==0.16.5-1", ["0.16.5-1"]),
+    ("ruff==1!2.0", ["1!2.0"]),
+    ("ruff==0.16.5.post1", ["0.16.5.post1"]),
     # Fremde Pakete. Ohne die Abgrenzung faende das Muster hier eine Drift,
     # die es gar nicht gibt.
     ("xruff==0.16.3", []),
