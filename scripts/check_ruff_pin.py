@@ -40,9 +40,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PYPROJECT = ROOT / "pyproject.toml"
 
-# `"ruff==0.16.1"` als Eintrag einer Dependency-Liste. Bewusst eng: eine
-# Spanne (`ruff>=…`) soll nicht als Pin durchgehen.
-_PIN = re.compile(r"""['"]ruff==([0-9][^'"\s;]*)['"]""")
+# `"ruff==0.16.1"` als Eintrag einer Dependency-Liste. Beim Operator bewusst
+# eng: eine Spanne (`ruff>=…`) soll nicht als Pin durchgehen.
+#
+# Beim Namen dagegen so weit, wie pip ihn liest. Gross-/Kleinschreibung ist
+# bei Paketnamen bedeutungslos (PEP 503), und PEP 508 erlaubt Leerraum um
+# `==` — `"Ruff == 0.16.5"` ist derselbe Pin.
+#
+# Eine engere Fassung uebersieht ihn, und das ist nicht immer laut. Steht er
+# allein, faellt die Pruefung unten mit «Kein exakter ruff-Pin». Steht er als
+# ZWEITER Eintrag neben einem klein geschriebenen, faellt sie gar nicht: Sie
+# sieht nur den einen, meldet «genau einer» und laesst den widersprechenden
+# stehen. Am 18.9.2026 nachgestellt — `"ruff==0.16.5"` und `"Ruff==0.16.3"`
+# nebeneinander ergaben «Ruff-Pin OK (0.16.5)», exit 0.
+_PIN = re.compile(
+    r"""['"]\s*ruff\s*==\s*([0-9][^'"\s;]*)\s*['"]""",
+    re.IGNORECASE,
+)
 
 # Aus `ruff 0.16.1` bzw. `ruff 0.16.1 (abc1234 2026-01-01)`.
 _REPORTED = re.compile(r"([0-9]+\.[0-9]+\.[0-9]+)")
