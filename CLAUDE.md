@@ -332,9 +332,12 @@ sie war schon einmal zu kurz angesetzt.
 
 Die Statuszeile taugt als Ersatz **nur zum Ausschliessen**. Sie springt von
 «🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
-Steht dort ein anderer Auslöser als deiner, gehört die Zeile einem späteren
-Lauf und sagt über deinen nichts — auf #79 hat ein ready-Lauf den manuellen so
-verdrängt, und beide waren danach nicht mehr auseinanderzuhalten.
+Steht dort ein anderer Auslöser als deiner, gehört die Zeile einem anderen Lauf
+und sagt über deinen nichts. Welchem, sagt sie nicht — einem späteren, der
+deinen verdrängt hat (so auf #79, danach waren beide nicht mehr
+auseinanderzuhalten), oder einem früheren, der noch steht, weil deiner noch
+nicht angefangen hat (auf #98 vierzehn Sekunden zwischen Aufruf und Start).
+Aus dem fremden Namen keine Reihenfolge lesen.
 
 Steht dort **derselbe** Name, ist nichts gewonnen: Zwei manuelle Aufrufe
 hintereinander tragen beide «Manual request», der zweite überschreibt den

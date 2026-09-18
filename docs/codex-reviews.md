@@ -446,10 +446,18 @@ dabei immer nur den letzten Lauf: Auf #94 überschrieb der ready-Lauf um
 05:51:36 die Zeile der manuellen Runde von 05:50:54, bevor für diese ein
 Ergebnis oder ein «Completed» feststellbar war; ihr Ausgang ist seither offen.
 **Der Auslöser-Name schliesst aus, er weist nicht zu.** Steht dort ein anderer
-Name als der eigene, gehört die Zeile einem späteren Lauf und sagt über den
-eigenen nichts. Steht dort derselbe, ist damit nichts gewonnen: Zwei manuelle
-Aufrufe hintereinander tragen beide «Manual request», und der zweite
-überschreibt den ersten, ohne dass die Prüfung auf den Namen anschlägt. Auf #95
+Name als der eigene, gehört die Zeile einem anderen Lauf und sagt über den
+eigenen nichts. **Welchem, sagt sie nicht.** Es kann ein späterer sein, der die
+eigene Zeile überschrieben hat — auf #79 hat ein ready-Lauf den manuellen so
+verdrängt. Es kann ebenso gut ein früherer sein, der noch dasteht, weil der
+eigene Lauf noch gar nicht angefangen hat: Auf #98 lagen zwischen dem Aufruf um
+06:27:19 und dem Start um 06:27:33 vierzehn Sekunden. Wer aus dem fremden Namen
+«meiner ist überholt» liest, hat sich eine Reihenfolge erfunden, die die Zeile
+nicht hergibt.
+
+Steht dort derselbe Name, ist damit nichts gewonnen: Zwei manuelle Aufrufe
+hintereinander tragen beide «Manual request», und der zweite überschreibt den
+ersten, ohne dass die Prüfung auf den Namen anschlägt. Auf #95
 lief der erste am 18.9. um 05:59:23, der zweite — nach dem Merge — um 06:15:06;
 die Zeile führte um 06:17:25 «✅ Completed» unter «Manual request» und meinte
 den zweiten.
@@ -460,10 +468,11 @@ den der **erste** Lauf geprüft hatte, während der zweite den Merge-Commit
 `1879444` prüfte. Wer die Zeile dem eigenen Lauf zuschreiben wollte, hätte
 beide Spalten für sich gehabt und trotzdem den falschen Lauf vor sich.
 
-Zuzuweisen wäre die Zeile nur, wenn ein späterer Auslöser auszuschliessen wäre.
-Ein sichtbarer lässt sich aus den Kommentaren lesen; ein unsichtbar
-angestossener Lauf grundsätzlich nicht — daran ist auf #93 das
-Entscheidungsverfahren gescheitert. Die Zeile taugt deshalb zum Ausschliessen
+Zuzuweisen wäre die Zeile nur, wenn auszuschliessen wäre, dass sie einem
+anderen Lauf gehört — einem späteren, der sie überschrieben hat, oder einem
+früheren, der noch steht. Ein sichtbarer Auslöser lässt sich aus den
+Kommentaren lesen; ein unsichtbar angestossener Lauf grundsätzlich nicht —
+daran ist auf #93 das Entscheidungsverfahren gescheitert. Die Zeile taugt deshalb zum Ausschliessen
 und nicht zum Zuweisen; was der eigene Lauf ergeben hat, steht im Ergebnis.
 Das ist dieselbe Bedingung, die die Arbeitsanweisung in `CLAUDE.md` nennt.
 
