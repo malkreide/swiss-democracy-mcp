@@ -326,12 +326,21 @@ Der Vorlauf lag bei den bisher gemessenen Läufen zwischen 2 min 14 s und
 und **auf einem bereits gemergten PR** an (dort wird der Merge-Commit geprüft).
 Nach einer Environment-Meldung lohnt der zweite Versuch.
 
-Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr, sondern
-die Statuszeile: Sie springt von «🔄 Running» auf «✅ Completed». Die Spanne
-oben sagt, wie lange es ungefähr dauert, nicht wann man aufhören darf; sie war
-schon einmal zu kurz angesetzt. Die 👀 auf dem auslösenden Kommentar ist die
-Empfangsbestätigung, nicht das Ergebnis. Wer zu früh nachsieht, hält einen
-laufenden Review für einen ausgefallenen.
+Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr: Die
+Spanne oben sagt, wie lange es ungefähr dauert, nicht wann man aufhören darf;
+sie war schon einmal zu kurz angesetzt.
+
+Die Statuszeile taugt als Ersatz nur **mit ihrem Auslöser-Namen**. Sie springt
+von «🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
+Steht dort ein anderer Auslöser als deiner, gehört die Zeile einem späteren
+Lauf und sagt über deinen nichts — auf #79 hat ein ready-Lauf den manuellen so
+verdrängt, und beide waren danach nicht mehr auseinanderzuhalten. Und auch die
+passende Zeile belegt nur, dass der Lauf endete, nicht dass ein Ergebnis
+vorliegt.
+
+Die 👀 auf dem auslösenden Kommentar ist die Empfangsbestätigung, nicht das
+Ergebnis. Wer zu früh nachsieht, hält einen laufenden Review für einen
+ausgefallenen.
 
 **Fussangel:** Wer `@codex review` in einem Kommentar bloss *zitiert*, löst
 damit vermutlich einen neuen Lauf aus.

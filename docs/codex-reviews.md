@@ -531,9 +531,10 @@ dann aber den Merge-Commit.
 
 Automatisch hat geliefert (#45 um 08:55:43, ohne jeden vorherigen Kommentar auf
 dem PR) und versagt (#53 um 18:43:41); von Hand hat geliefert (#45, #51, #53,
-#55) und versagt (#53 um 18:51:30). Über den *Einfluss* des Wegs sagt das
-nichts: Bei 1 Fehlschlag von 2 gegen 1 von 4 wäre ein Unterschied mit diesen
-Zahlen nicht zu sehen.
+#55, #93) und versagt (#53 um 18:51:30). Über den *Einfluss* des Wegs sagt das
+nichts: Bei 1 Fehlschlag von 2 gegen 1 von 5 wäre ein Unterschied mit diesen
+Zahlen nicht zu sehen — der Nenner ist mit #93 gewachsen, die Aussage hält das
+aus.
 
 ### Fälle, die weniger taugen, als sie aussehen
 
