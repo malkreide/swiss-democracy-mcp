@@ -423,6 +423,32 @@ Laufs. Ungeprüft ging er also nicht nach `main` — geprüft ist er durch den
 Lauf, den jemand abgewartet hat, nicht durch den, der lief.
 
 **Was der Fall nicht hergibt:** ob der Mergende vom laufenden Review wusste.
+
+**Ein zweiter Fall am selben Tag, diesmal ohne Rückhalt.** Auf #101, alles auf
+Commit `718689d`:
+
+| Zeit (UTC) | Ereignis |
+|---|---|
+| 10:01:43 | **manueller** Lauf startet |
+| 10:02:32 | Draft → ready |
+| 10:02:38 | **gemergt** |
+| 10:03:56 | ready-Lauf steht auf «Completed» |
+
+Zwischen Start und Merge lagen **55 Sekunden**, bei einem Vorlauf, der auf
+demselben PR kurz zuvor 2 min 48 s betragen hatte. Danach alle drei Abfragen:
+kein Review-Objekt zu diesem Commit, keine Befundlos-Meldung, nichts in den
+Review-Threads. Beide Läufe endeten ohne zugestelltes Ergebnis.
+
+**Der Unterschied zu #92 ist der Rückhalt.** Dort trug eine zugestellte
+Befundlos-Meldung desselben Commits den gemergten Stand, und der Abschnitt
+oben hält fest: «Ungeprüft ging er also nicht nach `main`.» Hier gibt es keine
+solche Meldung. Der vorige Commit `de3df06` hatte einen Befund, `718689d` ist
+dessen Korrektur — und für die Korrektur liegt nichts vor. Die Reihe hat damit
+ihren ersten Fall, in dem der gemergte Stand tatsächlich ohne Ergebnis blieb.
+
+Die Statuszeile sagte dabei «✅ Completed», und zwar für den ready-Lauf: Der
+manuelle war aus ihr verdrängt, sein Ausgang ist nicht mehr feststellbar. Wer
+nur auf sie sieht, hält diesen Stand für geprüft.
 Von aussen ist der Zustand messbar, nicht die Aufmerksamkeit — dieselbe Grenze
 wie in 4.2. Ebenso wenig ist belegt, welcher der beiden Läufe die 👍 am PR
 gesetzt hat: Die Reaktionen wurden erst **nach** dem zweiten Lauf gelesen, und
