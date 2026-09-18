@@ -750,6 +750,43 @@ das Verfahren anwendet, sollte aber wissen, dass es nicht gratis ist und bei
 langen Korrekturketten an eine Grenze stossen kann. Blockiert es, bleibt der PR
 Draft, bis wieder ein Lauf durchgeht.
 
+### Die Episode vom 18.9.2026
+
+Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
+«Vier Runden an einem kurzen Test»). Der fünfte Aufruf lief auf die Sperre, und
+sie hielt über alle weiteren Versuche:
+
+| Zeit (UTC) | PR | Auslöser |
+|---|---|---|
+| 06:37 | #97 | `@codex review` |
+| 06:46 | #99 | `@codex review` |
+| 06:51 | #99 | Draft → ready |
+
+**Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Der dritte
+Eintrag ist der Lauf, den das Umschalten auf ready selbst anstösst — dieselbe
+Meldung, kein Ergebnis. Umschalten ist also kein Weg an einer stehenden Sperre
+vorbei. Für die übrigen Auslöser (PR-Eröffnung, `@codex security review`) ist
+das nicht gemessen.
+
+Ein Zusammenhang zwischen den gelieferten Läufen und der Sperre ist **nicht
+belegt** — was sonst noch auf das Konto ging, ist von hier aus nicht zu sehen.
+Belegt ist die Reihenfolge: erst Ergebnisse, dann Fehlschläge.
+
+**Wann sie fiel, geben diese Messpunkte nicht her.** Sie belegen Zeitpunkte, an
+denen sie stand, und keinen, an dem sie fiel; eine Dauer daraus abzuleiten wäre
+erfunden. Das ist dieselbe Lage wie beim GitHub-Rate-Limit in `CLAUDE.md`, wo
+gesperrte Zeitpunkte ebenfalls keine Frist ergeben. Die Tabelle ist
+fortzuschreiben, solange die Sperre hält — Sätze daneben, die ihre Zeilen oder
+ihre Spanne zählen, veralten damit.
+
+**Was die Regel oben verlangt, ist hier nicht geschehen.** «Blockiert es, bleibt
+der PR Draft, bis wieder ein Lauf durchgeht» — beide PRs wurden stattdessen
+gemergt, #97 um 06:41 und #99 um 06:55, jeder mit einem Head, für den kein
+Ergebnis vorlag. Beide Male hat ein Mensch entschieden, und beide Male stand die
+Lage vorher als Kommentar auf dem PR. Festgehalten wird es, weil die Regel damit
+zum zweiten Mal an ihrer eigenen Anwendung gescheitert ist: Der erste Einsatz
+des Verfahrens verfehlte sie beim Umschalten, dieser hier beim Merge.
+
 ### Wie das Kontingent funktioniert
 
 Es hängt am Konto, nicht am Repo, und Code-Reviews haben einen eigenen Topf —
@@ -1090,3 +1127,126 @@ liegt an diesen Gegenbeispielen: Ein Abschnitt hinter dem verwiesenen lässt
 dessen Nummer stehen, einer davor verschiebt sie; eine Zeile mitten in der
 Tabelle lässt «die letzte Zeile» stehen, eine am Ende nicht. Ansehen kann man
 es keinem von beiden.
+
+---
+
+## 11. Vier Runden an einem kurzen Test (18.9.2026)
+
+Die bisherigen Mehrfachrunden dieser Sammlung hingen an Regeltexten — fünf auf
+dem Verfahrensabschnitt, neun auf PR #93. Am 18.9. lief dasselbe an etwas
+anderem: an `tests/test_ruff_pin_doku.py`, einer einzelnen Testdatei mit einer
+einzigen Frage. Vier Runden vor dem Merge, jede mit genau einem P2-Befund,
+keiner bestritten.
+
+| Runde | Head | Befund | Wirkung |
+|---|---|---|---|
+| 1 | `b67f091` | `rglob` über alle `*.md` mit handgeschriebener Ausschlussliste | Falsch-Rot |
+| 2 | `814dd53` | Version negativ abgegrenzt (Liste verbotener Folgezeichen) | Falsch-Rot |
+| 3 | `87a517f` | `ruff==` wörtlich, ohne PEP 503/508 | **Falsch-Grün** |
+| 4 | `d5814c6` | nur der Versions-Präfix gefangen | **Falsch-Grün** |
+
+### Der Gegenstand war die Fehlerklasse, die der Test enthielt
+
+Der PR behob eine Versionszahl, die `CLAUDE.md` aus `pyproject.toml` kopiert
+hatte, statt auf die Quelle zu verweisen. Jeder Befund der Tabelle traf
+dieselbe Klasse **im Test selbst**: eine Verzeichnisliste, eine Zeichenliste,
+eine Annahme über die Schreibweise des Paketnamens, eine über das, was nach
+einer Versionsnummer folgen darf. Jedes Mal stand eine handgeschriebene
+Aufzählung da, wo eine Quelle hingehört hätte — `.gitignore` für die Dateien,
+die Versionssyntax für den Rest.
+
+Wer ein Werkzeug gegen eine Fehlerklasse baut, baut sie mit hoher
+Wahrscheinlichkeit hinein. Das ist kein Argument gegen das Werkzeug, aber eines
+dafür, es prüfen zu lassen.
+
+### Die Richtung kippte in der Mitte
+
+Die ersten beiden Befunde machten die Suite rot, wo nichts falsch war: eine
+erzeugte Datei in `venv/`, ein Satzpunkt hinter der korrekten Version. Das
+fällt auf, sobald es eintritt.
+
+Die letzten beiden liessen eine echte Drift durch. `Ruff == <andere Version>`
+und `ruff==<Pin>.*` standen in einer getrackten Datei, und das Gate meldete
+grün. Ein Gate mit Falsch-Grün ist schlechter als keines: Es beantwortet die
+Frage, für die es da ist, mit einem Nein, das niemand nachprüft.
+
+Beide Falsch-Grün-Befunde kamen aus den Runden **nach** den Falsch-Rot-Befunden.
+Wer nach zwei sichtbaren Fehlern aufhört, weil «die offensichtlichen jetzt
+raus sind», hört genau vor den stillen auf.
+
+### Der teuerste Befund war die Korrektur des vorigen
+
+Runde 2 lehrte, den Satzpunkt nicht mitzufangen: `Install ruff==<Pin>.` darf
+nicht als `<Pin>.` gelesen werden. Die Korrektur fing daraufhin gar nichts
+mehr hinter der Ziffernfolge — und warf damit die Anforderungssyntax mit weg.
+`ruff==<Pin>.*` wurde zu `<Pin>`, stimmte damit überein und ging durch.
+Runde 4 war also nicht ein neuer Fehler neben dem alten, sondern der alte, in
+die Gegenrichtung überschossen.
+
+Der Punkt ist am Zeichen nicht zu erkennen, nur am folgenden: In
+`Install ruff==<Pin>.` schliesst er den Satz, in `ruff==<Pin>.*` gehört er zur
+Anforderung. Eine Korrektur, die das nicht trennt, kann nur die eine oder die
+andere Seite treffen.
+
+Das ergänzt die Beobachtung aus «Zum Verfahren für Doku-PRs», dass eine
+Straffung eine schon entfernte Behauptung zurückholen kann. Hier holte sie
+nichts zurück, sondern erzeugte den Spiegelfehler. Der Handgriff ist derselbe:
+**Nach einer Korrektur prüfen, was sie auf der anderen Seite kostet** — nicht
+nur, ob der gemeldete Fall jetzt stimmt.
+
+### Warum hier Platzhalter stehen
+
+Die Beispiele oben nennen `<Pin>` statt einer Ziffernfolge, und das ist kein
+Schönheitsentscheid. Der Test, um den es geht, gleicht jede `ruff==`-Angabe in
+den versionierten Markdown-Dateien gegen den Pin ab — auch die in dieser Datei.
+Mit ausgeschriebenen Versionen fiel er beim Schreiben dieses Abschnitts:
+`docs/codex-reviews.md` nannte vier abweichende Angaben, und jede war ein Zitat
+eines Fehlerfalls, keine Anweisung.
+
+**Zitat und Anweisung kann der Test nicht trennen**, und eine Ausnahme dafür
+wäre genau die Lücke, durch die eine echte Drift wieder durchginge. Die Kosten
+trägt deshalb die Doku, nicht das Gate.
+
+Ein Platzhalter ist hier ohnehin das Richtige: Ein Beispiel mit ausgeschriebener
+Version wechselt beim nächsten Pin-Wechsel seine Bedeutung — `<Pin>.*` sieht
+dem gepinnten Stand immer ähnlich, `0.16.5.*` nur so lange, wie dieser gilt.
+
+### Jeder Lauf sah eine Schicht
+
+Kein Lauf nannte zwei Befunde, und kein späterer wiederholte einen früheren.
+Runde 1 sah die Dateiliste und nicht das Muster daneben; Runde 2 sah die
+Zeichenklasse und nicht die Gross-/Kleinschreibung im selben Ausdruck. Der
+Gegenstand war klein genug, dass alles gleichzeitig sichtbar war — gefunden
+wurde es trotzdem nacheinander.
+
+Daraus folgt nichts über eine Reihenfolge, die man erwarten dürfte. Es folgt
+nur, dass ein Lauf mit Befund den Gegenstand so wenig erschöpft wie ein Lauf
+ohne: **Nach einem behobenen Befund ist der nächste Lauf keine Formalie.**
+
+### Was die Läufe nicht fanden
+
+Zwei Mängel kamen beim Nachmessen der gemeldeten Befunde ans Licht, nicht aus
+einem Review:
+
+- Der Namensabgrenzung wegen las das Muster `xruff==0.16.3` und
+  `my-ruff==0.16.3` als ruff — ein fremdes Paket wäre zur Drift erklärt worden.
+  Aufgefallen beim Prüfen der Schreibweisen aus Runde 3.
+- Die Positivkontrolle verlangte `X.Y.Z`, während der Pin-Leser daneben einen
+  Vorabversions-Pin wie `0.16.5rc1` zulässt. Ein solcher Pin hätte die Suite
+  falsch-rot gemacht — dieselbe Fehlerrichtung wie der Befund aus Runde 2, an
+  einer Stelle, die keiner der Läufe nannte.
+
+Der Review liefert damit den Anstoss und nicht die Vollständigkeit. Wer einen
+Befund bloss abarbeitet, statt seine Umgebung nachzumessen, lässt den Teil
+liegen, den ein Lauf nicht gesehen hat.
+
+### Das Ende war kein befundloser Lauf
+
+Das Verfahren für Doku-PRs verlangt, bis ein Lauf auf dem aktuellen Head nichts
+mehr findet. So weit kam es nicht: Nach Runde 4 lief die Anforderung auf die
+Kontingentsperre (siehe «Die Episode vom 18.9.2026»). Der Stand, der gemergt
+wurde, trug damit kein Ergebnis — weder ein gutes noch ein schlechtes.
+
+Die Befunde sagen nichts darüber, ob ein weiterer gekommen wäre. Sie sagen
+etwas anderes: dass an diesem Gegenstand Runde um Runde etwas gefunden wurde
+und keine leer ausging.
