@@ -761,6 +761,7 @@ sie hielt über alle weiteren Versuche:
 | 06:37 | #97 | `@codex review` |
 | 06:46 | #99 | `@codex review` |
 | 06:51 | #99 | Draft → ready |
+| 07:04 | #100 | `@codex review` |
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Der dritte
 Eintrag ist der Lauf, den das Umschalten auf ready selbst anstösst — dieselbe
