@@ -1293,18 +1293,11 @@ Merge:
 
 Die Ergebniszeiten stammen aus der Statuszeile des jeweiligen Laufs mit
 Auslöser «Draft marked ready». **Nicht mit den Vorläufen der manuellen Aufrufe
-verrechnen** (sie stehen unter «Der manuelle Aufruf: was belegt ist»)**:** Diese
-ready-Läufe brauchten **63 bis 100 Sekunden ab dem Umschalten** — die Zahlen in der Tabelle sind die Abstände zum
-Merge und ein bis zwei Sekunden kleiner. Der Abstand von ein bis drei
-Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
-Fälle ist die Reihenfolge damit nicht behauptet.
-
-**Die Wertebereiche überlappen inzwischen.** Der manuelle Aufruf auf #109
-lieferte am 18.9.2026 nach 82 Sekunden und liegt damit mitten im Bereich dieser
-ready-Läufe; beide Werte laufen vom Auslöser bis zum zugestellten Ergebnis. Aus
-einer Dauer ist also nicht zu lesen, welcher Auslöser dahinterstand. Getrennt
-zu halten sind die beiden Bezugsrahmen trotzdem — nur nicht mehr deshalb, weil
-sie weit auseinanderlägen. **Die Spanne ist auch kein
+verrechnen** — sie stehen unter «Der manuelle Aufruf: was belegt ist»: Diese
+ready-Läufe brauchten **63 bis 100 Sekunden ab dem Umschalten** — die Zahlen in
+der Tabelle sind die Abstände zum Merge und ein bis zwei Sekunden kleiner. Der
+Abstand von ein bis drei Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
+Fälle ist die Reihenfolge damit nicht behauptet. **Die Spanne ist auch kein
 Deckel:** Der ready-Lauf auf #88 stand am 31.8. um 04:43:50 auf «Running» und
 um 04:46:12 auf «Completed», also 142 Sekunden reine Laufzeit. Das ist aus der
 Statuszeile des Laufs gemessen und damit ab seinem Start, während die 63 bis
@@ -1313,6 +1306,13 @@ In beiden Bezugsrahmen liegt der Wert über der Spanne. **Was das kostet,
 ist an #83 gemessen:** Dort lag seit 18:05:51 ein P1 offen — die Löschregel
 löschte ungemergte Branches, an einem Bare-Repo nachgestellt —, und der Merge
 um 18:13:33 nahm ihn mit nach `main`. Behoben erst in #84.
+
+**Die Wertebereiche überlappen inzwischen.** Der manuelle Aufruf auf #109
+lieferte am 18.9.2026 nach 82 Sekunden und liegt damit mitten im Bereich der
+63 bis 100 Sekunden dieser ready-Läufe; beide Werte laufen vom Auslöser bis
+zum zugestellten Ergebnis. Aus einer Dauer ist also nicht zu lesen, welcher
+Auslöser dahinterstand. Getrennt zu halten sind die beiden Bezugsrahmen
+trotzdem — nur nicht mehr deshalb, weil sie weit auseinanderlägen.
 
 **Der Rückweg fehlt.** Ein Umschalten lässt sich nicht zurücknehmen:
 `update_pull_request` mit `draft: true` scheitert mit «does not have permission
