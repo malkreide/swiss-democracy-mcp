@@ -322,15 +322,17 @@ kein Review angekommen ist.
 
 ### Der Hebel: `@codex review` von Hand
 
-Der Vorlauf lag bei den bisher gemessenen Läufen zwischen 2 min 14 s und
-3 min 25 s; die Einzelwerte stehen in
-[`docs/codex-reviews.md`](docs/codex-reviews.md). Er läuft **auch auf einem Draft**
-und **auf einem bereits gemergten PR** an (dort wird der Merge-Commit geprüft).
-Nach einer Environment-Meldung lohnt der zweite Versuch.
+Der Vorlauf ist gemessen; die Einzelwerte stehen in
+[`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Der manuelle Aufruf:
+was belegt ist». Eine Spanne steht hier bewusst nicht: Sie war zweimal zu eng
+angesetzt — erst als «zwei bis drei Minuten», dann als Grenzwertpaar, das am
+18.9.2026 von zwei Läufen unterboten wurde. Der Aufruf läuft **auch auf einem
+Draft** und **auf einem bereits gemergten PR** an (dort wird der
+Merge-Commit geprüft). Nach einer Environment-Meldung lohnt der zweite Versuch.
 
-Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr: Die
-Spanne oben sagt, wie lange es ungefähr dauert, nicht wann man aufhören darf;
-sie war schon einmal zu kurz angesetzt.
+Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr. Eine
+Zahl hülfe dabei auch nicht: Abgewartet wird, bis ein Ergebnis da ist, nicht
+bis eine Frist abläuft.
 
 Die Statuszeile taugt als Ersatz **nur zum Ausschliessen**. Sie springt von
 «🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
