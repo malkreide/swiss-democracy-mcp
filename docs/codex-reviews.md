@@ -89,26 +89,47 @@ Zustellweg festgehalten sind:
 | #112, 13:47:01 | Issue-Kommentar | Issue-Kommentar (13:47:10) |
 | #113, 13:50:56 | Issue-Kommentar | Issue-Kommentar (13:51:08) |
 | #113, ≈13:51:46 | **Umschalten auf ready** | **Issue-Kommentar (13:51:48)** |
+| #118, ≈14:26:46 | **Umschalten auf ready** (Eröffnung 14:25:45 nicht ausgeschlossen) | **Issue-Kommentar (14:26:47)** |
 
-**Die beiden Zeilen mit «Umschalten auf ready» sagen etwas, das die übrigen
+**Die drei Zeilen mit «Umschalten auf ready» sagen etwas, das die übrigen
 nicht hergeben.** Das Umschalten ist gar kein Kommentar — es gibt keinen
-Thread, in dem geantwortet werden könnte. Beide Male landete die Meldung unter
-den Issue-Kommentaren. Damit liest sich die Beobachtung schärfer als «die Form
-folgt dem Auslöser»: **Der Issue-Kommentar ist der Normalfall, und die
+Thread, in dem geantwortet werden könnte. Alle drei Male landete die Meldung
+unter den Issue-Kommentaren. Damit liest sich die Beobachtung schärfer als «die
+Form folgt dem Auslöser»: **Der Issue-Kommentar ist der Normalfall, und die
 Thread-Antwort ist das, was ein Aufruf aus einem Thread heraus bekommt.**
 
-**Ob die zweite Messung die erste stützt, ist offen.** Wenn ein Auslöser ohne
-Thread gar nichts anderes bekommen *kann*, beschreiben beide Zeilen dieselbe
-Mechanik und nicht zwei unabhängige Beobachtungen — dann ist der Satz oben
-eine Beschreibung des Zustellwegs und keine Vermutung über ihn. Entschieden
-ist das nicht; beide Male war zudem eine Kontingent-Absage der Inhalt, nie ein
-Befund oder eine Befundlos-Meldung.
+**Ob die späteren Messungen die erste stützen, ist offen.** Wenn ein Auslöser
+ohne Thread gar nichts anderes bekommen *kann*, beschreiben alle drei Zeilen
+dieselbe Mechanik und nicht drei unabhängige Beobachtungen — dann ist der Satz
+oben eine Beschreibung des Zustellwegs und keine Vermutung über ihn. Entschieden
+ist das nicht; alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie
+ein Befund oder eine Befundlos-Meldung.
 
-Die Auslösezeiten dieser beiden Zeilen sind die einzigen in der Tabelle, die
+Die Auslösezeiten dieser drei Zeilen sind die einzigen in der Tabelle, die
 nicht aus der Primärquelle stammen: Das Umschalten trägt in der API keinen
 Zeitstempel am PR, die ≈-Werte kommen aus den Webhook-Ereignissen. Die
-Meldungen daneben sind mit 13:45:17 und 13:51:48 belegt; alle übrigen Zeiten
-sind `created_at`-Werte der Kommentare.
+Meldungen daneben sind mit 13:45:17, 13:51:48 und 14:26:47 belegt; alle
+übrigen Zeiten sind `created_at`-Werte der Kommentare.
+
+**Aus einer ≈-Zeile keine Dauer rechnen.** Auf #118 stehen 14:26:46 und
+14:26:47 nebeneinander; das liest sich als eine Sekunde und unterböte die zwei
+Sekunden, die unter «Die Meldung hat am 29.8. einen zweiten Satz bekommen» als
+Untergrenze stehen. Eine Messung ist es nicht: Die Ankunft einer
+Webhook-Meldung lag am selben Tag ein bis vier Sekunden hinter ihrer
+Primärquelle (siehe «Vier Fassungen, die kein Review getroffen hat»), das
+Umschalten kann also bis 14:26:42 zurückliegen. Die Untergrenze stützt sich
+weiter auf #64 und #65 — woher deren ready-Zeiten stammen, ist dort allerdings
+nicht festgehalten.
+
+**Die dritte Zeile hat zwei Kandidaten.** Auf #118 lagen Eröffnung als Draft
+(14:25:45, `created_at` des PR) und Umschalten (≈14:26:46) rund eine Minute
+auseinander; die Absage kam um 14:26:47, also 62 Sekunden nach der Eröffnung.
+Das Umschalten ist der nähere, und die lange Fassung des Wortlauts passt zu
+ihm — eine Zuordnung ist beides nicht: Die Verteilung der Fassungen steht unter
+«Die Nachmittagssperre desselben Tages» ausdrücklich als Verteilung da. Für das, was die Tabelle behauptet, ändert die
+Unschärfe nichts: Auch eine Eröffnung hat keinen Thread, unter beiden Lesarten
+ist die Zeile ein thread-loser Auslöser mit einer Antwort unter den
+Issue-Kommentaren.
 
 Belegt ist die Regel damit immer noch nicht: Alle Zeilen stammen aus diesem
 Repo, für die Environment-Meldung ist die Form gar nicht beobachtet, und ein
@@ -1239,8 +1260,9 @@ Der nächste Aufruf lief auf die Sperre:
 | 13:58:31 | #115 | `@codex review` | mit |
 | 14:01:51 | #115 | Draft → ready | mit |
 | 14:08:10 | #117 | **Eröffnung als Draft** | **ohne** |
+| 14:26:47 | #118 | Draft → ready | mit |
 
-**Die Spalte «Wortlaut» trennt drei Zeilen von den übrigen neun.** Keiner der
+**Die Spalte «Wortlaut» trennt drei Zeilen von den übrigen zehn.** Keiner der
 drei Auslöser ist eine ausdrückliche Review-Anforderung: zweimal die Eröffnung
 als Draft, einmal ein Kommentar, der die Zeichenfolge nur zitiert. Was daraus
 folgt und was nicht, steht weiter unten bei der kurzen Fassung und unter
@@ -1269,10 +1291,11 @@ Tabelle, der umgeschaltet wurde. Umschalten ist kein Weg an ihr vorbei; die
 Vormittagsepisode zeigt es einmal, diese Episode an jedem betroffenen PR.
 
 **Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:48, #113 um
-13:52:23, #114 um 14:01:36 und #115 um 14:01:53, jeder mit einem Head, für den
-kein Ergebnis vorlag; auf #115 lag die Absage **zwei Sekunden** vor dem Merge.
+13:52:23, #114 um 14:01:36, #115 um 14:01:53 und #118 um 14:26:48, jeder mit
+einem Head, für den kein Ergebnis vorlag; auf #118 lag die Absage **eine
+Sekunde** vor dem Merge, auf #115 zwei.
 
-Die vier Zeitangaben stammen aus dem Committer-Datum der Merge-Commits.
+Die fünf Zeitangaben stammen aus dem Committer-Datum der Merge-Commits.
 Frühere Fassungen nannten 13:45:50, 13:52:24 und 14:01:37 und hatten damit die
 Ankunftszeiten der Webhook-Meldungen genommen — drei Abweichungen von einer
 bis zwei Sekunden, aus zwei unabhängig entstandenen Fassungen. Der Griff zur
@@ -1284,9 +1307,10 @@ durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
 
 Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
 Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
-gelesen hat. Für #115, der diesen Abschnitt einträgt, gilt dasselbe.
+gelesen hat. Für #115, der diesen Abschnitt einträgt, gilt dasselbe, und für
+#118, der einträgt, welche Fehler kein Review getroffen hat.
 
-**Drei Absagen der Tabelle lauten anders als die übrigen neun.** Die erste
+**Drei Absagen der Tabelle lauten anders als die übrigen zehn.** Die erste
 davon auf #114 um 13:55:49:
 
 ```
@@ -1312,19 +1336,36 @@ selben Repo: #115 um 13:58:10 und #117 um 14:08:10, beide nach einer
 
 Damit stehen sich gegenüber: drei kurze Fassungen, deren Auslöser **keine**
 ausdrückliche Review-Anforderung war (zweimal Eröffnung, einmal ein Zitat der
-Zeichenfolge), und neun lange, deren Auslöser eine war (Aufruf im Thread,
+Zeichenfolge), und zehn lange, deren Auslöser eine war (Aufruf im Thread,
 Aufruf als Issue-Kommentar, Umschalten auf ready).
 
-**Eine Erklärung ist das immer noch nicht.** Drei zu neun ist keine Zuordnung,
+**Eine Erklärung ist das immer noch nicht.** Drei zu zehn ist keine Zuordnung,
 sondern eine Verteilung; gemessen ist, was die Meldung sagt, nicht warum. Was
 sich sagen lässt: Die kurze Fassung ist bisher nie nach einer ausdrücklichen
 Anforderung aufgetreten — und ein Gegenfall wäre eine einzige Absage, die das
 umkehrt.
 
-**Alle zwölf liegen in Sperrzeiten.** Ob dieselben Auslöser bei freiem
+**Alle dreizehn liegen in Sperrzeiten.** Ob dieselben Auslöser bei freiem
 Kontingent überhaupt etwas erzeugen, ist an keiner der Zeilen gemessen.
 
-**Diese Absage war nicht angefordert — der dritte Fall für die Fussangel.**
+**Die dritte Eröffnung als Draft blieb still.** #118 wurde um 14:25:45 als
+Draft eröffnet, und bis zum Umschalten rund eine Minute später kam nichts.
+Danach ist nichts mehr zuzuordnen: Die Absage um 14:26:47 hat zwei Kandidaten,
+und der nähere ist das Umschalten. Belegt ist damit die Stille in einem Fenster
+von höchstens 61 Sekunden — gegen den ≈-Wert des Umschaltens gerechnet, der
+selbst zu spät liegen kann — und nicht die Stille der Eröffnung. Das Fenster
+liegt zwar über allen bisher gemessenen Ausfallmeldungen (2 bis 22 Sekunden),
+aber diese Spanne ist kein Deckel.
+
+Innerhalb derselben Sperre, am selben Repo und binnen einer halben Stunde
+antworteten damit zwei Eröffnungen mit der kurzen Fassung und eine — im
+gemessenen Fenster — gar nicht. «Worauf ein Draft antwortet, ist offen» steht
+dafür in `CLAUDE.md`; diese drei Fälle zeigen, dass die Antwort schon
+verschieden ausfällt, wenn Repo und Sperre dieselben sind. Worin die drei sich
+sonst unterscheiden, ist nicht gemessen.
+
+**Die Absage auf #114 um 13:55:49 war nicht angefordert — der dritte Fall für
+die Fussangel.**
 Der Kommentar von 13:55:41 hielt fest, dass auf #114 kein Ergebnis vorliegt,
 und zitierte dabei die Auslöser-Zeichenfolge in einer Tabellenzelle, in
 Backticks. Acht Sekunden später kam die Absage. Ein anderer dokumentierter
