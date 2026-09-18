@@ -886,18 +886,26 @@ anderer PRs und anderer Repos —, bis Stunden später wieder einer durchlief:
 deshalb ihren Namen — die Nummernkreise überschneiden sich, und ein `#88` gibt
 es hier wie dort.
 
-**Sie traf drei Repos zugleich, und das ist hier zum ersten Mal gemessen.**
-«Wie das Kontingent funktioniert» sagt seit dem 29.8., es hänge am Konto und
-nicht am Repo — belegt war das über eine Reihe nacheinander, nicht über
-gleichzeitige Messungen. Die Zeilen 07:08:02 und 07:08:11 liegen **neun
-Sekunden** auseinander und gehören zwei verschiedenen Repos; um 07:32 und 07:48
-wies dasselbe Konto in einem dritten ab. Wer bei stehender Sperre in ein
-anderes Repo ausweicht, wechselt also nichts.
+**Dasselbe Konto bekam die Absage in drei Repos.** «Wie das Kontingent
+funktioniert» sagt seit dem 29.8., es hänge am Konto und nicht am Repo; die
+Zeilen aus zwei weiteren Repos sind dazu die erste Messung ausserhalb dieses
+einen. Die Zeilen 07:08:02 und 07:08:11 liegen neun Sekunden auseinander und
+gehören zwei verschiedenen Repos; um 07:32 und 07:48 wies dasselbe Konto in
+einem dritten ab.
 
-Was das **nicht** hergibt: dass die Sperre alle Repos eines Kontos zugleich
-trifft. Gemessen sind drei, in denen an jenem Vormittag gearbeitet wurde. Ein
-Repo, in dem gleichzeitig ein Lauf durchgelaufen wäre, würde die Aussage
-widerlegen — ein solcher Fall ist weder beobachtet noch gesucht worden.
+**Eine gleichzeitig stehende Sperre ist das nicht.** Der Absatz zur
+Punktmessung weiter unten gilt auch hier, und er gilt auch für neun Sekunden:
+Bei einem rollenden Fenster kann sich das Kontingent zwischen zwei Zeilen
+geöffnet und durch Aktivität, die von hier aus nicht zu sehen ist, wieder
+erschöpft haben. Für das dritte Repo liegen die Messpunkte ohnehin 24 und 40
+Minuten daneben.
+
+Belegt ist damit eine Folge von Absagen über Repo-Grenzen hinweg — nicht, dass
+die Sperre zu einem Zeitpunkt in allen dreien stand, und nicht, dass ein
+Ausweichen in ein anderes Repo nichts brächte. Wer das eine aus dem anderen
+folgert, tut dasselbe wie jemand, der aus der Tabelle eine Dauer macht.
+(Dieser Absatz stand zuerst umgekehrt da und wurde durch einen Codex-Befund
+auf PR #108 zurückgenommen.)
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
 mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
@@ -915,11 +923,11 @@ stand die Befundlos-Meldung zu Commit `42f7517` da — das erste Ergebnis seit
 06:35. Sie fiel also zwischen diesen beiden Zeitpunkten; wo genau, geben die
 Messpunkte nicht her, weil dazwischen niemand nachfragte.
 
-Auch die Öffnung galt dem Konto und nicht dem Repo: Um 09:56:36 lief ein
-Aufruf in `swiss-cultural-heritage-mcp`#88 an und lieferte um 09:59:48 zwei
-Befunde. Dasselbe Konto, ein anderes Repo, zweieinhalb Minuten nach dem Lauf
-hier — die Sperre ging also für beide zugleich auf, so wie sie für beide
-zugleich stand.
+Um 09:56:36 lief ein Aufruf in `swiss-cultural-heritage-mcp`#88 an und
+lieferte um 09:59:48 zwei Befunde — dasselbe Konto, ein anderes Repo,
+zweieinhalb Minuten nach dem Lauf hier. Das verdichtet den Endpunkt, macht
+aber aus zwei Zeitpunkten keine gemeinsame Öffnung: Es sind zwei gelungene
+Läufe kurz nacheinander, mehr nicht.
 
 Eine Dauer folgt daraus nicht, und auch keine Untergrenze dafür. **Die Tabelle
 ist eine Punktmessung:** Jede Zeile belegt eine Absage in ihrem Augenblick,
@@ -1478,12 +1486,22 @@ stehen in einer Datei, die der Test liest, und lösen ihn nicht aus.
 Der Befund galt **beiden** Repos. Die Kopie und das Original trugen denselben
 Lookbehind; gemessen wurde er in beiden, behoben in beiden.
 
-Bemerkenswert ist, wann er kam. «Vier Runden an einem kurzen Test» hält für
-dieselbe Datei fest, dass die Namensabgrenzung dort schon einmal nachgebessert
-wurde — `xruff` und `my-ruff` fielen beim Nachmessen der Befunde auf, nicht in
-einem Lauf. Der Punkt blieb dabei liegen. Er überstand also vier Läufe, das
-Nachmessen danach und die Portierung, und fiel erst im fünften Lauf auf, der
-dieselbe Datei in einem anderen Repo sah.
+Bemerkenswert ist, wann er kam — und hier ist genau zu zählen, welche Läufe
+den Fehler überhaupt sehen konnten. Den Lookbehind gab es vorher nicht: Er
+entstand mit `d5814c6` als Behebung des Befunds aus Runde 3, der die Datei
+erstmals PEP 503/508 lesen liess. **Gegenstand eines Laufs war er damit genau
+einmal** — Runde 4 prüfte diesen Head und fand etwas anderes (nur der
+Versions-Präfix wurde gefangen).
+
+Danach überstand er das Nachmessen, bei dem `xruff` und `my-ruff` auffielen —
+dieselbe Abgrenzung, dieselbe Zeile, der Punkt blieb liegen — und die
+Portierung. Aufgefallen ist er im nächsten Lauf, der die Datei sah, und der
+lief in einem anderen Repo.
+
+Die erste Fassung dieses Abschnitts sprach von «vier Läufen» und überzeichnete
+damit die Evidenz, auf der er beruht; ein Codex-Befund auf PR #108 hat es
+zurückgeholt. Das ist der Fall «Zahlen, die eine Aufzählung wiederholen», an
+einem Text über Codex-Befunde.
 
 **Der Mechanismus ist billig und hier zum ersten Mal beobachtet:** Wer eine
 Datei portiert und am Ziel einen Review anfordert, bekommt einen weiteren Blick
