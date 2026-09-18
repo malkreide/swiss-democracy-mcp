@@ -107,8 +107,9 @@ nicht: «Thread-Antwort» heisst in der Tabelle *irgendein* Review-Thread, und o
 eine Meldung sich an einen anderen, bereits offenen hängen könnte, ist nicht
 gemessen. Auch welche der übrigen Formen ein ready-Lauf annimmt, ist **nicht**
 bestimmt — ein Befund stünde im Review-Objekt, und «gar nichts» ist ebenfalls
-ein Ausgang; die Formen zählt die Überschrift dieses Abschnitts auf. Beobachtet sind hier drei Kontingent-Absagen, und alle drei
-kamen als Issue-Kommentar. Mehr trägt die Spalte nicht.
+ein Ausgang; die Formen zählt die Überschrift dieses Abschnitts auf. Beobachtet
+sind hier drei Kontingent-Absagen, und alle drei kamen als Issue-Kommentar.
+Mehr trägt die Spalte nicht.
 
 **Diese Stelle hat mehrere Fassungen an derselben Klasse verloren.** Zuerst
 stand die erste Lesart allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
@@ -119,12 +120,18 @@ Abschnitts widerlegt; sie fiel im nächsten Review, auf #122. Deren Behebung
 schloss dann «die Thread-Antwort» schlechthin aus statt nur die Antwort im
 auslösenden Thread und fiel in der Runde darauf.
 
-**Das ist der Ablauf, und mehr ist es nicht.** Jede Fassung war enger als die
-vorige und jede noch zu weit; gefunden hat es jedes Mal erst der nächste Lauf.
-Woran es lag, steht in keinem Commit: Was beim Korrigieren geprüft wurde und
-was nicht, ist nicht festgehalten, und wie oft ein Ersatz seinerseits
-danebenfällt, ist nicht gemessen. Eine Erklärung stand hier schon und ist genau daran
-gescheitert.
+**Das ist der Ablauf, und mehr ist es nicht.** Gefunden hat es jedes Mal erst
+der nächste Lauf. Woran es lag, steht in keinem Commit: Was beim Korrigieren
+geprüft wurde und was nicht, ist nicht festgehalten, und wie oft ein Ersatz
+seinerseits danebenfällt, ist nicht gemessen. Eine Erklärung stand hier schon
+und ist genau daran gescheitert.
+
+**Eine Ordnung auch nicht.** Eine frühere Fassung nannte die Reihe «jede enger
+als die vorige» — eine Bewertung ohne Massstab, und dazu eine falsche: Die
+Fassungen sind nicht ineinander enthalten. Die zweite betraf nur thread-lose
+Auslöser, schloss dort aber kategorisch alles andere aus, und war damit
+**strenger** als die erste, nicht enger. Ein Satz, der eine Chronik ordnet, ist
+selbst wieder eine Behauptung über sie.
 
 Beschreiben die drei Zeilen dieselbe erzwungene Mechanik, sind es nicht drei
 unabhängige Beobachtungen, sondern eine dreimal. Entschieden ist das nicht;
