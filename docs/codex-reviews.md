@@ -30,7 +30,7 @@ das die überlebende Fassung mitzählte. Jede Korrektur erzeugte die nächste.
 | Form | Wo | Bedeutet |
 |---|---|---|
 | «💡 Codex Review» | Review-**Objekt** (`get_reviews`) | Lauf mit Befund |
-| «Codex Review: Didn't find any major issues.» | Issue-Kommentar | Lauf ohne Befund |
+| «Codex Review: Didn't find any major issues.» | Issue-Kommentar **oder** Antwort im Review-Thread | Lauf ohne Befund |
 | «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar **oder** Antwort im Review-Thread | Kontingent weg |
 | «To use Codex here, create an environment for this repo.» | Issue-Kommentar | Environment-Meldung |
 | Status-Kommentar «🔄 Running» / «✅ Completed» | Issue-Kommentar, **bearbeitet** | Lauf läuft / ist durch |
@@ -50,10 +50,15 @@ Issue-Fassung an dieser Stelle nicht. Wer in einem solchen Fenster nur die zwei
 bisherigen Abfragen fährt, sieht gar nichts und hält den Head für ungeprüft aus
 unbekanntem Grund — statt zu wissen, dass eine Sperre steht.
 
-Was das **nicht** hergibt: wann die Meldung welche Form wählt. Beobachtet ist
-die Thread-Fassung genau einmal, auf einen Aufruf hin, der selbst eine
-Thread-Antwort war. Ob die Form dem Auslöser folgt, ist damit nicht belegt,
-sondern bloss naheliegend.
+**Nicht nur die Ausfallmeldung nimmt diese Form an.** Am 18.9. um 09:58:29 kam
+auf #103 die *Befundlos*-Meldung als Thread-Antwort, und `get_comments` kannte
+sie nicht. Das trifft härter als der erste Fall: Die Befundlos-Meldung ist einer
+der beiden Belege dafür, dass überhaupt geprüft wurde. Wer sie übersieht, hält
+einen erfolgreichen Lauf für einen stillen.
+
+Beide Male war der Aufruf selbst eine Thread-Antwort. Ob die Form dem Auslöser
+folgt, ist damit nicht belegt, sondern naheliegend — und ob die Environment-
+Meldung ebenso kann, ist gar nicht beobachtet.
 
 ### Der Schlusssatz der Befundlos-Meldung wechselt
 
@@ -618,10 +623,24 @@ nichts mehr zugestellt würde.
 
 Praktisch heisst das: **Nach einem frühen Merge kann am PR nicht mehr
 ablesbar sein, ob geprüft wurde** — verlassen kann man sich weder darauf noch
-auf das Gegenteil. Wer es wissen muss, sieht nach: `get_reviews` für das
-Objekt, `get_comments` für die Befundlos-Meldung. Steht dort nichts, ist der
-Rückgriff ein neuer Aufruf von Hand — er läuft auf dem gemergten PR an, prüft
-dann aber den Merge-Commit.
+auf das Gegenteil. Wer es wissen muss, sieht nach, und zwar mit allen drei
+Abfragen: `get_reviews` für das Objekt, `get_comments` für die
+Issue-Kommentare, `get_review_comments` für alles, was als Antwort in einem
+Review-Thread steht. Die dritte gehört hierher, weil ohne sie ein Teil der
+Antwort fehlt: Am 18.9. stand auf #98 die Kontingent-Meldung nur dort und auf
+#103 die Befundlos-Meldung. Wer bloss die beiden anderen fährt, sieht im einen
+Fall die Sperre nicht und im anderen den geglückten Lauf.
+
+**Eine gefundene Ausfallmeldung erklärt aber nur die Vergangenheit.** Sie sagt,
+warum *damals* nichts kam, und nichts darüber, ob die Sperre jetzt noch steht —
+am 18.9. war sie um 08:42 belegt und um 09:45 weg. Wer aus einer älteren
+Meldung schliesst, ein Aufruf lohne sich nicht, lässt den Merge-Commit
+ungeprüft aus einem Grund, den er nicht gemessen hat. Gemessen wird der
+aktuelle Zustand nur durch einen Aufruf.
+
+Der Rückgriff ist deshalb in beiden Fällen derselbe: ein neuer Aufruf von Hand.
+Er läuft auf dem gemergten PR an und prüft dann den Merge-Commit. Die drei
+Abfragen sagen, was vorliegt — sie ersetzen den Versuch nicht.
 
 ### Der Vorlauf trennt «angelaufen» nicht von «abgeblockt»
 
@@ -641,10 +660,19 @@ aus einer ausbleibenden auf einen laufenden Job. Die Messungen vom 18.9. auf
 
 Für die Zeilen oben gilt: Die Sperre antwortete in 8 bis 12 Sekunden, ein Start
 kam nach 11 bis 14 — die Bereiche überlappen. **Den Text lesen, nicht die Uhr:**
-Was nach zwölf Sekunden erscheint, kann beides sein. Die Versuchung ist real —
-beim Messen dieser Tabelle ist aus den schnellen Absagen erst einmal eine
-Faustregel geworden («bleibt die Meldung eine Viertelminute aus, läuft es»),
-und die Überlappung stand in derselben Tabelle schon da.
+Was nach zwölf Sekunden erscheint, kann beides sein — und ohnehin nicht nur
+beides: Die Tabelle führt die zwei Meldungen, die an diesem Vormittag kamen,
+nicht die möglichen. Die Environment-Meldung ist eine dritte.
+
+**Bleibt eine Meldung ganz aus, ist das keine vierte.** Dann steht nichts da,
+was sich lesen liesse, und ein laufender oder verzögerter Review sieht genauso
+aus wie einer, der nie antwortet — es ist derselbe Fall wie «gar nichts» in der
+Tabelle der Formen, und er belegt nichts.
+
+Die Versuchung, aus der Wartezeit doch etwas zu machen, ist real: Beim Messen
+dieser Tabelle ist aus den schnellen Absagen erst einmal eine Faustregel
+geworden («bleibt die Meldung eine Viertelminute aus, läuft es»), und die
+Überlappung stand in derselben Tabelle schon da.
 
 **Die Spanne ist auch kein Fenster für andere Tage.** Sie stammt von einem PR
 an einem Vormittag. Am 29.8. antworteten zwei Läufe schon nach vier und zehn

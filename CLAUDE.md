@@ -307,7 +307,7 @@ eine bekannte Schublade zu zwingen.
 
 | Grund | Erkennbar an |
 |---|---|
-| Kein Befund | Befundlos-Meldung als Issue-Kommentar |
+| Kein Befund | Befundlos-Meldung — als Issue-Kommentar oder als Antwort im Review-Thread |
 | PR ist Draft | meist gar nichts; am 29.8. kam auf *eine* Draft-Eröffnung doch eine Ausfallmeldung, auf die nächste wieder nicht — worauf ein Draft antwortet, ist offen |
 | Kontingent weg | «You have reached your Codex usage limits for code reviews.» |
 | Environment fehlt | «To use Codex here, create an environment for this repo.» |
@@ -367,10 +367,16 @@ Zeichenfolge gehört nicht in einen Kommentar, den du nicht als Aufruf meinst.
 beim Beantworten eines Befundes: Anfordern und Antworten gehen in einem. Die
 Kehrseite steht eine Zeile höher.
 
-**Den Text lesen, nicht die Uhr.** Die Antwort auf einen Aufruf ist entweder
-ein angelaufener Lauf oder die Kontingent-Sperre, und beide kommen binnen
-Sekunden. Die gemessenen Spannen überlappen — aus der Wartezeit folgt also
-nicht, welches von beidem vorliegt.
+**Kommt eine Meldung, lies sie — nicht die Uhr.** Ein angelaufener Lauf und die
+Kontingent-Sperre kommen beide binnen Sekunden, und die gemessenen Spannen
+überlappen; aus der Wartezeit folgt also nicht, welche von beiden vorliegt. Die
+Environment-Meldung kommt als dritte dazu. Welche es ist, sagt nur ihr Text.
+
+**Kommt keine, ist das kein vierter Ausgang, sondern gar keiner.** Schweigen
+trennt einen laufenden oder verzögerten Review nicht von einem, der nie
+antwortet, und eine Frist, nach der es das eine hiesse und nicht das andere,
+gibt es nicht — deshalb steht oben, den Aufruf abzuwarten statt die Uhr zu
+befragen.
 
 ### Ein befundloser Lauf ist kein Freispruch
 
