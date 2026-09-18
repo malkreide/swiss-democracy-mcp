@@ -67,6 +67,24 @@ Vorbehalte:
   der ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
   seither nirgends mehr. Wer zwei Läufe auseinanderhalten will, braucht ihre
   Ergebnis-Kommentare — die bleiben einzeln stehen.
+- **«✅ Completed» kann der einzige Nachweis eines Laufs sein.** Am 18.9. auf
+  #92 endete der ready-Lauf um 04:10:15 auf `494a61f`, ohne Review-Objekt und
+  **ohne Befundlos-Meldung**: `get_reviews` leer, unter den Kommentaren nichts
+  Neues. Der manuelle Lauf zuvor hatte auf demselben Commit eine geschrieben
+  (04:08:40). Gleicher PR, gleicher Commit, zwei Läufe, zwei verschiedene
+  Meldeformen.
+
+  Das trifft den Vorbehalt zum überschreibbaren Status: Wenn ein Lauf gar keinen
+  Ergebnis-Kommentar hinterlässt, sind zwei Läufe **nicht** an ihren
+  Ergebnis-Kommentaren auseinanderzuhalten — der überschriebene Status ist
+  dann das Einzige, was von ihm übrig war, und er ist überschreibbar.
+
+  **Was der Fall nicht hergibt:** wovon der Unterschied abhängt. Manueller
+  gegen automatischer Auslöser ist die naheliegende Vermutung und aus *einer*
+  Beobachtung nicht mehr als das; ebenso wenig ist ausgeschlossen, dass Codex
+  eine zweite Befundlos-Meldung auf demselben Commit schlicht unterdrückt. Am
+  Zustand ändert das nichts: Wer nur auf einen Ergebnis-Kommentar prüft,
+  verbucht diesen Lauf als ausgefallen.
 
 ### `comments: 1` hat fünf Bedeutungen
 
@@ -152,7 +170,7 @@ nur der Lauf, den niemand mit Absicht angestossen hat.
 
 ---
 
-## 4. Drei Wege, den Prüfer zu verlieren
+## 4. Wege, den Prüfer zu verlieren
 
 ### 4.1 Zu schnell mergen
 
@@ -314,6 +332,45 @@ siebzig Sekunden nach einem Push. Der Abstand spricht für den Kommentar — die
 beiden anderen Läufe antworteten nach vier und zehn Sekunden —, entscheiden
 lässt es sich mit einer Beobachtung nicht. Wer beim Beantworten eines Reviews
 aus ihm zitiert, sollte mit einem neuen Lauf rechnen.
+
+### 4.4 Der Lauf läuft noch, der Merge geht durch
+
+Am 18.9. auf #92, alles auf demselben Commit `494a61f`:
+
+| Zeit (UTC) | Ereignis |
+|---|---|
+| 04:08:40 | Befundlos-Meldung des **manuellen** Laufs |
+| vor 04:09:03 | Draft → ready |
+| 04:09:03 | ready-Lauf startet («Draft marked ready») |
+| 04:09:20 | **gemergt** |
+| 04:10:15 | ready-Lauf endet, ohne Befund |
+
+Zwischen Start und Merge lagen **17 Sekunden**, der Lauf endete 55 Sekunden
+nach dem Merge.
+
+Das ist weder 4.1 noch 4.2. In 4.1 ging der Lauf verloren, weil der Merge ihn
+überholte, bevor er anlief; in 4.2 lag der Befund vor und wurde übergangen.
+Hier war der Lauf nachweislich **in der Luft** — der Status-Kommentar stand zum
+Merge-Zeitpunkt auf «🔄 Running» — und sein Ausgang zu diesem Zeitpunkt
+schlicht unbekannt. Hätte er einen Befund getragen, stünde der in `main`, und
+es bräuchte den Nachzügler wie auf #59/#60.
+
+**Warum es hier glimpflich ausging, ist kein Verdienst des Merges:** Derselbe
+Commit hatte 40 Sekunden zuvor bereits eine Befundlos-Meldung des manuellen
+Laufs. Der gemergte Stand war also nicht ungeprüft — geprüft war er durch den
+Lauf, den niemand abwarten musste, nicht durch den, der lief.
+
+**Was der Fall nicht hergibt:** ob der Mergende vom laufenden Review wusste.
+Von aussen ist der Zustand messbar, nicht die Aufmerksamkeit — dieselbe Grenze
+wie in 4.2. Ebenso wenig ist belegt, welcher der beiden Läufe die 👍 am PR
+gesetzt hat: Die Reaktionen wurden erst **nach** dem zweiten Lauf gelesen, und
+die Sammlung führt sie ohnehin als Nicht-Beleg.
+
+**Der Handgriff daraus ist nicht «schneller sein».** Auf #76 fielen Befund und
+Merge in dieselbe gemessene Sekunde; auf eine Reaktionszeit ist nicht zu bauen.
+Was trägt, ist die Reihenfolge: einen Lauf auf dem Stand abwarten, der gemergt
+wird — dann ist ein zweiter, der beim Merge noch läuft, eine Zugabe und kein
+Risiko.
 
 ---
 
