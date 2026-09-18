@@ -309,7 +309,7 @@ eine bekannte Schublade zu zwingen.
 |---|---|
 | Kein Befund | Befundlos-Meldung — als Issue-Kommentar oder als Antwort im Review-Thread |
 | PR ist Draft | meist gar nichts; am 29.8. kam auf *eine* Draft-Eröffnung doch eine Ausfallmeldung, auf die nächste wieder nicht — worauf ein Draft antwortet, ist offen |
-| Kontingent weg | «You have reached your Codex usage limits for code reviews.» |
+| Kontingent weg | «You have reached your Codex usage limits for code reviews.» — am 18.9. auch ohne das «for code reviews»; auf den Anfang prüfen, nicht auf den ganzen Satz |
 | Environment fehlt | «To use Codex here, create an environment for this repo.» |
 | Environment-Meldung trotz Prüfbarkeit | dieselbe Meldung, aber der nächste Aufruf läuft durch |
 
@@ -360,9 +360,11 @@ ausgefallenen.
 
 **Fussangel:** Wer die Auslöser-Zeichenfolge in einem Kommentar bloss
 *zitiert*, löst damit vermutlich einen Versuch aus — Backticks schützen nicht.
-Zwei Fälle, zuletzt am 18.9. auf #98, wo kein anderer Kandidat im Text stand.
+Mehrere Fälle, zuletzt am 18.9. auf #114, wo als einziger dokumentierter
+Auslöser das Zitat in Frage kam — acht Sekunden bis zur Antwort.
 «Vermutlich» bleibt es, weil die Gegenprobe fehlt: Ein Kommentar ganz ohne die
-Zeichenfolge wurde nie gemessen. Für die Praxis genügt es trotzdem — die
+Zeichenfolge wurde nie gemessen. Eine Bearbeitung, die die Zeichenfolge
+entfernt, ist keine: Ob eine Bearbeitung überhaupt auslöst, ist ungemessen. Für die Praxis genügt es trotzdem — die
 Zeichenfolge gehört nicht in einen Kommentar, den du nicht als Aufruf meinst.
 
 **Der Aufruf wirkt auch aus einer Antwort in einem Review-Thread.** Praktisch

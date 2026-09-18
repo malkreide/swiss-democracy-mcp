@@ -31,7 +31,7 @@ das die überlebende Fassung mitzählte. Jede Korrektur erzeugte die nächste.
 |---|---|---|
 | «💡 Codex Review» | Review-**Objekt** (`get_reviews`) | Lauf mit Befund |
 | «Codex Review: Didn't find any major issues.» | Issue-Kommentar **oder** Antwort im Review-Thread | Lauf ohne Befund |
-| «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar **oder** Antwort im Review-Thread | Kontingent weg |
+| «You have reached your Codex usage limits for code reviews.» — auch ohne «for code reviews» | Issue-Kommentar **oder** Antwort im Review-Thread | Kontingent weg |
 | «To use Codex here, create an environment for this repo.» | Issue-Kommentar | Environment-Meldung |
 | Status-Kommentar «🔄 Running» / «✅ Completed» | Issue-Kommentar, **bearbeitet** | Lauf läuft / ist durch |
 | gar nichts | — | nichts belegt |
@@ -1180,6 +1180,9 @@ Der nächste Aufruf, 93 Sekunden später, lief auf die Sperre:
 | 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR |
 | 13:51:08 | #113 | `@codex review` |
 | 13:51:48 | #113 | Draft → ready |
+| 13:52:39 | #114 | `@codex review` |
+| 13:53:36 | #114 | Draft → ready |
+| 13:55:49 | #114 | Kommentar, der die Zeichenfolge nur zitiert |
 
 **Das Zugehen ist hier auf 93 Sekunden eingegrenzt** — 13:18:22 lieferte noch
 ein Ergebnis, 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht
@@ -1191,19 +1194,60 @@ werden mussten.** Das ist dasselbe Muster wie unter «Die Korrekturschleife
 verbraucht das Kontingent»: Jede Korrekturrunde kostet einen Lauf, und die
 Runden häufen sich dort, wo ein Text viele Befunde trägt.
 
-**Auch hier traf die Sperre den automatischen Auslöser** — zweimal, auf beiden
-PRs. Umschalten ist kein Weg an ihr vorbei; die Vormittagsepisode zeigt es
-einmal, diese zweimal.
+**Auch hier traf die Sperre den automatischen Auslöser** — auf jedem PR der
+Tabelle, der umgeschaltet wurde. Umschalten ist kein Weg an ihr vorbei; die
+Vormittagsepisode zeigt es einmal, diese Episode an jedem betroffenen PR.
 
-**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:50 und #113 um
-13:52:24, beide mit einem Head, für den kein Ergebnis vorlag. Wie am Vormittag
-hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
-auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
+**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:50, #113 um
+13:52:24 und #114 um 14:01:37, jeder mit einem Head, für den kein Ergebnis
+vorlag. Wie am Vormittag hat ein Mensch entschieden, und wie dort stand die
+Lage vorher als Kommentar auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
 durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
 
 Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
 Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
 gelesen hat.
+
+**Die letzte Absage der Tabelle lautet anders als alle vorigen.** Auf #114 um
+13:55:49:
+
+```
+You have reached your Codex usage limits. You can see your limits in the
+[Codex usage dashboard](https://chatgpt.com/codex/cloud/settings/usage).
+```
+
+Es fehlt das «for code reviews», das die übrigen belegten Absagen tragen. Wer
+den notierten Wortlaut als ganzen Satz
+vergleicht, erkennt diese Fassung nicht und zählt sie als «gar nichts», also
+als den einen Ausgang, aus dem sich nichts schliessen lässt. Der Handgriff ist
+deshalb, auf den **Anfang** zu prüfen — «You have reached your Codex usage
+limits» —, nicht auf den vollen Satz. Das ist dieselbe Regel wie «Den Text
+lesen, nicht die Zahl», eine Ebene tiefer: auch ein bekannter Text kommt in
+Fassungen.
+
+**Warum sie anders lautet, ist offen.** Es liegt ein einziger Fall vor. Dass
+gerade der unabsichtliche Auslöser die kurze Fassung bekam, ist eine
+Beobachtung und keine Erklärung; eine Zuordnung «kurze Fassung ↔ anderer
+Auslösertyp» wäre aus n = 1 erfunden.
+
+**Diese Absage war nicht angefordert — der dritte Fall für die Fussangel.**
+Der Kommentar von 13:55:41 hielt fest, dass auf #114 kein Ergebnis vorliegt,
+und zitierte dabei die Auslöser-Zeichenfolge in einer Tabellenzelle, in
+Backticks. Acht Sekunden später kam die Absage. Ein anderer dokumentierter
+Auslöser lag nicht vor: Die Codex-Hinweisbox nennt Eröffnung, Umschalten auf
+ready und den Kommentaraufruf, und keines davon geschah; das einzige andere
+Ereignis in diesen Sekunden war der Abschluss der CI-Prüfsuite um 13:55:45,
+der dort nicht als Auslöser geführt wird.
+
+**Die Gegenprobe fehlt weiterhin.** Das Entfernen der Zeichenfolge aus
+demselben Kommentar um 13:56:33 brachte keine weitere Absage — aber eine
+Bearbeitung ist kein neuer Kommentar, und ob sie überhaupt einen Versuch
+auslöst, ist unabhängig vom Inhalt ungemessen. Ein Kommentar ganz ohne die
+Zeichenfolge bleibt der offene Fall.
+
+**Der Fall ist unangenehm genau am Ort seiner Regel aufgetreten:** in einem
+Kommentar, der vor dem ungeprüften Merge warnte, verfasst von jemandem, der
+die Fussangel im selben Atemzug zitierte.
 
 ### Wie das Kontingent funktioniert
 
