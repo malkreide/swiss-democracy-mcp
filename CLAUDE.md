@@ -490,15 +490,29 @@ wie der Code: Nichts ist rot, weil nichts geprüft wird, worauf es ankommt.
 
 ## Dieses Repo
 
-**ruff-Pin: eine Quelle.** `pyproject.toml`, `dev`-Extra, `ruff==0.16.3`.
+**ruff-Pin: eine Quelle.** `pyproject.toml`, `dev`-Extra. Die Version steht
+hier bewusst nicht mehr: Am 18.9.2026 stand an dieser Stelle `0.16.3`,
+gepinnt war `0.16.5`. Die Überschrift «eine Quelle» stand über einer Kopie,
+und wer ihr folgte, installierte genau das abweichende ruff, vor dem «Vor der
+Arbeit» warnt — der Satz erzeugte den Fehler, den er verhindern sollte.
+Kein Gate sah es: `check_ruff_pin.py` vergleicht das installierte ruff gegen
+`pyproject.toml` und liest keine Doku. Seither gleicht
+`tests/test_ruff_pin_doku.py` jede `ruff==`-Angabe in den Markdown-Dateien
+gegen den Pin ab — es verbietet sie nicht, es verlangt, dass sie stimmt.
 Die CI hat keinen eigenen Pin-Schritt — `pip install ".[dev]"` genügt, lokal
 wie dort. Eine `.pre-commit-config.yaml` gibt es nicht; wenn eine dazukommt,
 muss sie dieselbe Version aus `pyproject.toml` beziehen und keine zweite
 nennen. Beim Anheben `ruff format` einmal über `src/ tests/ scripts/` laufen
 lassen und das Ergebnis mitcommitten.
 
-Vor dem Lauf `ruff --version` prüfen: ein älteres ruff früher im `PATH`
-schlägt den Pin, ohne dass der Install etwas meldet.
+Den Abgleich macht `scripts/check_ruff_pin.py`, das erste Gate unten: Es liest
+den Pin aus `pyproject.toml`, nennt ihn in seiner Ausgabe und prüft beide
+Wege, auf denen ein Gate ruff erreicht. `ruff --version` von Hand genügt nicht
+— es sieht nur das Binary aus dem `PATH`, die Gates rufen `python -m ruff`
+auf. Am 18.9.2026 meldete `ruff --version` 0.15.8 aus einem früher liegenden
+`/root/.local/bin/ruff`, das Modul dagegen den gepinnten Stand; nur das Gate
+zeigte beides nebeneinander. Ein älteres ruff früher im `PATH` schlägt den
+Pin, ohne dass der Install etwas meldet.
 
 Gates, wörtlich aus `ci.yml` (Python 3.11/3.12/3.13):
 
@@ -510,7 +524,7 @@ PYTHONPATH=src python -m pytest tests/ -m "not live" -v
 python scripts/check_version_sync.py
 ```
 
-Alle vier laufen in einem Job auf allen drei Feldern — keine
+Alle diese Befehle laufen in einem Job auf allen drei Feldern — keine
 `if:`-Ausnahme, kein zweiter lint-Job. Ein grünes 3.13 heisst hier wirklich,
 dass alles auf 3.13 lief; im Portfolio ist das nicht durchgehend so. Ein
 `fail-fast: false` steht nicht da.
