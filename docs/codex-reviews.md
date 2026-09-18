@@ -1309,9 +1309,24 @@ einer bis zwei Sekunden, aus zwei unabhängig entstandenen Fassungen, aber
 Zwei der drei sind Meldezeiten; der Griff zur Benachrichtigung statt zur
 Primärquelle ist also wirklich naheliegend, auch wenn die Regel danebensteht.
 **Der dritte ist es nicht.** 14:01:37 ist `merged_at` aus dem PR-Objekt, die
-Meldung kam erst um 14:01:38. Dort weichen zwei *Primärquellen* derselben
-Sache um eine Sekunde ab — bei den anderen drei Merges dieser Episode fallen
-sie zusammen, auf #116 ebenso (14:08:04).
+Meldung kam erst um 14:01:38 — dort weichen zwei *Primärquellen* derselben
+Sache um eine Sekunde ab.
+
+Wie oft das vorkommt, ist an allen Merges dieser Episode gemessen:
+
+| PR | `merged_at` | Committer | Abweichung |
+|---|---|---|---|
+| #112 | 13:45:48 | 13:45:48 | — |
+| #113 | 13:52:23 | 13:52:23 | — |
+| #114 | 14:01:37 | 14:01:36 | 1 s |
+| #115 | 14:01:54 | 14:01:53 | 1 s |
+| #116 | 14:08:04 | 14:08:04 | — |
+| #118 | 14:26:48 | 14:26:48 | — |
+
+Die Abweichung ist also weder die Regel noch ein Einzelfall, und sie ist nie
+grösser als eine Sekunde. Woran sie hängt, ist nicht gemessen — dass die
+beiden betroffenen Merges 17 Sekunden auseinanderliegen, passt zu vielem und
+belegt nichts.
 
 Daraus folgt eine zweite Regel neben «nicht die Benachrichtigung nehmen»:
 **Wo Sekundenabstände verglichen werden, gehört dazugeschrieben, welche
@@ -1754,16 +1769,26 @@ noch einmal anfasste.
 | 3 | dieselbe Zahl stand an **zwei** Stellen; korrigiert war eine | beim Auflösen eines Merge-Konflikts |
 | 4 | drei Merge-Zeiten (#112, #113, #114) | beim Zusammenführen zweier Fassungen |
 
-**Zwei Klassen, und beide haben ihre Regel neben sich stehen.**
+**Jede dieser Klassen hat ihre Regel neben sich stehen.**
 
 *Die Benachrichtigung statt der Primärquelle.* Fall 1 und Fall 4 sind zusammen
-vier Zeitangaben, genommen aus den Ankunftszeiten der Webhook-Meldungen statt
-aus `created_at`, `submitted_at` oder dem Committer-Datum. Die Abweichung
-beträgt ein bis vier Sekunden — klein genug, um nicht aufzufallen, gross
-genug, um eine Spanne zu verfälschen. **Drei davon stammen aus dieser Sitzung,
-eine aus einer anderen**, die unabhängig an derselben Datei arbeitete. Der
-Griff zur Benachrichtigung ist offenbar der naheliegende: Sie liegt vor, die
+vier falsche Zeitangaben. **Drei davon sind Ankunftszeiten von
+Webhook-Meldungen** — beide Werte auf #110 und die Merge-Zeit von #112 und
+#113 — genommen statt `created_at`, `submitted_at` oder des Committer-Datums.
+Die Abweichung beträgt ein bis vier Sekunden, klein genug, um nicht
+aufzufallen, gross genug, um eine Spanne zu verfälschen. Der Griff zur
+Benachrichtigung ist offenbar der naheliegende: Sie liegt vor, die
 Primärquelle kostet eine Abfrage.
+
+**Die vierte gehört nicht dazu, obwohl eine frühere Fassung sie dazuzählte.**
+14:01:37 auf #114 ist `merged_at` aus dem PR-Objekt; die Meldung kam um
+14:01:38. Der Wert stammte also aus einer Primärquelle, bloss aus einer
+anderen als der geführten. Die Zuschreibung ist unter «Die Nachmittagssperre
+desselben Tages» nachgemessen und dort richtiggestellt; der Fehler war nicht,
+zur Benachrichtigung zu greifen, sondern nicht zu benennen, welche
+Primärquelle geführt wird. Er stand in dieser Aufzählung, seit sie
+geschrieben wurde — eine falsche Ursache in einem Abschnitt über falsche
+Zahlen, und keiner der Läufe, die ihn prüften, hat sie getroffen.
 
 *Die Halbkorrektur.* Fall 3 ist der vierte an diesem Tag, an dem eine
 zurückgenommene Aussage an der gemeldeten Stelle verschwand und anderswo
