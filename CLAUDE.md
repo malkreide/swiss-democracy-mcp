@@ -320,13 +320,18 @@ kein Review angekommen ist.
 
 ### Der Hebel: `@codex review` von Hand
 
-Zwei bis drei Minuten Vorlauf, viermal belegt. Er läuft **auch auf einem Draft**
+Der Vorlauf lag bei den bisher gemessenen Läufen zwischen 2 min 14 s und
+3 min 25 s; die Einzelwerte stehen in
+[`docs/codex-reviews.md`](docs/codex-reviews.md). Er läuft **auch auf einem Draft**
 und **auf einem bereits gemergten PR** an (dort wird der Merge-Commit geprüft).
 Nach einer Environment-Meldung lohnt der zweite Versuch.
 
-Wer den Aufruf absetzt, wartet die drei Minuten ab: Die 👀 auf dem auslösenden
-Kommentar ist die Empfangsbestätigung, nicht das Ergebnis. Wer nach einer
-Minute nachsieht, hält einen laufenden Review für einen ausgefallenen.
+Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr, sondern
+die Statuszeile: Sie springt von «🔄 Running» auf «✅ Completed». Die Spanne
+oben sagt, wie lange es ungefähr dauert, nicht wann man aufhören darf; sie war
+schon einmal zu kurz angesetzt. Die 👀 auf dem auslösenden Kommentar ist die
+Empfangsbestätigung, nicht das Ergebnis. Wer zu früh nachsieht, hält einen
+laufenden Review für einen ausgefallenen.
 
 **Fussangel:** Wer `@codex review` in einem Kommentar bloss *zitiert*, löst
 damit vermutlich einen neuen Lauf aus.

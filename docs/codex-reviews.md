@@ -418,14 +418,24 @@ beim Zählen noch nicht geschrieben war.
 
 ## 5. Der manuelle Aufruf: was belegt ist
 
-Viermal geliefert, erstaunlich gleichmässig:
+Geliefert hat er in dieser Spanne:
 
 | PR | Vorlauf |
 |---|---|
+| #55 (Draft!) | 2 min 14 s |
 | #45 | 2 min 31 s |
 | #51 | 2 min 57 s |
 | #53 | 3 min 1 s |
-| #55 (Draft!) | 2 min 14 s |
+| #93 (gemergt!) | 3 min 25 s |
+
+**Die Spanne ist keine Zusage.** Sie reicht von 2 min 14 s bis 3 min 25 s; wer
+bei drei Minuten aufhört nachzusehen, verpasst den längsten gemessenen Lauf.
+Eine frühere Fassung nannte die Werte «erstaunlich gleichmässig» und CLAUDE.md
+sprach von «zwei bis drei Minuten» — beides stammte aus der Zeit, als die
+Tabelle vier Zeilen hatte. Woran das Ende zu erkennen ist, ist deshalb nicht
+die Uhr, sondern die Statuszeile: Sie springt von «🔄 Running» auf
+«✅ Completed». Ob dann auch ein Ergebnis vorliegt, ist die nächste Frage — der
+Vorbehalt «✅ Completed belegt kein zugestelltes Ergebnis» hält sie fest.
 
 Einmal gescheitert (#53 um 18:51:30, siehe den Abschnitt über die schwankenden
 Antworten). Nach einem Fehlschlag lohnt der zweite Versuch.
