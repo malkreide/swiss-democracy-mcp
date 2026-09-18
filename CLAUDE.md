@@ -353,65 +353,27 @@ Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und
 **nach jeder Korrekturrunde erneut anfordern**, auf dem neuen Head. Auf ready
 geht es, wenn ein Lauf auf dem aktuellen Head nichts mehr findet.
 
-**Das Umschalten löst selbst einen Lauf aus, und damit endet das Verfahren
-nicht.** Er prüft denselben Head und kann anders urteilen als der, den du
-abgewartet hast — ein befundloser Lauf ist kein Freispruch, das gilt auch für
-deinen. Vor dem Merge steht deshalb eine Wahl, und beide Zweige verlangen
-etwas: ihn abwarten, oder den offenen Ausgang ausdrücklich in Kauf nehmen und
-das hinschreiben. Stillschweigend darüber hinweggehen ist keiner von beiden.
+**Das Umschalten löst selbst einen Lauf aus.** Er prüft denselben Head und kann
+anders urteilen als der, den du abgewartet hast; ein befundloser Lauf ist kein
+Freispruch, auch der eigene nicht. Bei Regeldateien — alles, wonach später
+gearbeitet wird — ist er abzuwarten: Auf #85 brachte genau dieser Lauf den
+Befund, 15 Sekunden nach einem befundlosen. Ein Fehler in einer Regel pflanzt
+sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum Einzelfall.
 
-**Bei Regeldateien gibt es diese Wahl nicht.** Regeldatei ist alles, wonach
-später gearbeitet wird — in diesem Repo diese Datei, die Dateien unter `docs/`
-und `CONTRIBUTING*.md`; das Kriterium gilt, nicht die Aufzählung. Der Grund
-steht in [`docs/codex-reviews.md`](docs/codex-reviews.md): Auf #85 war der
-ready-Lauf derjenige, der den Befund brachte — 15 Sekunden nachdem ein anderer
-Lauf denselben Commit befundlos genannt hatte. Ein Fehler in einer Regel
-pflanzt sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum
-Einzelfall.
+**Ein vollständiges Entscheidungsverfahren steht hier bewusst nicht.** Der
+Auslöser kann sichtbar ohne Lauf beantwortet werden, er kann schweigen, und ein
+Lauf kann «✅ Completed» zeigen, ohne ein Ergebnis zu liefern — was davon
+vorliegt und was sich daraus **nicht** schliessen lässt, steht in
+[`docs/codex-reviews.md`](docs/codex-reviews.md). Aus keinem dieser Fälle folgt
+«nichts gefunden».
 
-**Das Tor hat zwei Hälften, und beide müssen stimmen:** Auf dem Stand, der
-gemergt wird, steht kein angestossener Lauf mehr aus, **und** mindestens einer
-hat ein befundloses Ergebnis zugestellt.
-
-Die erste Hälfte ist die, die man vergisst. Startet das Umschalten einen Lauf,
-steht er aus, bis er zugestellt hat — ein früheres befundloses Ergebnis
-desselben Commits nimmt ihm das nicht ab. Auf #85 war genau der ready-Lauf
-derjenige, der den Befund brachte, 15 Sekunden nach einem befundlosen.
-
-Wird das Umschalten dagegen sichtbar ohne Lauf beantwortet — Kontingent- oder
-Environment-Meldung —, dann steht auch keiner aus, und das Ergebnis des
-manuellen Aufrufs genügt. Der läuft in jedem Zustand an: auf einem Draft, auf
-einem offenen PR und sogar auf einem gemergten. Ohne diesen Zweig wäre das Tor
-nach einem fehlgeschlagenen Auslöser nie mehr zu schliessen, weil das
-Umschalten einmalig ist.
-
-**Schweigen gehört nicht in diese Aufzählung.** Es belegt nicht, dass kein Lauf
-angestossen wurde — «nichts kam an» ist nicht «nichts wurde ausgelöst», und der
-Absatz «Bleibt es nach dem automatischen Auslöser still» weiter oben sagt
-dasselbe. Nach Schweigen also nicht schliessen, sondern einen Lauf von Hand
-anfordern und dessen zugestelltes Ergebnis abwarten. Dass daneben ein
-unsichtbarer Lauf liefe, lässt sich damit nicht ausschliessen; diese Grenze
-lösen die Werkzeuge nicht auf, und sie ist hier benannt statt verschwiegen.
-
-«Ausstehend» heisst dabei: angestossen und noch kein Ergebnis zugestellt. Zeigt
-ein Lauf «✅ Completed», ohne eines zu liefern, ist er zwar nicht mehr
-ausstehend, sein Urteil aber unbekannt — bei einer Regeldatei genügt das nicht,
-dann einen neuen Lauf anfordern. Diese stille Form ist bisher nur nach einem
-Merge beobachtet, nicht davor.
-
-Liefert überhaupt kein Lauf ein Ergebnis, etwa bei erschöpftem Kontingent,
-wartet der Merge. Das ist kein Sonderfall, sondern was ein verbindliches Tor
-heisst; erfüllbar wird es, sobald wieder einer durchkommt.
-
-**Auf die Zustellung nach dem Merge ist dabei nicht zu bauen.** Ein Lauf, der
-erst nach dem Schliessen endet, kann sein Ergebnis auch gar nicht mehr
-abliefern; dann steht auf dem PR nur «Completed», und ob er etwas fand, ist
-nicht mehr zu erfahren. «Abwarten, bis es doch noch kommt» ist also keine
-Strategie. Wer es wissen muss, ruft den Review auf dem gemergten PR neu auf —
-er läuft dort an und prüft dann den Merge-Commit.
-
-Am 18.9. lagen auf #92 zwischen dem Start des ready-Laufs und dem Merge
-17 Sekunden. Sein Urteil ist bis heute nicht zu haben.
+Warum hier kein Verfahren steht, ist gemessen und nicht behauptet: Auf PR #93
+sind neun Review-Runden über neun Fassungen eines solchen Verfahrens gelaufen,
+und jede trug einen Befund — zuletzt den, dass sich ein unsichtbar
+angestossener Lauf grundsätzlich nicht ausschliessen lässt und ein Tor, das ihn
+verlangt, deshalb weder zu erfüllen noch zu widerlegen ist. Wer vor dieser Lage
+steht, entscheidet sie nicht über eine Regel, sondern mit einem Menschen — und
+schreibt hin, was offen blieb.
 
 Das ist ein Abbruchkriterium, kein Gütesiegel: Derselbe Text kann in der
 nächsten Runde wieder einen Befund tragen, und irgendwo muss die Schleife
