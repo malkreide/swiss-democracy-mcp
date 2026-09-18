@@ -925,9 +925,11 @@ Messpunkte nicht her, weil dazwischen niemand nachfragte.
 
 Um 09:56:36 lief ein Aufruf in `swiss-cultural-heritage-mcp`#88 an und
 lieferte um 09:59:48 zwei Befunde — dasselbe Konto, ein anderes Repo,
-zweieinhalb Minuten nach dem Lauf hier. Das verdichtet den Endpunkt, macht
-aber aus zwei Zeitpunkten keine gemeinsame Öffnung: Es sind zwei gelungene
-Läufe kurz nacheinander, mehr nicht.
+zweieinhalb Minuten nach dem Lauf hier. **Am Endpunkt ändert das nichts:** Er
+ist durch die letzte Absage um 08:51 und den gelungenen Aufruf um 09:54:12
+eingegrenzt, und ein weiterer Erfolg danach kann dieses Intervall nicht
+verkleinern. Der Messpunkt belegt allein, dass kurz darauf auch im anderen
+Repo ein Lauf gelang.
 
 Eine Dauer folgt daraus nicht, und auch keine Untergrenze dafür. **Die Tabelle
 ist eine Punktmessung:** Jede Zeile belegt eine Absage in ihrem Augenblick,
@@ -1489,19 +1491,29 @@ Lookbehind; gemessen wurde er in beiden, behoben in beiden.
 Bemerkenswert ist, wann er kam — und hier ist genau zu zählen, welche Läufe
 den Fehler überhaupt sehen konnten. Den Lookbehind gab es vorher nicht: Er
 entstand mit `d5814c6` als Behebung des Befunds aus Runde 3, der die Datei
-erstmals PEP 503/508 lesen liess. **Gegenstand eines Laufs war er damit genau
-einmal** — Runde 4 prüfte diesen Head und fand etwas anderes (nur der
-Versions-Präfix wurde gefangen).
+erstmals PEP 503/508 lesen liess. **Unter den vier Runden war er damit genau
+einmal Gegenstand eines Laufs** — Runde 4 prüfte diesen Head und fand etwas
+anderes (nur der Versions-Präfix wurde gefangen). Übersehen hat ihn also genau
+ein Lauf, und zwar vor der Portierung; der Lauf danach, von dem dieser
+Abschnitt handelt, fand ihn.
 
 Danach überstand er das Nachmessen, bei dem `xruff` und `my-ruff` auffielen —
 dieselbe Abgrenzung, dieselbe Zeile, der Punkt blieb liegen — und die
 Portierung. Aufgefallen ist er im nächsten Lauf, der die Datei sah, und der
 lief in einem anderen Repo.
 
-Die erste Fassung dieses Abschnitts sprach von «vier Läufen» und überzeichnete
-damit die Evidenz, auf der er beruht; ein Codex-Befund auf PR #108 hat es
-zurückgeholt. Das ist der Fall «Zahlen, die eine Aufzählung wiederholen», an
-einem Text über Codex-Befunde.
+Diese Zählung hat zwei Runden gebraucht. Die erste Fassung sprach von «vier
+Läufen» und überzeichnete die Evidenz, auf der der Abschnitt beruht. Die
+Korrektur sagte «genau einmal» — und war ebenfalls falsch, weil der Lauf, von
+dem dieser Abschnitt handelt, denselben Fehler ja sah und fand. Beide Male kam
+der Einwand aus einem Codex-Lauf auf PR #108, der zweite an der Korrektur des
+ersten.
+
+Das ist der Fall «Zahlen, die eine Aufzählung wiederholen», an einem Text über
+Codex-Befunde — und daneben der Fall «Der teuerste Befund war die Korrektur des
+vorigen», den «Vier Runden an einem kurzen Test» für dieselbe Datei schon
+festhält. Eine Zahl beim Kürzen richtigzustellen, heisst nicht, sie richtig
+gestellt zu haben.
 
 **Der Mechanismus ist billig und hier zum ersten Mal beobachtet:** Wer eine
 Datei portiert und am Ziel einen Review anfordert, bekommt einen weiteren Blick
