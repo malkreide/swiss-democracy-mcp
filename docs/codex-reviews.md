@@ -824,8 +824,8 @@ Draft, bis wieder ein Lauf durchgeht.
 
 Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
 «Vier Runden an einem kurzen Test»). Der nächste Aufruf auf demselben PR lief
-auf die Sperre, und sie hielt über jeden weiteren Versuch — auch über die
-anderer PRs — bis sie Stunden später wieder aufging:
+auf die Sperre, und jeder weitere Versuch lief ebenso auf sie — auch die
+anderer PRs —, bis Stunden später wieder einer durchlief:
 
 | Zeit (UTC) | PR | Auslöser |
 |---|---|---|
@@ -857,12 +857,18 @@ stand die Befundlos-Meldung zu Commit `42f7517` da — das erste Ergebnis seit
 06:35. Sie fiel also zwischen diesen beiden Zeitpunkten; wo genau, geben die
 Messpunkte nicht her, weil dazwischen niemand nachfragte.
 
-Eine Frist folgt daraus trotzdem nicht. Belegt sind eine Untergrenze für die
-Dauer (06:37 bis 08:51 stand sie) und eine Obergrenze (um 09:54 stand sie nicht
-mehr). Warum sie in diesem Fenster aufging — abgelaufenes Fünf-Stunden-Fenster,
-etwas anderes —, ist von hier aus nicht zu sehen; zum Verhältnis der beiden
-Limits siehe «Wie das Kontingent funktioniert». Wer aus einer Episode eine
-Wartezeit ableitet, hat sie erfunden: Das ist dieselbe Lage wie beim
+Eine Dauer folgt daraus nicht, und auch keine Untergrenze dafür. **Die Tabelle
+ist eine Punktmessung:** Jede Zeile belegt eine Absage in ihrem Augenblick,
+keine Strecke bis zur nächsten. Bei einem rollenden Fenster kann sich das
+Kontingent zwischen zwei Zeilen geöffnet und durch Aktivität, die von hier aus
+nicht zu sehen ist, wieder erschöpft haben — «Wie das Kontingent funktioniert»
+hält das für die Episode vom 29.8. schon fest. Ob über die ganze Reihe dieselbe
+Sperre stand, ist damit offen.
+
+Was 08:51 und 09:54 eingrenzen, ist deshalb ein **Endpunkt** und keine Spanne:
+der Zeitpunkt, an dem zuletzt eine aufging. Warum dort — abgelaufenes
+Fünf-Stunden-Fenster, etwas anderes —, ist von hier aus nicht zu sehen. Wer aus
+einer Episode eine Wartezeit ableitet, hat sie erfunden: dieselbe Lage wie beim
 GitHub-Rate-Limit in `CLAUDE.md`, nur mit einem Endpunkt mehr.
 
 Die Tabelle ist fortzuschreiben, solange eine Sperre hält — Sätze daneben, die
