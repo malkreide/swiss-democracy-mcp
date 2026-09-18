@@ -656,12 +656,18 @@ aus einer ausbleibenden auf einen laufenden Job. Die Messungen vom 18.9. auf
 Für die Zeilen oben gilt: Die Sperre antwortete in 8 bis 12 Sekunden, ein Start
 kam nach 11 bis 14 — die Bereiche überlappen. **Den Text lesen, nicht die Uhr:**
 Was nach zwölf Sekunden erscheint, kann beides sein — und ohnehin nicht nur
-beides: Die Tabelle führt die zwei Ausgänge, die an diesem Vormittag vorkamen,
-nicht die möglichen. Die Environment-Meldung ist ein dritter, und dass gar
-nichts kommt, ein vierter. Die Versuchung ist real —
-beim Messen dieser Tabelle ist aus den schnellen Absagen erst einmal eine
-Faustregel geworden («bleibt die Meldung eine Viertelminute aus, läuft es»),
-und die Überlappung stand in derselben Tabelle schon da.
+beides: Die Tabelle führt die zwei Meldungen, die an diesem Vormittag kamen,
+nicht die möglichen. Die Environment-Meldung ist eine dritte.
+
+**Bleibt eine Meldung ganz aus, ist das keine vierte.** Dann steht nichts da,
+was sich lesen liesse, und ein laufender oder verzögerter Review sieht genauso
+aus wie einer, der nie antwortet — es ist derselbe Fall wie «gar nichts» in der
+Tabelle der Formen, und er belegt nichts.
+
+Die Versuchung, aus der Wartezeit doch etwas zu machen, ist real: Beim Messen
+dieser Tabelle ist aus den schnellen Absagen erst einmal eine Faustregel
+geworden («bleibt die Meldung eine Viertelminute aus, läuft es»), und die
+Überlappung stand in derselben Tabelle schon da.
 
 **Die Spanne ist auch kein Fenster für andere Tage.** Sie stammt von einem PR
 an einem Vormittag. Am 29.8. antworteten zwei Läufe schon nach vier und zehn
