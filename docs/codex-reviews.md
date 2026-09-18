@@ -94,16 +94,49 @@ Zustellweg festgehalten sind:
 **Die drei Zeilen mit «Umschalten auf ready» sagen etwas, das die übrigen
 nicht hergeben.** Das Umschalten ist gar kein Kommentar — es gibt keinen
 Thread, in dem geantwortet werden könnte. Alle drei Male landete die Meldung
-unter den Issue-Kommentaren. Damit liest sich die Beobachtung schärfer als «die
-Form folgt dem Auslöser»: **Der Issue-Kommentar ist der Normalfall, und die
-Thread-Antwort ist das, was ein Aufruf aus einem Thread heraus bekommt.**
+unter den Issue-Kommentaren.
 
-**Ob die späteren Messungen die erste stützen, ist offen.** Wenn ein Auslöser
-ohne Thread gar nichts anderes bekommen *kann*, beschreiben alle drei Zeilen
-dieselbe Mechanik und nicht drei unabhängige Beobachtungen — dann ist der Satz
-oben eine Beschreibung des Zustellwegs und keine Vermutung über ihn. Entschieden
-ist das nicht; alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie
-ein Befund oder eine Befundlos-Meldung.
+**Zwei Lesarten passen darauf, und diese Zeilen trennen sie nicht.** Entweder
+ist der Issue-Kommentar der Normalfall, und die Thread-Antwort ist das, was ein
+Aufruf aus einem Thread heraus bekommt. Oder er ist bloss die Ausweichroute,
+wenn kein Antwortziel da ist — dann sagt er über einen Normalfall gar nichts.
+
+**Ausgeschlossen ist allein eine Antwort im auslösenden Thread** — sie braucht
+einen solchen, und beim Umschalten gibt es keinen. Weiter reicht der Ausschluss
+nicht: «Thread-Antwort» heisst in der Tabelle *irgendein* Review-Thread, und ob
+eine Meldung sich an einen anderen, bereits offenen hängen könnte, ist nicht
+gemessen. Auch welche der übrigen Formen ein ready-Lauf annimmt, ist **nicht**
+bestimmt — ein Befund stünde im Review-Objekt, und «gar nichts» ist ebenfalls
+ein Ausgang; die Formen zählt die Überschrift dieses Abschnitts auf. Beobachtet
+sind hier drei Kontingent-Absagen, und alle drei kamen als Issue-Kommentar.
+Mehr trägt die Spalte nicht.
+
+**Diese Stelle hat mehrere Fassungen an derselben Klasse verloren.** Zuerst
+stand die erste Lesart allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
+darunter; das räumte ein Rückgriff-Review auf dem gemergten #113 ab. Die
+Korrektur ersetzte sie durch «ein Auslöser ohne Thread kann nichts anderes
+bekommen» — eine neue kategorische Aussage, die schon die Überschrift dieses
+Abschnitts widerlegt; sie fiel im nächsten Review, auf #122. Deren Behebung
+schloss dann «die Thread-Antwort» schlechthin aus statt nur die Antwort im
+auslösenden Thread und fiel in der Runde darauf.
+
+**Das ist der Ablauf, und mehr ist es nicht.** Gefunden hat es jedes Mal erst
+der nächste Lauf. Woran es lag, steht in keinem Commit: Was beim Korrigieren
+geprüft wurde und was nicht, ist nicht festgehalten, und wie oft ein Ersatz
+seinerseits danebenfällt, ist nicht gemessen. Eine Erklärung stand hier schon
+und ist genau daran gescheitert.
+
+**Eine Ordnung auch nicht.** Eine frühere Fassung nannte die Reihe «jede enger
+als die vorige» — eine Bewertung ohne Massstab, und dazu eine falsche: Die
+Fassungen sind nicht ineinander enthalten. Die zweite betraf nur thread-lose
+Auslöser, schloss dort aber kategorisch alles andere aus, und war damit
+**strenger** als die erste, nicht enger. Ein Satz, der eine Chronik ordnet, ist
+selbst wieder eine Behauptung über sie.
+
+Beschreiben die drei Zeilen dieselbe erzwungene Mechanik, sind es nicht drei
+unabhängige Beobachtungen, sondern eine dreimal. Entschieden ist das nicht;
+alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie ein Befund oder
+eine Befundlos-Meldung.
 
 Die Auslösezeiten dieser drei Zeilen sind die einzigen in der Tabelle, die
 nicht aus der Primärquelle stammen: Das Umschalten trägt in der API keinen
@@ -403,7 +436,7 @@ ein Befund vor dem Merge — und ging anders aus:
 nahm für #110 das **Autoren**datum 12:58:00 und rechnete daraus 222 statt 369
 Sekunden — der Fix-Commit `f7eb98e` war wegen eines Rebase erst um 13:00:27
 committet. Das Autorendatum sagt, wann die Änderung geschrieben wurde; im Repo
-liegt sie zu dem Zeitpunkt noch nicht. Wo eine Spalte «committet» heißt, gehört
+liegt sie zu dem Zeitpunkt noch nicht. Wo eine Spalte «committet» heisst, gehört
 das Committer-Datum hinein. Für #111 fallen beide zusammen (`ec3c4bf`, beide
 13:08:20), die Zeile bleibt also, wie sie war — gegengeprüft, nicht
 angenommen.
