@@ -1340,7 +1340,10 @@ Primärquelle ist also wirklich naheliegend, auch wenn die Regel danebensteht.
 Meldung kam erst um 14:01:38 — dort weichen zwei *Primärquellen* derselben
 Sache um eine Sekunde ab.
 
-Wie oft das vorkommt, ist an allen Merges dieser Episode gemessen:
+Wie oft das vorkommt, ist an jedem Merge dieser Episode gemessen. Welche das
+sind, kommt aus `git log origin/main --merges` im Fenster der Sperre und nicht
+aus einer Aufzählung von Hand — eine frühere Fassung dieser Tabelle liess
+genau deshalb zwei aus:
 
 | PR | `merged_at` | Committer | Abweichung |
 |---|---|---|---|
@@ -1349,12 +1352,14 @@ Wie oft das vorkommt, ist an allen Merges dieser Episode gemessen:
 | #114 | 14:01:37 | 14:01:36 | 1 s |
 | #115 | 14:01:54 | 14:01:53 | 1 s |
 | #116 | 14:08:04 | 14:08:04 | — |
+| #117 | 14:20:29 | 14:20:28 | 1 s |
 | #118 | 14:26:48 | 14:26:48 | — |
+| #119 | 14:41:30 | 14:41:30 | — |
 
-Die Abweichung ist also weder die Regel noch ein Einzelfall, und sie ist nie
-grösser als eine Sekunde. Woran sie hängt, ist nicht gemessen — dass die
-beiden betroffenen Merges 17 Sekunden auseinanderliegen, passt zu vielem und
-belegt nichts.
+Die Abweichung ist damit weder die Regel noch ein Einzelfall, und sie ist in
+keiner Zeile grösser als eine Sekunde. Woran sie hängt, ist nicht gemessen;
+die betroffenen Merges liegen über die Episode verstreut, was zu vielem passt
+und nichts belegt.
 
 Daraus folgt eine zweite Regel neben «nicht die Benachrichtigung nehmen»:
 **Wo Sekundenabstände verglichen werden, gehört dazugeschrieben, welche
