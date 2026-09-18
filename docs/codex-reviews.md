@@ -1484,6 +1484,12 @@ Die Befunde sagen nichts darüber, ob ein weiterer gekommen wäre. Sie sagen
 etwas anderes: dass an diesem Gegenstand Runde um Runde etwas gefunden wurde
 und keine leer ausging.
 
+**Einer kam dann doch**, und zwar aus einem anderen Repo, in das die Datei am
+selben Vormittag portiert wurde: «Ein Befund an der Kopie deckt das Original
+auf» hält ihn fest. Dort steht auch, wie viele dieser Runden ihn überhaupt
+sehen konnten — die naheliegende Lesart, alle vier hätten ihn übersehen, ist
+falsch.
+
 ---
 
 ## 12. Ein Befund an der Kopie deckt das Original auf (18.9.2026)
