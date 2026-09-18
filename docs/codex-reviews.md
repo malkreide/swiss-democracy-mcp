@@ -503,6 +503,39 @@ saubere Messungen, beide zwei Sekunden. Über die Eröffnung sagt die Zeile
 darüber nur, dass binnen 317 Sekunden nichts sichtbar wurde. Die Antwort auf #64 vor meinem Aufruf bleibt als Einzelfall stehen und
 ist nicht erklärt.
 
+**Ein dritter Draft am 18.9. — und diesmal trennt der Wortlaut.** #115 wurde
+als Draft eröffnet; um 13:58:10 stand eine Kontingent-Meldung da, neun Sekunden
+vor dem ersten `@codex review` (IDs `5731051064` vor `5731052982`, dieselbe
+monotone Ordnung wie auf #64). Um 13:58:31 kam die Antwort auf diesen Aufruf.
+Die beiden lauten **verschieden**:
+
+| Zeit (UTC) | Auslöser | Wortlaut |
+|---|---|---|
+| 13:58:10 | Eröffnung als Draft | «You have reached your Codex usage limits.» |
+| 13:58:31 | `@codex review` | «…usage limits **for code reviews**.» |
+
+Derselbe PR, dasselbe Konto, 21 Sekunden auseinander. Von den acht Absagen
+jenes Nachmittags — sie stehen unter «Die Nachmittagssperre desselben Tages» —
+trägt nur diese eine den Zusatz nicht; die übrigen sieben gehören zu Auslösern,
+die einen Code-Review verlangen (Aufruf im Thread, Aufruf als Issue-Kommentar,
+Umschalten auf ready).
+
+**Was das hergibt:** Die Absage nach der Eröffnung war ihrem eigenen Wortlaut
+nach *keine* Absage eines Code-Reviews. Die Eröffnung erreicht damit einen
+anderen Pfad als das Umschalten — der erste Anhaltspunkt dafür in dieser
+Sammlung, und er stammt aus dem Text der Meldung, nicht aus einer Zeitreihe.
+
+**Was es nicht hergibt**, und das bleibt die offene Frage dieses Abschnitts:
+dass eine Eröffnung einen *Lauf* auslöst. Sie löst etwas aus, das bei
+erschöpftem Kontingent eine Meldung erzeugt; was daraus bei freiem Kontingent
+würde, ist weiterhin ungemessen — und genau das verlangt der Absatz oben.
+
+Die Zuordnung der Meldung zur Eröffnung ist auch hier ein Schluss aus der
+Reihenfolge, nicht aus einem Feld: Die Meldung nennt ihren Auslöser nicht, und
+die Statuszeile, die als Einzige eine Auslöser-Spalte führt, entsteht bei einer
+Absage gar nicht. Zwei der drei beobachteten Eröffnungen haben eine Meldung
+erzeugt (#64, #115), eine nicht (#65). Auch das ist keine Regel.
+
 **Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
 versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
 Ursachen zu machen; «Fassungen, die nicht hielten» zählt sie. Die letzte
@@ -1173,37 +1206,55 @@ Läufe an drei PRs an (12:50:48 auf #110, 13:01:52, 13:04:40 und 13:09:07 auf
 #111, 13:15:13 auf #112), und der letzte lieferte um 13:18:22 zwei Befunde.
 Der nächste Aufruf, 93 Sekunden später, lief auf die Sperre:
 
-| Zeit (UTC) | PR | Auslöser |
-|---|---|---|
-| 13:19:55 | #112 | Aufruf als Antwort im Review-Thread |
-| 13:45:17 | #112 | Draft → ready |
-| 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR |
-| 13:51:08 | #113 | `@codex review` |
-| 13:51:48 | #113 | Draft → ready |
+| Zeit (UTC) | PR | Auslöser | Wortlaut |
+|---|---|---|---|
+| 13:19:55 | #112 | Aufruf als Antwort im Review-Thread | mit «for code reviews» |
+| 13:45:17 | #112 | Draft → ready | mit |
+| 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR | mit |
+| 13:51:08 | #113 | `@codex review` | mit |
+| 13:51:48 | #113 | Draft → ready | mit |
+| 13:58:10 | #115 | **Eröffnung als Draft** | **ohne** |
+| 13:58:31 | #115 | `@codex review` | mit |
+| 14:01:51 | #115 | Draft → ready | mit |
 
-**Das Zugehen ist hier auf 93 Sekunden eingegrenzt** — 13:18:22 lieferte noch
-ein Ergebnis, 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht
-her: Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
+**Die Spalte «Wortlaut» trennt eine Zeile von allen anderen.** Was sie hergibt,
+steht unter «Fassungen zur stillen Draft-Eröffnung» — dort gehört der Fall hin,
+weil er die dortige offene Frage berührt.
+
+**Das Zugehen ist auf 282 Sekunden eingegrenzt** — um 13:15:13 lief noch ein
+Lauf an, um 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht her:
+Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
 *fällt*, sagt auch diese Episode nicht; gemessen ist nur, wann sie zuging.
+
+**Eine frühere Fassung nannte hier 93 Sekunden** und stützte sich auf die
+Zustellung um 13:18:22. Das war falsch: Eine Zustellung belegt, dass der Lauf
+**vorher** anlief, nicht dass das Kontingent im Augenblick der Zustellung noch
+offen war. Die obere Grenze muss deshalb am letzten *Start* hängen, nicht am
+letzten Ergebnis. Der Fehler stand keine Stunde in `main` und ist nicht durch
+einen Review aufgefallen, sondern beim Nachrechnen für den nächsten Nachtrag —
+dieselbe Klasse wie die Zeitstempel unten.
 
 **Zwei Läufe hatten unmittelbar zuvor Befunde geliefert, die eingearbeitet
 werden mussten.** Das ist dasselbe Muster wie unter «Die Korrekturschleife
 verbraucht das Kontingent»: Jede Korrekturrunde kostet einen Lauf, und die
 Runden häufen sich dort, wo ein Text viele Befunde trägt.
 
-**Auch hier traf die Sperre den automatischen Auslöser** — zweimal, auf beiden
-PRs. Umschalten ist kein Weg an ihr vorbei; die Vormittagsepisode zeigt es
-einmal, diese zweimal.
+**Auch hier traf die Sperre den automatischen Auslöser** — auf jedem der drei
+PRs einmal. Umschalten ist kein Weg an ihr vorbei.
 
-**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:50 und #113 um
-13:52:24, beide mit einem Head, für den kein Ergebnis vorlag. Wie am Vormittag
+**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:48, #113 um
+13:52:23 und #115 um 14:01:53, alle mit einem Head, für den kein Ergebnis
+vorlag; auf #115 lag die Absage **zwei Sekunden** vor dem Merge. Die
+Zeitangaben stammen aus dem Committer-Datum der Merge-Commits — eine frühere
+Fassung nannte 13:45:50 und 13:52:24 und hatte damit die Ankunftszeiten der
+Webhook-Meldungen genommen. Wie am Vormittag
 hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
 auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
 durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
 
 Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
 Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
-gelesen hat.
+gelesen hat. Für #115, der diesen Abschnitt einträgt, gilt dasselbe.
 
 ### Wie das Kontingent funktioniert
 
