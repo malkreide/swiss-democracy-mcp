@@ -13,9 +13,11 @@ Versionsfelder und ruehrt die Beschreibung nicht an, und kein Test las
 `server.json`. Der Fall fiel also nirgends — deshalb steht hier etwas.
 
 Was die Pruefungen NICHT leisten: Sie lesen keinen Text. Eine sachlich
-schiefe, aber marker-treue Beschreibung kommt durch. Sie fangen zwei
-mechanische Klassen — eine fehlende Quelle und eine namentlich bekannte
-fremde — und behaupten darueber hinaus nichts.
+schiefe, aber marker-treue Beschreibung kommt durch. Sie fangen die
+mechanischen Klassen, die unten je einen Test tragen, und behaupten darueber
+hinaus nichts. (Hier steht bewusst keine Anzahl: Die Testliste ist die
+Quelle, und sie ist schon einmal gewachsen — um die Schema-Kopplung, die ein
+Codex-Review auf PR #96 nachgetragen hat.)
 """
 
 from __future__ import annotations
@@ -30,11 +32,19 @@ from swiss_democracy_mcp.server import SOURCES
 _ROOT = pathlib.Path(__file__).resolve().parents[1]
 _SERVER_JSON = _ROOT / "server.json"
 
-# Die harte Grenze aus dem Registry-Schema, das `server.json` selbst per
-# `$schema` benennt (ServerDetail.description: minLength 1, maxLength 100).
-# Sie steht hier als Zahl, weil der Test sonst im CI-Lauf ans Netz muesste;
-# die Herkunft ist der `$schema`-Wert der Datei.
-_MAX_LAENGE = 100
+# `ServerDetail.description.maxLength`, je Schema-Fassung. Als Zahl abgelegt,
+# weil der Test sonst im CI-Lauf ans Netz muesste — aber NICHT allein: Das
+# Limit steht unter dem `$schema`-Wert, aus dem es stammt.
+#
+# Sonst waere es eine Kopie, die ihre Quelle nicht kennt. Wer `server.json`
+# auf eine neue Schema-Fassung umstellt, erbte still die Grenze der alten:
+# bei einem kleineren neuen Wert bliebe das Gate gruen und die Registry
+# wiese erst nach der PyPI-Veroeffentlichung zurueck, bei einem groesseren
+# blockierte es gueltige Beschreibungen. So faellt die Umstellung hier auf
+# und verlangt, die Grenze der neuen Fassung nachzuschlagen.
+_MAX_LAENGE_JE_SCHEMA: dict[str, int] = {
+    "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json": 100,
+}
 
 # Je Quelle aus `SOURCES` die Schreibweisen, von denen mindestens eine in der
 # Beschreibung vorkommen muss. Die SCHLUESSEL sind nicht aufgeschrieben,
@@ -58,8 +68,12 @@ _NICHT_ANGEBUNDEN: dict[str, str] = {
 }
 
 
+def _manifest() -> dict:
+    return json.loads(_SERVER_JSON.read_text(encoding="utf-8"))
+
+
 def _beschreibung() -> str:
-    return json.loads(_SERVER_JSON.read_text(encoding="utf-8"))["description"]
+    return _manifest()["description"]
 
 
 def test_die_beschreibung_haelt_die_schema_grenze() -> None:
@@ -70,11 +84,24 @@ def test_die_beschreibung_haelt_die_schema_grenze() -> None:
     nachdem das Paket bereits veroeffentlicht ist: Die Version steht auf PyPI,
     der Verzeichniseintrag fehlt, und zuruecknehmen laesst sich das erste
     nicht. Die Grenze hier kostet einen String-Vergleich.
+
+    Geprueft wird gegen die Fassung, auf die `server.json` per `$schema`
+    zeigt — nicht gegen eine fest verdrahtete Zahl.
     """
-    beschreibung = _beschreibung()
+    manifest = _manifest()
+    schema = manifest.get("$schema", "")
+    grenze = _MAX_LAENGE_JE_SCHEMA.get(schema)
+    assert grenze is not None, (
+        f"server.json verweist auf {schema!r}. Fuer diese Schema-Fassung ist in "
+        "_MAX_LAENGE_JE_SCHEMA keine Grenze hinterlegt. Ihr "
+        "`ServerDetail.description.maxLength` nachschlagen und dort eintragen — "
+        "die Grenze der alten Fassung weiterzuerben pruefte das falsche Schema."
+    )
+
+    beschreibung = manifest["description"]
     assert beschreibung, "leere Beschreibung — das Schema verlangt minLength 1"
-    assert len(beschreibung) <= _MAX_LAENGE, (
-        f"{len(beschreibung)} Zeichen, erlaubt sind {_MAX_LAENGE}. Die Beschreibung "
+    assert len(beschreibung) <= grenze, (
+        f"{len(beschreibung)} Zeichen, erlaubt sind {grenze}. Die Beschreibung "
         "aus pyproject.toml ist 104 Zeichen lang und passt deshalb NICHT "
         "unveraendert hierher — die beiden Felder koennen sich nicht gleichen."
     )
