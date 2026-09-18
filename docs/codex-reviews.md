@@ -100,13 +100,26 @@ unter den Issue-Kommentaren.
 ist der Issue-Kommentar der Normalfall, und die Thread-Antwort ist das, was ein
 Aufruf aus einem Thread heraus bekommt. Oder er ist bloss die Ausweichroute,
 wenn kein Antwortziel da ist — dann sagt er über einen Normalfall gar nichts.
-**Ein Auslöser ohne Thread kann nichts anderes bekommen; genau deshalb kann er
-zwischen den beiden Lesarten nicht entscheiden.** Hier stand die erste Lesart
-eine Zeit lang allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
-darunter — abgeräumt hat das ein Rückgriff-Review auf dem gemergten #113.
 
-Was die drei Zeilen hergeben, ist deshalb schmaler: Sie belegen die Zustellung,
-die sie zeigen. Beschreiben sie dieselbe erzwungene Mechanik, sind es nicht drei
+**Ausgeschlossen ist allein die Thread-Antwort**, und das aus einem Grund, der
+mit dem Zustellweg nichts zu tun hat: Sie braucht einen auslösenden Thread, und
+beim Umschalten gibt es keinen. Welche der übrigen Formen ein ready-Lauf
+annimmt, ist damit **nicht** bestimmt — ein Befund stünde im Review-Objekt, und
+«gar nichts» ist ebenfalls ein Ausgang; die Formen zählt die Überschrift dieses
+Abschnitts auf. Beobachtet sind hier drei Kontingent-Absagen, und alle drei
+kamen als Issue-Kommentar. Mehr trägt die Spalte nicht.
+
+**Diese Stelle hat zwei Fassungen verloren, beide an derselben Klasse.** Zuerst
+stand die erste Lesart allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
+darunter; das räumte ein Rückgriff-Review auf dem gemergten #113 ab. Die
+Korrektur ersetzte sie durch «ein Auslöser ohne Thread kann nichts anderes
+bekommen» — eine neue kategorische Aussage, die schon die Überschrift dieses
+Abschnitts widerlegt. Auch sie fiel erst im Review, auf #122. **Beim Korrigieren
+sitzt der Blick auf dem, was weg soll**; was an seine Stelle tritt, wird nicht
+noch einmal so geprüft wie der Satz, den es ersetzt. Wie oft das schiefgeht, ist
+nicht gemessen — hier ging es einmal schief, und zwar sofort.
+
+Beschreiben die drei Zeilen dieselbe erzwungene Mechanik, sind es nicht drei
 unabhängige Beobachtungen, sondern eine dreimal. Entschieden ist das nicht;
 alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie ein Befund oder
 eine Befundlos-Meldung.
