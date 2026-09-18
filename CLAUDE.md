@@ -497,8 +497,11 @@ und wer ihr folgte, installierte genau das abweichende ruff, vor dem «Vor der
 Arbeit» warnt — der Satz erzeugte den Fehler, den er verhindern sollte.
 Kein Gate sah es: `check_ruff_pin.py` vergleicht das installierte ruff gegen
 `pyproject.toml` und liest keine Doku. Seither gleicht
-`tests/test_ruff_pin_doku.py` jede `ruff==`-Angabe in den Markdown-Dateien
-gegen den Pin ab — es verbietet sie nicht, es verlangt, dass sie stimmt.
+`tests/test_ruff_pin_doku.py` jede `ruff==`-Angabe in den *versionierten*
+Markdown-Dateien gegen den Pin ab — es verbietet sie nicht, es verlangt, dass
+sie stimmt. Die Dateiliste kommt von `git ls-files`: Ein `rglob` haette an
+einem erzeugten Changelog in `venv/` fehlgeschlagen, und eine eigene
+Ausschlussliste waere beim naechsten Werkzeug wieder unvollstaendig.
 Die CI hat keinen eigenen Pin-Schritt — `pip install ".[dev]"` genügt, lokal
 wie dort. Eine `.pre-commit-config.yaml` gibt es nicht; wenn eine dazukommt,
 muss sie dieselbe Version aus `pyproject.toml` beziehen und keine zweite

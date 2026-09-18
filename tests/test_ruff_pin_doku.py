@@ -24,6 +24,7 @@ from __future__ import annotations
 import importlib.util
 import pathlib
 import re
+import subprocess
 
 _ROOT = pathlib.Path(__file__).resolve().parents[1]
 _GATE = _ROOT / "scripts" / "check_ruff_pin.py"
@@ -43,9 +44,28 @@ def _pin() -> str:
 
 
 def _markdown() -> list[pathlib.Path]:
-    """Jede Doku-Datei des Repos, ohne die Verzeichnisse von Werkzeugen."""
-    aus = {".git", ".venv", "node_modules", ".mypy_cache", ".ruff_cache"}
-    return sorted(p for p in _ROOT.rglob("*.md") if not any(teil in aus for teil in p.parts))
+    """Die versionierten Markdown-Dateien. Git fuehrt sie, nicht eine Liste hier.
+
+    Ein `rglob` sammelt auch ein, was in `venv/`, `build/` oder
+    `.pytest_cache/` liegt: erzeugte Dateien, die niemand pflegt. Ein alter
+    Pin im Changelog eines installierten Pakets haette die Suite rot gemacht,
+    ohne dass an der Projektdoku etwas falsch war — nachgestellt am 18.9.2026,
+    `venv/lib/CHANGELOG.md` mit `ruff==0.16.3` genuegte.
+
+    Eine handgeschriebene Ausschlussliste behebt das nicht, sie kodiert nur
+    die Annahme des Autors, welche Verzeichnisse es gibt: Die erste Fassung
+    fuehrte `.venv`, aber weder `venv` noch `build` oder `env`. `.gitignore`
+    weiss das bereits, und `git ls-files` liest es — eine Quelle statt einer
+    Aufzaehlung, die beim naechsten Werkzeug wieder unvollstaendig waere.
+    """
+    ruf = ["git", "-C", str(_ROOT), "ls-files", "-z", "--", "*.md"]
+    try:
+        roh = subprocess.run(ruf, capture_output=True, text=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError) as fehler:
+        # Nicht stillschweigend ueberspringen: Ohne die Dateiliste misst der
+        # Test nichts, und das muss man ihm ansehen.
+        raise AssertionError(f"`git ls-files` nicht auswertbar: {fehler}") from fehler
+    return sorted(_ROOT / teil for teil in roh.split("\0") if teil)
 
 
 def test_gate_liefert_den_pin() -> None:
