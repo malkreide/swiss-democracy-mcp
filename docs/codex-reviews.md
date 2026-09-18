@@ -1271,7 +1271,8 @@ folgt und was nicht, steht weiter unten bei der kurzen Fassung und unter
 **Das Zugehen ist auf 282 Sekunden eingegrenzt** — um 13:15:13 lief noch ein
 Lauf an, um 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht her:
 Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
-*fällt*, sagt auch diese Episode nicht; gemessen ist nur, wann sie zuging.
+*fällt*, steht weiter unten — anders als bei der Vormittagsepisode ist es
+hier gemessen.
 
 **Eine frühere Fassung nannte hier 93 Sekunden** und stützte sich auf die
 Zustellung um 13:18:22. Das war falsch: Eine Zustellung belegt, dass der Lauf
@@ -1296,9 +1297,10 @@ einem Head, für den kein Ergebnis vorlag; auf #118 lag die Absage **eine
 Sekunde** vor dem Merge, auf #115 zwei. Wie am Vormittag hat ein Mensch
 entschieden, und wie dort stand die Lage vorher als Kommentar auf dem PR.
 
-**Die Sperre ist am selben Nachmittag gefallen — auf 43 min 52 s
-eingegrenzt.** Um 14:07:46 kam die letzte belegte Absage; um 14:51:38 lief auf
-dem gemergten #116 wieder ein Lauf an, der um 14:54:37 einen Befund lieferte.
+**Die Sperre ist am selben Nachmittag gefallen — auf 24 min 51 s
+eingegrenzt.** Um 14:26:47 steht die letzte Absage der Tabelle oben; um
+14:51:38 lief auf dem gemergten #116 wieder ein Lauf an, der um 14:54:37 einen
+Befund lieferte.
 
 **Die obere Grenze hängt am Start, nicht am Auslöser.** Der Aufruf dazu stand
 um 14:51:22; dass das Kontingent schon in dieser Sekunde offen war, belegt er
@@ -1310,7 +1312,7 @@ Lauf** die Marke.
 
 Beide Ränder dieser Episode sind damit gemessen. Das ist nicht das erste Mal —
 die Episode vom 29.8. hat ebenfalls beide —, aber die Eingrenzung des Endes
-ist hier enger: 43 min 52 s gegen 1 h 10 min 2 s. Was die Episode weiterhin
+ist hier enger: 24 min 51 s gegen 1 h 10 min 2 s. Was die Episode weiterhin
 nicht hergibt, ist eine **Dauer**: Zwischen den Rändern liegen zwei Fenster
 und kein einziger Nachweis, dass die Sperre dazwischen durchgehend stand.
 
