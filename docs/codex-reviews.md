@@ -433,9 +433,17 @@ bei drei Minuten aufhört nachzusehen, verpasst den längsten gemessenen Lauf.
 Eine frühere Fassung nannte die Werte «erstaunlich gleichmässig» und CLAUDE.md
 sprach von «zwei bis drei Minuten» — beides stammte aus der Zeit, als die
 Tabelle vier Zeilen hatte. Woran das Ende zu erkennen ist, ist deshalb nicht
-die Uhr, sondern die Statuszeile: Sie springt von «🔄 Running» auf
-«✅ Completed». Ob dann auch ein Ergebnis vorliegt, ist die nächste Frage — der
-Vorbehalt «✅ Completed belegt kein zugestelltes Ergebnis» hält sie fest.
+die Uhr, sondern die Statuszeile — **aber nur, solange kein weiterer Auslöser
+dazwischenkommt.** Sie springt von «🔄 Running» auf «✅ Completed» und führt
+dabei immer nur den letzten Lauf: Auf #94 überschrieb der ready-Lauf um
+05:51:36 die Zeile der manuellen Runde von 05:50:54, bevor für diese ein
+Ergebnis oder ein «Completed» feststellbar war; ihr Ausgang ist seither offen.
+Steht dort ein anderer Auslöser-Name als der eigene, sagt die Zeile über den
+eigenen Lauf nichts — dieselbe Bedingung, die die Arbeitsanweisung in
+`CLAUDE.md` nennt.
+
+Ob dann auch ein Ergebnis vorliegt, ist die nächste Frage — der Vorbehalt
+«✅ Completed belegt kein zugestelltes Ergebnis» hält sie fest.
 
 Einmal gescheitert (#53 um 18:51:30, siehe den Abschnitt über die schwankenden
 Antworten). Nach einem Fehlschlag lohnt der zweite Versuch.
