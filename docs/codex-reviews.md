@@ -763,6 +763,7 @@ sie hielt über alle weiteren Versuche:
 | 06:51 | #99 | Draft → ready |
 | 07:04 | #100 | `@codex review` |
 | 07:06 | #100 | Draft → ready |
+| 07:48 | #101 | `@codex review` |
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
 mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
