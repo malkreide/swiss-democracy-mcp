@@ -1522,9 +1522,13 @@ an der Quelle nachzumessen, bevor man es für ein Problem der Kopie hält.
 
 Was der Fall **nicht** hergibt: dass der fünfte Lauf ihn wegen der Portierung
 fand. Ein fünfter Lauf am Original hätte ihn vielleicht genauso gefunden —
-«Ein Ergebnis sagt etwas über den Lauf, nicht über den Text» gilt auch hier,
-und derselbe Text war schon einmal durch 42 Läufe mit gegenteiligem Urteil
-gegangen. Belegt ist die Reihenfolge, nicht die Ursache.
+«Ein Ergebnis sagt etwas über den Lauf, nicht über den Text» gilt auch hier.
+Der Beleg dafür ist ein **anderer, früherer** Fall: die 42 Läufe vom 23.8. in
+Abschnitt 3, die über einen anderen Text gegenteilig urteilten. Diese Datei
+ist da nicht durchgegangen — es gab sie noch nicht, sie entstand erst am
+18.9. mit `b67f091`. Der Streubereich, den jener Fall misst, reicht aber
+mühelos aus, um den Unterschied zwischen «übersehen» und «gefunden» auch ohne
+die Portierung zu erklären. Belegt ist die Reihenfolge, nicht die Ursache.
 
 ### Der zweite Befund (P2) traf nur die Kopie
 
