@@ -530,11 +530,26 @@ dass eine Eröffnung einen *Lauf* auslöst. Sie löst etwas aus, das bei
 erschöpftem Kontingent eine Meldung erzeugt; was daraus bei freiem Kontingent
 würde, ist weiterhin ungemessen — und genau das verlangt der Absatz oben.
 
-Die Zuordnung der Meldung zur Eröffnung ist auch hier ein Schluss aus der
+**Sechs Minuten später dasselbe, und ohne die Schwäche des ersten Falls.** #117
+wurde um 14:08 als Draft eröffnet; um 14:08:10 stand die Meldung da, wieder
+**ohne** «for code reviews». Auf #115 folgte neun Sekunden später ein Aufruf,
+und die Zuordnung hing an der Reihenfolge der Kommentar-IDs. Auf #117 gab es
+keinen Aufruf: **Die Meldung war der einzige Kommentar auf dem PR.** Ein
+konkurrierender Auslöser existiert hier nicht.
+
+Damit stehen für den fehlenden Zusatz zwei Beobachtungen, beide an einer
+Eröffnung, und für seinen Gebrauch sieben, alle an Auslösern, die einen
+Code-Review verlangen.
+
+Die Zuordnung der Meldung zur Eröffnung bleibt trotzdem ein Schluss aus der
 Reihenfolge, nicht aus einem Feld: Die Meldung nennt ihren Auslöser nicht, und
 die Statuszeile, die als Einzige eine Auslöser-Spalte führt, entsteht bei einer
-Absage gar nicht. Zwei der drei beobachteten Eröffnungen haben eine Meldung
-erzeugt (#64, #115), eine nicht (#65). Auch das ist keine Regel.
+Absage gar nicht. Auf #117 ist der Schluss nur deshalb stärker, weil kein
+anderer Kandidat im Zeitraum liegt.
+
+Drei der vier beobachteten Eröffnungen haben eine Meldung erzeugt (#64, #115,
+#117), eine nicht (#65). Auch das ist keine Regel — und die drei liegen alle in
+Sperrzeiten, bei freiem Kontingent ist keine einzige gemessen.
 
 **Eine zusammenfassende Regel steht hier nicht mehr.** Alle Fassungen, die es
 versucht haben, sind daran gescheitert, aus zwei Zeitreihen eine Aussage über
