@@ -1295,12 +1295,30 @@ Vormittagsepisode zeigt es einmal, diese Episode an jedem betroffenen PR.
 einem Head, für den kein Ergebnis vorlag; auf #118 lag die Absage **eine
 Sekunde** vor dem Merge, auf #115 zwei.
 
-Die fünf Zeitangaben stammen aus dem Committer-Datum der Merge-Commits.
-Frühere Fassungen nannten 13:45:50, 13:52:24 und 14:01:37 und hatten damit die
-Ankunftszeiten der Webhook-Meldungen genommen — drei Abweichungen von einer
-bis zwei Sekunden, aus zwei unabhängig entstandenen Fassungen. Der Griff zur
-Benachrichtigung statt zur Primärquelle ist offenbar der naheliegende, auch
-wenn die Regel danebensteht. Wie am Vormittag
+Die Zeitangaben stammen aus dem Committer-Datum der Merge-Commits. Frühere
+Fassungen nannten 13:45:50, 13:52:24 und 14:01:37 — drei Abweichungen von
+einer bis zwei Sekunden, aus zwei unabhängig entstandenen Fassungen, aber
+**nicht aus einer Ursache**:
+
+| PR | `merged_at` | Committer | gestanden hatte | Herkunft |
+|---|---|---|---|---|
+| #112 | 13:45:48 | 13:45:48 | 13:45:50 | Meldung |
+| #113 | 13:52:23 | 13:52:23 | 13:52:24 | Meldung |
+| #114 | 14:01:37 | 14:01:36 | 14:01:37 | `merged_at` |
+
+Zwei der drei sind Meldezeiten; der Griff zur Benachrichtigung statt zur
+Primärquelle ist also wirklich naheliegend, auch wenn die Regel danebensteht.
+**Der dritte ist es nicht.** 14:01:37 ist `merged_at` aus dem PR-Objekt, die
+Meldung kam erst um 14:01:38. Dort weichen zwei *Primärquellen* derselben
+Sache um eine Sekunde ab — bei den anderen drei Merges dieser Episode fallen
+sie zusammen, auf #116 ebenso (14:08:04).
+
+Daraus folgt eine zweite Regel neben «nicht die Benachrichtigung nehmen»:
+**Wo Sekundenabstände verglichen werden, gehört dazugeschrieben, welche
+Primärquelle geführt wird.** Eine Fassung, die bloss «aus der Primärquelle»
+sagt, schliesst diese Abweichung nicht aus. Aufgefallen ist sie durch einen
+Codex-Befund auf #116, der den Wert zu Recht anstrich und die Herkunft
+danebengriff; die Messung, die ihn einordnet, entstand erst beim Beantworten. Wie am Vormittag
 hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
 auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
 durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
