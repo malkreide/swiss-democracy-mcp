@@ -31,14 +31,29 @@ das die überlebende Fassung mitzählte. Jede Korrektur erzeugte die nächste.
 |---|---|---|
 | «💡 Codex Review» | Review-**Objekt** (`get_reviews`) | Lauf mit Befund |
 | «Codex Review: Didn't find any major issues.» | Issue-Kommentar | Lauf ohne Befund |
-| «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar | Kontingent weg |
+| «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar **oder** Antwort im Review-Thread | Kontingent weg |
 | «To use Codex here, create an environment for this repo.» | Issue-Kommentar | Environment-Meldung |
 | Status-Kommentar «🔄 Running» / «✅ Completed» | Issue-Kommentar, **bearbeitet** | Lauf läuft / ist durch |
 | gar nichts | — | nichts belegt |
 
-Die ersten fünf verlangen **zwei** Abfragen: `get_reviews` für das Objekt,
-`get_comments` für alles andere. Wer nur eine nimmt, übersieht den Rest —
-genau so ist die Limit-Meldung zuerst durchgerutscht.
+Die ersten fünf Formen verlangen **drei** Abfragen, nicht zwei: `get_reviews`
+für das Objekt, `get_comments` für die Issue-Kommentare — und
+`get_review_comments` für die Antworten in Review-Threads. Wer eine weglässt,
+übersieht einen Teil; genau so ist die Limit-Meldung zuerst durchgerutscht.
+
+**Die dritte kam am 18.9. dazu.** Auf #98 stand die Kontingent-Meldung um
+06:40:01 als Antwort in einem Review-Thread, also nur über
+`get_review_comments` zu sehen; erst der *nächste* Aufruf bekam sie um 06:41:11
+als Issue-Kommentar. Die beiden gehören verschiedenen Aufrufen, und der Wortlaut
+unterscheidet sich: Die Thread-Fassung nennt «for code reviews», die
+Issue-Fassung an dieser Stelle nicht. Wer in einem solchen Fenster nur die zwei
+bisherigen Abfragen fährt, sieht gar nichts und hält den Head für ungeprüft aus
+unbekanntem Grund — statt zu wissen, dass eine Sperre steht.
+
+Was das **nicht** hergibt: wann die Meldung welche Form wählt. Beobachtet ist
+die Thread-Fassung genau einmal, auf einen Aufruf hin, der selbst eine
+Thread-Antwort war. Ob die Form dem Auslöser folgt, ist damit nicht belegt,
+sondern bloss naheliegend.
 
 ### Der Schlusssatz der Befundlos-Meldung wechselt
 
@@ -348,6 +363,21 @@ beiden anderen Läufe antworteten nach vier und zehn Sekunden —, entscheiden
 lässt es sich mit einer Beobachtung nicht. Wer beim Beantworten eines Reviews
 aus ihm zitiert, sollte mit einem neuen Lauf rechnen.
 
+**Ein zweiter Fall am 18.9., sauberer als der erste.** Auf #98 ging um 06:40:59
+ein Kommentar hinaus, der die Zeichenfolge nur in Backticks führte, in einem
+Satz *über* das Auslösen. Zwölf Sekunden später stand die Kontingent-Meldung da.
+Kein Push, kein Zustandswechsel, kein anderer Kandidat im Text — das ist der
+Unterschied zum ersten Fall, wo ein Push siebzig Sekunden vorher lag. Der
+Backtick schützt also nicht.
+
+**Und trotzdem bleibt es «vermutlich».** Was fehlt, ist die Gegenprobe: In
+dieser Sitzung trug *jeder* Kommentar an den Connector entweder einen echten
+Aufruf oder ein Zitat davon. Ein Kommentar ohne beides wurde nie abgesetzt, und
+damit ist nie gemessen worden, ob der Connector auf einen beliebigen Kommentar
+schweigt. Zwei Fälle mit demselben blinden Fleck sind nicht mehr als ein Fall
+mit zwei Zeitstempeln. Für die Praxis genügt es — die Zeichenfolge gehört nicht
+in einen Kommentar, auch nicht zitiert —, als Beleg genügt es nicht.
+
 ### 4.4 Der Lauf läuft noch, der Merge geht durch
 
 Am 18.9. auf #92, alles auf demselben Commit `494a61f`:
@@ -505,6 +535,17 @@ seit knapp 14 Stunden; beide bekamen ihren Review. Geprüft wird dann allerdings
 der **Merge-Commit**, nicht der Branch-Stand: Der Aufruf auf dem gemergten #59
 am 29.8. um 07:07:24 lieferte um 07:09:27 einen Review von `789e901`.
 
+**Auch aus einer Antwort in einem Review-Thread läuft er an**, nicht nur aus
+einem gewöhnlichen Kommentar. Auf #98 ging der Aufruf am 18.9. um 06:31:40 als
+Antwort unter einem Codex-Befund hinaus; elf Sekunden später stand der Lauf auf
+«Running». Wer einen Befund beantwortet und im selben Zug neu anfordern will,
+braucht dafür also keinen zweiten Kommentar — und wer bloss antworten will,
+muss die Zeichenfolge meiden.
+
+Belegt ist das mit **einem** Lauf. Ein zweiter Aufruf derselben Form, um
+06:39:50, traf schon die Kontingent-Sperre; er zeigt, dass die Form einen
+Versuch anstösst, aber keinen zweiten Startzeitpunkt.
+
 **Ein Lauf kann einen Merge überleben.** Auf #60 startete am 29.8. um 07:11:27
 ein Lauf, um 07:11:53 wurde gemergt, und um 07:12:44 stand er auf «Completed».
 Was zwei Fassungen lang als eigener Grund dastand — der Merge töte einen
@@ -581,6 +622,35 @@ auf das Gegenteil. Wer es wissen muss, sieht nach: `get_reviews` für das
 Objekt, `get_comments` für die Befundlos-Meldung. Steht dort nichts, ist der
 Rückgriff ein neuer Aufruf von Hand — er läuft auf dem gemergten PR an, prüft
 dann aber den Merge-Commit.
+
+### Der Vorlauf trennt «angelaufen» nicht von «abgeblockt»
+
+Naheliegend wäre, aus einer schnellen Antwort auf die Sperre zu schliessen und
+aus einer ausbleibenden auf einen laufenden Job. Die Messungen vom 18.9. auf
+#98 geben das nicht her:
+
+| Aufruf (UTC) | Form | Antwort nach | Was kam |
+|---|---|---|---|
+| 06:27:19 | Issue-Kommentar | 14 s | Lauf «Running» |
+| 06:31:40 | Antwort im Review-Thread | 11 s | Lauf «Running» |
+| 06:35:51 | Issue-Kommentar | 12 s | Lauf «Running» |
+| 06:39:50 | Antwort im Review-Thread | 11 s | Kontingent-Meldung |
+| 06:40:59 | Issue-Kommentar (nur Zitat) | 12 s | Kontingent-Meldung |
+| 06:44:08 | Issue-Kommentar | 9 s | Kontingent-Meldung |
+| 07:32:49 | Issue-Kommentar | 8 s | Kontingent-Meldung |
+
+Für die Zeilen oben gilt: Die Sperre antwortete in 8 bis 12 Sekunden, ein Start
+kam nach 11 bis 14 — die Bereiche überlappen. **Den Text lesen, nicht die Uhr:**
+Was nach zwölf Sekunden erscheint, kann beides sein. Die Versuchung ist real —
+beim Messen dieser Tabelle ist aus den schnellen Absagen erst einmal eine
+Faustregel geworden («bleibt die Meldung eine Viertelminute aus, läuft es»),
+und die Überlappung stand in derselben Tabelle schon da.
+
+**Die Spanne ist auch kein Fenster für andere Tage.** Sie stammt von einem PR
+an einem Vormittag. Am 29.8. antworteten zwei Läufe schon nach vier und zehn
+Sekunden (siehe «Derselbe PR bekommt auf dieselbe Frage verschiedene
+Antworten»); eine Untergrenze von acht Sekunden gibt es also nicht. Wächst die
+Tabelle, sind die beiden Spannen daneben fällig.
 
 ### Beide Wege können funktionieren
 
@@ -753,16 +823,21 @@ Draft, bis wieder ein Lauf durchgeht.
 ### Die Episode vom 18.9.2026
 
 Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
-«Vier Runden an einem kurzen Test»). Der fünfte Aufruf lief auf die Sperre, und
-sie hielt über alle weiteren Versuche:
+«Vier Runden an einem kurzen Test»). Der nächste Aufruf auf demselben PR lief
+auf die Sperre, und sie hielt über alle weiteren Versuche — auch über die
+anderer PRs:
 
 | Zeit (UTC) | PR | Auslöser |
 |---|---|---|
 | 06:37 | #97 | `@codex review` |
+| 06:39:50 | #98 | Aufruf als Antwort im Review-Thread |
+| 06:40:59 | #98 | Kommentar, der die Zeichenfolge nur *zitiert* |
+| 06:44:08 | #98 | `@codex review` auf dem bereits gemergten PR |
 | 06:46 | #99 | `@codex review` |
 | 06:51 | #99 | Draft → ready |
 | 07:04 | #100 | `@codex review` |
 | 07:06 | #100 | Draft → ready |
+| 07:32:49 | #98 | `@codex review` auf dem bereits gemergten PR |
 | 07:48 | #101 | `@codex review` |
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
@@ -781,6 +856,12 @@ erfunden. Das ist dieselbe Lage wie beim GitHub-Rate-Limit in `CLAUDE.md`, wo
 gesperrte Zeitpunkte ebenfalls keine Frist ergeben. Die Tabelle ist
 fortzuschreiben, solange die Sperre hält — Sätze daneben, die ihre Zeilen oder
 ihre Spanne zählen, veralten damit.
+
+**Auch der Rückgriff auf einem gemergten PR fällt darunter.** Die beiden
+#98-Aufrufe um 06:44:08 und 07:32:49 galten dem Merge-Commit `2e80539`, dessen
+Branch-Stand ungeprüft nach `main` gegangen war. Der Hebel, der sonst genau
+diese Lücke schliesst, ist bei stehender Sperre keiner — und der Head bleibt
+ungeprüft, bis sie fällt.
 
 **Was die Regel oben verlangt, ist hier nicht geschehen.** «Blockiert es, bleibt
 der PR Draft, bis wieder ein Lauf durchgeht» — beide PRs wurden stattdessen
@@ -825,8 +906,8 @@ nicht.
 
 ## 7. Portfolio-weit nachsehen
 
-Zwei Abfragen, aus demselben Grund, aus dem am einzelnen PR `get_reviews` und
-`get_comments` beide nötig sind:
+Zwei Abfragen, aus demselben Grund, aus dem am einzelnen PR keine der drei
+allein genügt:
 
 ```
 search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] updated:>=<Datum>
@@ -835,6 +916,11 @@ search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] upda
 Findet, wo er *kommentiert* hat — Befundlos-Meldung und die beiden
 Ausfallmeldungen, die aber nicht voneinander; dafür ist der Text zu lesen. Ein
 Review **mit** Befund ist kein Kommentar und taucht hier nicht auf.
+
+Ob `commenter:` auch eine Antwort in einem Review-Thread erfasst, ist **nicht
+gemessen**. Seit dem 18.9. ist bekannt, dass die Kontingent-Meldung diese Form
+annehmen kann; ein PR, der sie *nur* in dieser Form trägt, könnte dem Vorfilter
+also entgehen. Wer sich darauf verlässt, prüft es besser einmal nach.
 
 ```
 search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
