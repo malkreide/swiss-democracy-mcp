@@ -362,13 +362,26 @@ das hinschreiben. Stillschweigend darüber hinweggehen ist keiner von beiden.
 
 **Bei Regeldateien gibt es diese Wahl nicht.** Regeldatei ist alles, wonach
 später gearbeitet wird — in diesem Repo diese Datei, die Dateien unter `docs/`
-und `CONTRIBUTING*.md`; das Kriterium gilt, nicht die Aufzählung. Dort ist der
-ready-Lauf abzuwarten, ohne Ausnahme. Der Grund steht in
-[`docs/codex-reviews.md`](docs/codex-reviews.md): Auf #85 war genau dieser
+und `CONTRIBUTING*.md`; das Kriterium gilt, nicht die Aufzählung. Der Grund
+steht in [`docs/codex-reviews.md`](docs/codex-reviews.md): Auf #85 war der
 ready-Lauf derjenige, der den Befund brachte — 15 Sekunden nachdem ein anderer
 Lauf denselben Commit befundlos genannt hatte. Ein Fehler in einer Regel
 pflanzt sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum
 Einzelfall.
+
+**Was das Tor öffnet, ist ein zugestelltes befundloses Ergebnis auf dem Stand,
+der gemergt wird** — gleich welcher Auslöser den Lauf angestossen hat. Nicht
+der ready-Lauf als solcher: Das Umschalten ist einmalig, und es startet nicht
+immer einen Lauf. Kommt statt dessen eine Kontingent- oder Environment-Meldung
+oder gar nichts, gibt es keinen ready-Lauf zum Abwarten, und ein Tor, das auf
+ihm bestünde, wäre nie mehr zu schliessen.
+
+Dann greift der manuelle Aufruf: Er läuft in jedem Zustand an — auf einem
+Draft, auf einem offenen PR und sogar auf einem gemergten —, und sein Ergebnis
+erfüllt das Tor genauso. Liefert auch er keines, etwa weil das Kontingent weg
+ist, dann wartet der Merge. Das ist kein Sonderfall, sondern was ein
+verbindliches Tor heisst; erfüllbar wird es, sobald wieder ein Lauf
+durchkommt.
 
 **Auf die Zustellung nach dem Merge ist dabei nicht zu bauen.** Ein Lauf, der
 erst nach dem Schliessen endet, kann sein Ergebnis auch gar nicht mehr
