@@ -30,7 +30,7 @@ das die überlebende Fassung mitzählte. Jede Korrektur erzeugte die nächste.
 | Form | Wo | Bedeutet |
 |---|---|---|
 | «💡 Codex Review» | Review-**Objekt** (`get_reviews`) | Lauf mit Befund |
-| «Codex Review: Didn't find any major issues.» | Issue-Kommentar | Lauf ohne Befund |
+| «Codex Review: Didn't find any major issues.» | Issue-Kommentar **oder** Antwort im Review-Thread | Lauf ohne Befund |
 | «You have reached your Codex usage limits for code reviews.» | Issue-Kommentar **oder** Antwort im Review-Thread | Kontingent weg |
 | «To use Codex here, create an environment for this repo.» | Issue-Kommentar | Environment-Meldung |
 | Status-Kommentar «🔄 Running» / «✅ Completed» | Issue-Kommentar, **bearbeitet** | Lauf läuft / ist durch |
@@ -50,10 +50,15 @@ Issue-Fassung an dieser Stelle nicht. Wer in einem solchen Fenster nur die zwei
 bisherigen Abfragen fährt, sieht gar nichts und hält den Head für ungeprüft aus
 unbekanntem Grund — statt zu wissen, dass eine Sperre steht.
 
-Was das **nicht** hergibt: wann die Meldung welche Form wählt. Beobachtet ist
-die Thread-Fassung genau einmal, auf einen Aufruf hin, der selbst eine
-Thread-Antwort war. Ob die Form dem Auslöser folgt, ist damit nicht belegt,
-sondern bloss naheliegend.
+**Nicht nur die Ausfallmeldung nimmt diese Form an.** Am 18.9. um 09:58:29 kam
+auf #103 die *Befundlos*-Meldung als Thread-Antwort, und `get_comments` kannte
+sie nicht. Das trifft härter als der erste Fall: Die Befundlos-Meldung ist einer
+der beiden Belege dafür, dass überhaupt geprüft wurde. Wer sie übersieht, hält
+einen erfolgreichen Lauf für einen stillen.
+
+Beide Male war der Aufruf selbst eine Thread-Antwort. Ob die Form dem Auslöser
+folgt, ist damit nicht belegt, sondern naheliegend — und ob die Environment-
+Meldung ebenso kann, ist gar nicht beobachtet.
 
 ### Der Schlusssatz der Befundlos-Meldung wechselt
 
@@ -620,11 +625,11 @@ Praktisch heisst das: **Nach einem frühen Merge kann am PR nicht mehr
 ablesbar sein, ob geprüft wurde** — verlassen kann man sich weder darauf noch
 auf das Gegenteil. Wer es wissen muss, sieht nach, und zwar mit allen drei
 Abfragen: `get_reviews` für das Objekt, `get_comments` für die
-Befundlos-Meldung, `get_review_comments` für eine Ausfallmeldung, die als
-Antwort in einem Review-Thread steht. Die dritte gehört hierher, weil ohne sie
-ein Teil der Antwort fehlt: Am 18.9. stand die Kontingent-Meldung auf #98 nur
-dort, und wer bloss die beiden anderen fuhr, sah das fehlende Ergebnis als
-unerklärt an.
+Issue-Kommentare, `get_review_comments` für alles, was als Antwort in einem
+Review-Thread steht. Die dritte gehört hierher, weil ohne sie ein Teil der
+Antwort fehlt: Am 18.9. stand auf #98 die Kontingent-Meldung nur dort und auf
+#103 die Befundlos-Meldung. Wer bloss die beiden anderen fährt, sieht im einen
+Fall die Sperre nicht und im anderen den geglückten Lauf.
 
 **Eine gefundene Ausfallmeldung erklärt aber nur die Vergangenheit.** Sie sagt,
 warum *damals* nichts kam, und nichts darüber, ob die Sperre jetzt noch steht —
