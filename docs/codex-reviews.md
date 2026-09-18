@@ -51,8 +51,10 @@ statt eines Satzes bloss ein 🚀. Stabil ist nur der Satz davor.
 Kenntlich am HTML-Marker `<!-- codex-pull-request-review-summary -->`. Codex
 legt ihn zu Beginn eines Laufs an und **aktualisiert ihn an Ort und Stelle**
 von «🔄 Running» auf «✅ Completed» — kein zweiter Kommentar, sondern ein
-`issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht das Ende des
-Laufs nicht.
+`issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht diesen
+Wechsel nicht. **Welcher** Lauf damit endete, ist allerdings eine eigene Frage
+— «Der manuelle Aufruf: was belegt ist» hält fest, warum die Zeile das nicht
+beantwortet.
 
 Seine Tabelle nennt als Einzige **beides**: einen Commit *und* den Auslöser
 («Manual request», «Draft marked ready»). Die Befundlos-Meldung und das
@@ -439,12 +441,20 @@ Geliefert hat er in dieser Spanne:
 bei drei Minuten aufhört nachzusehen, verpasst den längsten gemessenen Lauf.
 Eine frühere Fassung nannte die Werte «erstaunlich gleichmässig» und CLAUDE.md
 sprach von «zwei bis drei Minuten» — beides stammte aus der Zeit, als die
-Tabelle vier Zeilen hatte. Woran das Ende zu erkennen ist, ist deshalb nicht
-die Uhr, sondern die Statuszeile — **aber nur, solange kein weiterer Auslöser
-dazwischenkommt.** Sie springt von «🔄 Running» auf «✅ Completed» und führt
-dabei immer nur den letzten Lauf: Auf #94 überschrieb der ready-Lauf um
-05:51:36 die Zeile der manuellen Runde von 05:50:54, bevor für diese ein
-Ergebnis oder ein «Completed» feststellbar war; ihr Ausgang ist seither offen.
+Tabelle vier Zeilen hatte.
+
+**Eine verlässliche Endmarke gibt es nicht.** Die Uhr taugt nicht dafür, und
+die Statuszeile auch nicht. Eine frühere Fassung hat sie dafür ausgegeben,
+«solange kein weiterer Auslöser dazwischenkommt» — die Bedingung greift zu
+kurz, weil sie nur nach vorn schaut. Die Zeile springt zwar von «🔄 Running»
+auf «✅ Completed», führt dabei aber immer nur den letzten Lauf, den der
+Connector geschrieben hat, und das muss nicht der eigene sein: nicht, wenn ein
+späterer ihn überschreibt — auf #94 verdrängte der ready-Lauf um 05:51:36 die
+manuelle Runde von 05:50:54, bevor für diese überhaupt ein «Completed»
+feststand, und ihr Ausgang ist seither offen —, und nicht, wenn ein früherer
+noch dasteht. Ein «✅ Completed» unter dem eigenen Auslöser-Namen kann deshalb
+einem fremden Lauf gehören.
+
 **Der Auslöser-Name schliesst aus, er weist nicht zu.** Steht dort ein anderer
 Name als der eigene, gehört die Zeile einem anderen Lauf und sagt über den
 eigenen nichts. **Welchem, sagt sie nicht.** Es kann ein späterer sein, der die
@@ -457,8 +467,8 @@ nicht hergibt.
 
 Steht dort derselbe Name, ist damit nichts gewonnen: Zwei manuelle Aufrufe
 hintereinander tragen beide «Manual request», und der zweite überschreibt den
-ersten, ohne dass die Prüfung auf den Namen anschlägt. Auf #95
-lief der erste am 18.9. um 05:59:23, der zweite — nach dem Merge — um 06:15:06;
+ersten, ohne dass die Prüfung auf den Namen anschlägt. Auf #95 lief der erste
+am 18.9. um 05:59:23, der zweite — nach dem Merge — um 06:15:06;
 die Zeile führte um 06:17:25 «✅ Completed» unter «Manual request» und meinte
 den zweiten.
 
@@ -472,12 +482,15 @@ Zuzuweisen wäre die Zeile nur, wenn auszuschliessen wäre, dass sie einem
 anderen Lauf gehört — einem späteren, der sie überschrieben hat, oder einem
 früheren, der noch steht. Ein sichtbarer Auslöser lässt sich aus den
 Kommentaren lesen; ein unsichtbar angestossener Lauf grundsätzlich nicht —
-daran ist auf #93 das Entscheidungsverfahren gescheitert. Die Zeile taugt deshalb zum Ausschliessen
-und nicht zum Zuweisen; was der eigene Lauf ergeben hat, steht im Ergebnis.
-Das ist dieselbe Bedingung, die die Arbeitsanweisung in `CLAUDE.md` nennt.
+daran ist auf #93 das Entscheidungsverfahren gescheitert. Die Zeile taugt
+deshalb zum Ausschliessen und nicht zum Zuweisen — dieselbe Bedingung, die die
+Arbeitsanweisung in `CLAUDE.md` nennt.
 
-Ob dann auch ein Ergebnis vorliegt, ist die nächste Frage — der Vorbehalt
-«✅ Completed belegt kein zugestelltes Ergebnis» hält sie fest.
+**Was bleibt, ist das zugestellte Ergebnis.** Es trägt den geprüften Commit und
+steht als eigener Eintrag, den kein späterer Lauf überschreibt. Bleibt es aus,
+ist das kein Urteil, sondern ein offener Ausgang — der Vorbehalt «✅ Completed
+belegt kein zugestelltes Ergebnis» hält genau das fest. Wer wartet, wartet
+folglich auf das Ergebnis und nicht auf die Zeile.
 
 Einmal gescheitert (#53 um 18:51:30, siehe den Abschnitt über die schwankenden
 Antworten). Nach einem Fehlschlag lohnt der zweite Versuch.

@@ -346,6 +346,10 @@ Die Commit-Spalte trennt sie auch nicht: Sie nannte dort den Commit, den der
 **erste** Lauf geprüft hatte. Und selbst die Zeile, die wirklich deinem Lauf
 gehört, belegt nur, dass er endete, nicht dass ein Ergebnis vorliegt.
 
+Eine positive Endmarke hat die Zeile damit nicht: Abgewartet wird das
+Ergebnis — Review-Objekt oder Befundlos-Meldung —, nicht der Status. Bleibt es
+aus, ist der Ausgang offen und nicht «nichts gefunden».
+
 Die 👀 auf dem auslösenden Kommentar ist die Empfangsbestätigung, nicht das
 Ergebnis. Wer zu früh nachsieht, hält einen laufenden Review für einen
 ausgefallenen.
