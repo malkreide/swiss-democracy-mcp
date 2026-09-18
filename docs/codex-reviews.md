@@ -839,6 +839,7 @@ anderer PRs:
 | 07:06 | #100 | Draft → ready |
 | 07:32:49 | #98 | `@codex review` auf dem bereits gemergten PR |
 | 07:48 | #101 | `@codex review` |
+| 08:51 | #101 | `@codex review` |
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
 mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
