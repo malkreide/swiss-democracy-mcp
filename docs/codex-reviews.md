@@ -638,9 +638,16 @@ Meldung schliesst, ein Aufruf lohne sich nicht, lässt den Merge-Commit
 ungeprüft aus einem Grund, den er nicht gemessen hat. Gemessen wird der
 aktuelle Zustand nur durch einen Aufruf.
 
-Der Rückgriff ist deshalb in beiden Fällen derselbe: ein neuer Aufruf von Hand.
-Er läuft auf dem gemergten PR an und prüft dann den Merge-Commit. Die drei
-Abfragen sagen, was vorliegt — sie ersetzen den Versuch nicht.
+Was die drei Abfragen ergeben, trennt drei Lagen:
+
+- **Ein Review-Objekt oder eine Befundlos-Meldung zum Merge-Commit.** Dann
+  liegt das gesuchte Ergebnis vor, und der Rückgriff hat keinen Gegenstand.
+- **Nur eine Ausfallmeldung.** Sie erklärt das Fehlen und sagt über jetzt
+  nichts — also ein neuer Aufruf.
+- **Nichts davon.** Ebenfalls ein neuer Aufruf.
+
+In den beiden letzten Fällen ist der Rückgriff derselbe: ein Aufruf von Hand,
+der auf dem gemergten PR anläuft und den Merge-Commit prüft.
 
 ### Der Vorlauf trennt «angelaufen» nicht von «abgeblockt»
 
@@ -958,14 +965,20 @@ allein genügt:
 search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] updated:>=<Datum>
 ```
 
-Findet, wo er *kommentiert* hat — Befundlos-Meldung und die beiden
-Ausfallmeldungen, die aber nicht voneinander; dafür ist der Text zu lesen. Ein
-Review **mit** Befund ist kein Kommentar und taucht hier nicht auf.
+Findet, wo er als Kommentar *geschrieben* hat — Befundlos-Meldung und die
+beiden Ausfallmeldungen, die aber nicht voneinander; dafür ist der Text zu
+lesen. Ein Review **mit** Befund ist kein Kommentar und taucht hier nicht auf.
 
 Ob `commenter:` auch eine Antwort in einem Review-Thread erfasst, ist **nicht
-gemessen**. Seit dem 18.9. ist bekannt, dass die Kontingent-Meldung diese Form
-annehmen kann; ein PR, der sie *nur* in dieser Form trägt, könnte dem Vorfilter
-also entgehen. Wer sich darauf verlässt, prüft es besser einmal nach.
+gemessen**. Seit dem 18.9. ist bekannt, dass sowohl die Kontingent- als auch
+die Befundlos-Meldung diese Form annehmen kann; ein PR, der eine davon *nur*
+so trägt, könnte dem Vorfilter entgehen.
+
+Die Richtung des Irrtums ist dabei verschieden. Entgeht eine Ausfallmeldung,
+fehlt ein PR, an dem nichts geprüft wurde. Entgeht eine **Befundlos**-Meldung,
+fehlt ein PR, der geprüft *ist* — und er sieht in einer Erhebung aus wie einer,
+den niemand angesehen hat. Wer sich auf den Vorfilter verlässt, prüft das
+besser einmal nach.
 
 ```
 search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
