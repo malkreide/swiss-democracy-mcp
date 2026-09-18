@@ -67,24 +67,12 @@ Vorbehalte:
   der ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
   seither nirgends mehr. Wer zwei Läufe auseinanderhalten will, braucht ihre
   Ergebnis-Kommentare — die bleiben einzeln stehen.
-- **«✅ Completed» kann der einzige Nachweis eines Laufs sein.** Am 18.9. auf
-  #92 endete der ready-Lauf um 04:10:15 auf `494a61f`, ohne Review-Objekt und
-  **ohne Befundlos-Meldung**: `get_reviews` leer, unter den Kommentaren nichts
-  Neues. Der manuelle Lauf zuvor hatte auf demselben Commit eine geschrieben
-  (04:08:40). Gleicher PR, gleicher Commit, zwei Läufe, zwei verschiedene
-  Meldeformen.
-
-  Das trifft den Vorbehalt zum überschreibbaren Status: Wenn ein Lauf gar keinen
-  Ergebnis-Kommentar hinterlässt, sind zwei Läufe **nicht** an ihren
-  Ergebnis-Kommentaren auseinanderzuhalten — der überschriebene Status ist
-  dann das Einzige, was von ihm übrig war, und er ist überschreibbar.
-
-  **Was der Fall nicht hergibt:** wovon der Unterschied abhängt. Manueller
-  gegen automatischer Auslöser ist die naheliegende Vermutung und aus *einer*
-  Beobachtung nicht mehr als das; ebenso wenig ist ausgeschlossen, dass Codex
-  eine zweite Befundlos-Meldung auf demselben Commit schlicht unterdrückt. Am
-  Zustand ändert das nichts: Wer nur auf einen Ergebnis-Kommentar prüft,
-  verbucht diesen Lauf als ausgefallen.
+- **«✅ Completed» belegt kein zugestelltes Ergebnis.** Auf #60, #79, #88, #89
+  und #92 stand die Zeile auf «Completed», ohne dass ein Review-Objekt oder
+  eine Befundlos-Meldung ankam. Ob diese Läufe nichts fanden oder ihr Ergebnis
+  nach dem Merge nicht mehr zugestellt wurde, ist von aussen nicht zu
+  unterscheiden; die Fälle stehen unter «Der manuelle Aufruf: was belegt ist».
+  Wer aus «Completed» auf «nichts gefunden» schliesst, erfindet ein Urteil.
 
 ### `comments: 1` hat fünf Bedeutungen
 
@@ -343,22 +331,31 @@ Am 18.9. auf #92, alles auf demselben Commit `494a61f`:
 | vor 04:09:03 | Draft → ready |
 | 04:09:03 | ready-Lauf startet («Draft marked ready») |
 | 04:09:20 | **gemergt** |
-| 04:10:15 | ready-Lauf endet, ohne Befund |
+| 04:10:15 | ready-Lauf steht auf «Completed» — **ohne zugestelltes Ergebnis** |
 
-Zwischen Start und Merge lagen **17 Sekunden**, der Lauf endete 55 Sekunden
-nach dem Merge.
+Zwischen Start und Merge lagen **17 Sekunden**. Kein Review-Objekt, keine
+zweite Befundlos-Meldung: `get_reviews` leer, unter den Kommentaren nichts
+Neues.
 
-Das ist weder 4.1 noch 4.2. In 4.1 ging der Lauf verloren, weil der Merge ihn
-überholte, bevor er anlief; in 4.2 lag der Befund vor und wurde übergangen.
-Hier war der Lauf nachweislich **in der Luft** — der Status-Kommentar stand zum
-Merge-Zeitpunkt auf «🔄 Running» — und sein Ausgang zu diesem Zeitpunkt
-schlicht unbekannt. Hätte er einen Befund getragen, stünde der in `main`, und
-es bräuchte den Nachzügler wie auf #59/#60.
+**Der Ausgang dieses Laufs ist unbekannt, nicht «befundlos».** Ob er nichts
+fand oder ob sein Ergebnis nach dem Schliessen nicht mehr zugestellt wurde, ist
+von aussen nicht zu unterscheiden — die Fälle #60, #79, #88 und #89 unter «Der
+manuelle Aufruf: was belegt ist» halten genau diese Grenze fest, und #80 zeigt,
+dass ein Ergebnis einen Merge durchaus überholen kann. #92 ist ein weiterer
+Fall dieser Reihe und kein neuer Befund. Eine frühere Fassung dieses Abschnitts
+trug «endet, ohne Befund» in die Tabelle und schloss daraus, es sei «gut
+ausgegangen» — beides war ein erfundenes Urteil.
 
-**Warum es hier glimpflich ausging, ist kein Verdienst des Merges:** Derselbe
-Commit hatte 40 Sekunden zuvor bereits eine Befundlos-Meldung des manuellen
-Laufs. Der gemergte Stand war also nicht ungeprüft — geprüft war er durch den
-Lauf, den niemand abwarten musste, nicht durch den, der lief.
+Der Platz hier statt dort ist trotzdem gewollt: Die Belege gehören zu dem, was
+ein Aufruf hergibt, die Lehre zu den Wegen, den Prüfer zu verlieren. In 4.1
+überholte der Merge den Lauf, bevor er anlief; in 4.2 lag der Befund vor und
+wurde übergangen. Hier lief er nachweislich — der Status stand beim Merge auf
+«🔄 Running» — und sein Urteil ist bis heute nicht zu haben.
+
+**Was den gemergten Stand trägt, ist der andere Lauf.** Derselbe Commit hatte
+40 Sekunden vor dem Merge eine zugestellte Befundlos-Meldung des manuellen
+Laufs. Ungeprüft ging er also nicht nach `main` — geprüft ist er durch den
+Lauf, den jemand abgewartet hat, nicht durch den, der lief.
 
 **Was der Fall nicht hergibt:** ob der Mergende vom laufenden Review wusste.
 Von aussen ist der Zustand messbar, nicht die Aufmerksamkeit — dieselbe Grenze
@@ -369,29 +366,28 @@ die Sammlung führt sie ohnehin als Nicht-Beleg.
 **Der Handgriff daraus ist nicht «schneller sein».** Auf #76 fielen Befund und
 Merge in dieselbe gemessene Sekunde; auf eine Reaktionszeit ist nicht zu bauen.
 
-**Er ist aber auch nicht «einer reicht».** Die erste Fassung dieses Absatzes
+**Er ist aber auch nicht «einer reicht».** Die erste Fassung dieses Abschnitts
 schloss, ein abgewarteter Lauf mache den zweiten, der beim Merge noch läuft, zu
 «einer Zugabe und keinem Risiko». Das widerspricht «Ein Ergebnis sagt etwas
-über den Lauf, nicht über den Text» im selben Dokument: Dort urteilten drei
-Läufe über denselben Defekt zweimal befundlos und einmal zutreffend P2 —
-gefunden hat ihn der Lauf, den niemand mit Absicht angestossen hat. Ein
-befundloser Erstlauf sagt über den Ausgang des Zweitlaufs nichts. Dieser
-Abschnitt räumte es selbst ein — «Hätte er einen Befund getragen, stünde der in
-`main`» — und widerrief es zwei Absätze später.
+über den Lauf, nicht über den Text»: Dort urteilten drei Läufe über denselben
+Defekt zweimal befundlos und einmal zutreffend P2 — gefunden hat ihn der Lauf,
+den niemand mit Absicht angestossen hat. Ein befundloser Erstlauf sagt über den
+Ausgang des Zweitlaufs nichts.
 
 Es bleiben zwei Haltungen, und die Wahl gehört benannt:
 
 - **Jeden angestossenen Lauf abwarten.** Dann ist der gemergte Stand so weit
   geprüft, wie diese Werkzeuge es hergeben.
-- **Den offenen Ausgang wissentlich in Kauf nehmen** — dann aber
-  weiterverfolgen, bis er vorliegt, und den Nachzügler einplanen.
+- **Den offenen Ausgang wissentlich in Kauf nehmen.** Dann aber nicht darauf
+  warten, dass er noch eintrifft — auf einem geschlossenen PR kann er
+  ausbleiben. Wer es wissen muss, ruft den Review auf dem gemergten PR neu auf;
+  er läuft dort an und prüft dann den Merge-Commit.
 
-Auf #92 ging das gut aus. Das war der Ausgang eines Laufs, dessen Urteil beim
-Merge niemand kannte, nicht das Ergebnis einer Vorkehrung. Was nicht geht, ist
-das Zweite zu tun und das Erste zu behaupten.
+Was nicht geht, ist das Zweite zu tun und das Erste zu behaupten.
 
-Gefunden hat diesen Fehlschluss ein Codex-Review auf #93 — dem PR, der diesen
-Abschnitt einführte.
+Zwei Fassungen dieses Abschnitts sind an Codex-Reviews auf #93 gescheitert —
+dem PR, der ihn einführt: die erste am Fehlschluss «kein Risiko», die zweite
+am erfundenen Urteil «ohne Befund».
 
 ---
 
