@@ -68,25 +68,45 @@ Thread-Antworten.
 Sitzung auf #98, die den ersten Fall lieferte: Um 06:40:59 ging dort ein
 *Issue-Kommentar* hinaus, und die Kontingent-Meldung kam zwölf Sekunden später
 als *Issue-Kommentar*. Damit ist die Vermutung an beiden Formen geprüft statt
-nur an einer:
+nur an einer. Die Tabelle führt jeden Fall, für den Auslöser **und**
+Zustellweg festgehalten sind:
 
-| Aufruf (UTC) | Form des Aufrufs | Form der Meldung |
+| Auslöser (UTC) | Form des Auslösers | Form der Meldung |
 |---|---|---|
 | #98, 06:39:50 | Thread-Antwort | Thread-Antwort (06:40:01) |
 | #98, 06:40:59 | Issue-Kommentar | Issue-Kommentar (06:41:11) |
 | #103 | Thread-Antwort | Thread-Antwort (09:58:29) |
 | #108, 10:58:56 | Thread-Antwort | Thread-Antwort (11:01:23) |
 | #108, 11:06:13 | Thread-Antwort | Thread-Antwort (11:09:16) |
+| #111, 13:08:50 | Thread-Antwort | Thread-Antwort (13:10:14) |
+| #112, 13:19:45 | Thread-Antwort | Thread-Antwort (13:19:55) |
+| #112, ≈13:45:14 | **Umschalten auf ready** | **Issue-Kommentar (13:45:17)** |
+| #112, 13:47:01 | Issue-Kommentar | Issue-Kommentar (13:47:10) |
 
-Belegt ist sie damit immer noch nicht: Die Zeilen stammen alle aus diesem Repo,
-und für die Environment-Meldung ist die Form gar nicht beobachtet. Zwei weitere
-Aufrufe jener Sitzung auf #98 (06:44:08 und 07:32:49, beide Issue-Kommentare)
-bekamen ebenfalls die Kontingent-Meldung — wo sie landete, ist nicht
-festgehalten. **«Naheliegend» ist nach der Gegenprobe trotzdem untertrieben.**
+**Die vorletzte Zeile ist die einzige, die etwas Neues sagt.** Das Umschalten
+auf ready ist gar kein Kommentar — es gibt keinen Thread, in dem geantwortet
+werden könnte. Die Meldung landete unter den Issue-Kommentaren. Damit liest
+sich die Beobachtung schärfer als «die Form folgt dem Auslöser»: **Der
+Issue-Kommentar ist der Normalfall, und die Thread-Antwort ist das, was ein
+Aufruf aus einem Thread heraus bekommt.**
+
+Ihr Zeitpunkt ist der einzige in der Tabelle, der nicht aus der Primärquelle
+stammt: Das Umschalten trägt in der API keinen Zeitstempel am PR, die ≈13:45:14
+kommen aus dem Webhook-Ereignis. Die Meldung daneben ist mit 13:45:17 belegt;
+alle übrigen Zeiten sind `created_at`-Werte der Kommentare.
+
+Belegt ist die Regel damit immer noch nicht: Alle Zeilen stammen aus diesem
+Repo, für die Environment-Meldung ist die Form gar nicht beobachtet, und ein
+Fall, der ihr widerspricht — eine Thread-Antwort auf einen Issue-Kommentar oder
+umgekehrt —, ist bisher nicht vorgekommen, aber auch nicht gezielt gesucht
+worden. Zwei weitere Aufrufe jener Sitzung auf #98 (06:44:08 und 07:32:49,
+beide Issue-Kommentare) bekamen ebenfalls die Kontingent-Meldung — wo sie
+landete, ist nicht festgehalten.
 
 Für die Praxis ändert das nichts — die dritte Abfrage ist ohnehin zu fahren.
 Es verschiebt nur die Erwartung: Wer aus einem Thread heraus anfordert, sucht
-die Antwort zuerst dort.
+die Antwort zuerst dort; wer gar nicht kommentiert hat, sucht sie unter den
+Issue-Kommentaren.
 
 ### Der Schlusssatz der Befundlos-Meldung wechselt
 
