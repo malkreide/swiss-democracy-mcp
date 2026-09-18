@@ -67,14 +67,19 @@ Vorbehalte:
   der ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
   seither nirgends mehr. Wer zwei Läufe auseinanderhalten will, braucht ihre
   Ergebnis-Kommentare — die bleiben einzeln stehen.
-- **«✅ Completed» belegt kein zugestelltes Ergebnis.** Auf #60, #79, #88 und
-  #89 stand die Zeile auf «Completed», ohne dass ein Review-Objekt oder eine
-  Befundlos-Meldung ankam; sie stehen unter «Der manuelle Aufruf: was belegt
-  ist». #92 kommt hinzu und steht unter «Der Lauf läuft noch, der Merge geht
-  durch» — dort, weil es dabei um den Merge-Zeitpunkt geht und nicht darum,
-  was ein Aufruf hergibt. Ob diese Läufe nichts fanden oder ihr Ergebnis nach
-  dem Merge nicht mehr zugestellt wurde, ist von aussen nicht zu unterscheiden.
-  Wer aus «Completed» auf «nichts gefunden» schliesst, erfindet ein Urteil.
+- **«✅ Completed» belegt kein zugestelltes Ergebnis.** Auf #60, #79, #88, #89
+  und #93 stand die Zeile auf «Completed», ohne dass ein Review-Objekt oder
+  eine Befundlos-Meldung ankam; sie stehen unter «Der manuelle Aufruf: was
+  belegt ist». #92 kommt hinzu und steht unter «Der Lauf läuft noch, der Merge
+  geht durch» — dort, weil es dabei um den Merge-Zeitpunkt geht und nicht
+  darum, was ein Aufruf hergibt. Ob diese Läufe nichts fanden oder ihr Ergebnis
+  nach dem Merge nicht mehr zugestellt wurde, ist von aussen nicht zu
+  unterscheiden. Wer aus «Completed» auf «nichts gefunden» schliesst, erfindet
+  ein Urteil.
+- **Der Commit in der Statuszeile ist nicht unbedingt der geprüfte.** Am 18.9.
+  auf dem gemergten #93 nannte die Zeile `639fce5`, den Branch-Stand; das
+  Review-Objekt desselben Laufs trägt `7755c900`, den Merge-Commit. Wer wissen
+  muss, was geprüft wurde, liest das Ergebnis, nicht die Statuszeile.
 
 ### `comments: 1` hat fünf Bedeutungen
 
@@ -390,9 +395,11 @@ Es bleiben zwei Haltungen, und die Wahl gehört benannt:
 
 Was nicht geht, ist das Zweite zu tun und das Erste zu behaupten.
 
-Zwei Fassungen dieses Abschnitts sind an Codex-Reviews auf #93 gescheitert —
-dem PR, der ihn einführt: die erste am Fehlschluss «kein Risiko», die zweite
-am erfundenen Urteil «ohne Befund».
+Die Fassungen dieses Abschnitts, die an Codex-Reviews auf #93 gescheitert sind
+— dem PR, der ihn einführt —, stehen in dessen Commit-Historie: der Fehlschluss
+«kein Risiko», das erfundene Urteil «ohne Befund», die unbelegte Abgrenzung zu
+4.1. Eine Zahl steht hier nicht: Sie war schon einmal falsch, weil die dritte
+beim Zählen noch nicht geschrieben war.
 
 ---
 
@@ -468,6 +475,21 @@ Die Laufzeit ist diesmal **nicht** zu haben: Die Statuszeile zeigt nur noch
 sie festgehalten. Belegt sind Auslöser und Ende, nicht der Start — dass für
 #88 eine Dauer dasteht und hier keine, liegt nicht an den Läufen, sondern
 daran, welche Fassung der Zeile zufällig konserviert wurde.
+
+**Und noch einmal auf #93**, dem PR, der diesen Abschnitt erweitert. Am 18.9.
+wurde um 05:18:38 gemergt, um 05:18:41 startete der ready-Lauf — drei Sekunden
+**nach** dem Merge — und um 05:19:50 stand er auf «Completed». Angekommen ist
+nichts: kein Review-Objekt zu `639fce5`, und die einzige Befundlos-Meldung
+trägt 05:04:32 und gehört zum manuellen Lauf davor. Dieselbe Prüfung wie bei
+#88 und #89.
+
+**Der Rückgriff hat dort funktioniert, und das ist der Teil, der neu ist.** Ein
+`@codex review` auf dem gemergten #93 um 05:25:21 lieferte um 05:28:46 ein
+Review-Objekt mit zwei Befunden — zum **Merge-Commit** `7755c900`, nicht zum
+Branch-Stand. Damit ist an einem Fall belegt, dass der Rückgriff nach einem
+stillen Lauf tatsächlich ein Urteil beschafft, und zwar über den Stand, der in
+`main` liegt. Was er nicht beschafft, ist das Urteil des stillen Laufs: Ob der
+ready-Lauf dieselben zwei Befunde gehabt hätte oder gar keine, bleibt offen.
 
 **Zugestellt wird aber durchaus.** Auf #80 wurde um 18:48:36 gemergt, und um
 18:48:45 — neun Sekunden danach — erschien ein Review-Objekt mit Befund zum
