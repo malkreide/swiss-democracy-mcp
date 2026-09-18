@@ -1293,7 +1293,33 @@ Vormittagsepisode zeigt es einmal, diese Episode an jedem betroffenen PR.
 **Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:48, #113 um
 13:52:23, #114 um 14:01:36, #115 um 14:01:53 und #118 um 14:26:48, jeder mit
 einem Head, für den kein Ergebnis vorlag; auf #118 lag die Absage **eine
-Sekunde** vor dem Merge, auf #115 zwei.
+Sekunde** vor dem Merge, auf #115 zwei. Wie am Vormittag hat ein Mensch
+entschieden, und wie dort stand die Lage vorher als Kommentar auf dem PR.
+
+**Die Sperre ist am selben Nachmittag gefallen — auf 43 min 52 s
+eingegrenzt.** Um 14:07:46 kam die letzte belegte Absage; um 14:51:38 lief auf
+dem gemergten #116 wieder ein Lauf an, der um 14:54:37 einen Befund lieferte.
+
+**Die obere Grenze hängt am Start, nicht am Auslöser.** Der Aufruf dazu stand
+um 14:51:22; dass das Kontingent schon in dieser Sekunde offen war, belegt er
+nicht — belegt ist es erst durch den Start. Das ist die Umkehrung derselben
+Überlegung, mit der oben die Eingrenzung des Zugehens berichtigt wurde: Dort
+hing die Grenze fälschlich an einer Zustellung statt an einem Start, hier
+hinge sie fälschlich an einem Auslöser. Beide Male ist der **beobachtete
+Lauf** die Marke.
+
+Beide Ränder dieser Episode sind damit gemessen. Das ist nicht das erste Mal —
+die Episode vom 29.8. hat ebenfalls beide —, aber die Eingrenzung des Endes
+ist hier enger: 43 min 52 s gegen 1 h 10 min 2 s. Was die Episode weiterhin
+nicht hergibt, ist eine **Dauer**: Zwischen den Rändern liegen zwei Fenster
+und kein einziger Nachweis, dass die Sperre dazwischen durchgehend stand.
+
+**Für #116 ist die Prüfung damit nachgeholt**, auf dem Merge-Commit, und sie
+brachte einen Befund — er betraf genau die Zuschreibung, die unten
+richtiggestellt ist. Für die übrigen Stände der Aufzählung oben ist hier keine
+nachgeholte Prüfung festgehalten: Was der Merge ohne Ergebnis gekostet hat,
+ist für sie offen und bleibt es. Nicht ein schlechtes Ergebnis liegt vor,
+sondern keines.
 
 Die Zeitangaben stammen aus dem Committer-Datum der Merge-Commits. Frühere
 Fassungen nannten 13:45:50, 13:52:24 und 14:01:37 — drei Abweichungen von
@@ -1333,10 +1359,7 @@ Daraus folgt eine zweite Regel neben «nicht die Benachrichtigung nehmen»:
 Primärquelle geführt wird.** Eine Fassung, die bloss «aus der Primärquelle»
 sagt, schliesst diese Abweichung nicht aus. Aufgefallen ist sie durch einen
 Codex-Befund auf #116, der den Wert zu Recht anstrich und die Herkunft
-danebengriff; die Messung, die ihn einordnet, entstand erst beim Beantworten. Wie am Vormittag
-hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
-auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
-durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
+danebengriff; die Messung, die ihn einordnet, entstand erst beim Beantworten.
 
 Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
 Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
@@ -1772,9 +1795,11 @@ noch einmal anfasste.
 **Jede dieser Klassen hat ihre Regel neben sich stehen.**
 
 *Die Benachrichtigung statt der Primärquelle.* Fall 1 und Fall 4 sind zusammen
-vier falsche Zeitangaben. **Drei davon sind Ankunftszeiten von
-Webhook-Meldungen** — beide Werte auf #110 und die Merge-Zeit von #112 und
-#113 — genommen statt `created_at`, `submitted_at` oder des Committer-Datums.
+vier falsche **Angaben** — die veröffentlichte Spanne auf #110 und die drei
+Merge-Zeiten, jede einmal gezählt. **Drei davon beruhen auf Ankunftszeiten von
+Webhook-Meldungen**: die Spanne auf #110, deren beide Eingangswerte Meldezeiten
+waren, und die Merge-Zeiten von #112 und #113 — genommen statt `created_at`,
+`submitted_at` oder des Committer-Datums.
 Die Abweichung beträgt ein bis vier Sekunden, klein genug, um nicht
 aufzufallen, gross genug, um eine Spanne zu verfälschen. Der Griff zur
 Benachrichtigung ist offenbar der naheliegende: Sie liegt vor, die
