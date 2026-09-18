@@ -618,10 +618,16 @@ nichts mehr zugestellt würde.
 
 Praktisch heisst das: **Nach einem frühen Merge kann am PR nicht mehr
 ablesbar sein, ob geprüft wurde** — verlassen kann man sich weder darauf noch
-auf das Gegenteil. Wer es wissen muss, sieht nach: `get_reviews` für das
-Objekt, `get_comments` für die Befundlos-Meldung. Steht dort nichts, ist der
-Rückgriff ein neuer Aufruf von Hand — er läuft auf dem gemergten PR an, prüft
-dann aber den Merge-Commit.
+auf das Gegenteil. Wer es wissen muss, sieht nach, und zwar mit allen drei
+Abfragen: `get_reviews` für das Objekt, `get_comments` für die
+Befundlos-Meldung, `get_review_comments` für eine Ausfallmeldung, die als
+Antwort in einem Review-Thread steht. Die dritte gehört hierher, nicht nur der
+Vollständigkeit halber: Wer sie weglässt, sieht eine stehende Kontingent-Sperre
+nicht und setzt den Rückgriff ab, als bliebe das fehlende Ergebnis unerklärt —
+er läuft dann in dieselbe Sperre.
+
+Steht wirklich nichts da, ist der Rückgriff ein neuer Aufruf von Hand — er
+läuft auf dem gemergten PR an, prüft dann aber den Merge-Commit.
 
 ### Der Vorlauf trennt «angelaufen» nicht von «abgeblockt»
 
@@ -641,7 +647,10 @@ aus einer ausbleibenden auf einen laufenden Job. Die Messungen vom 18.9. auf
 
 Für die Zeilen oben gilt: Die Sperre antwortete in 8 bis 12 Sekunden, ein Start
 kam nach 11 bis 14 — die Bereiche überlappen. **Den Text lesen, nicht die Uhr:**
-Was nach zwölf Sekunden erscheint, kann beides sein. Die Versuchung ist real —
+Was nach zwölf Sekunden erscheint, kann beides sein — und ohnehin nicht nur
+beides: Die Tabelle führt die zwei Ausgänge, die an diesem Vormittag vorkamen,
+nicht die möglichen. Die Environment-Meldung ist ein dritter, und dass gar
+nichts kommt, ein vierter. Die Versuchung ist real —
 beim Messen dieser Tabelle ist aus den schnellen Absagen erst einmal eine
 Faustregel geworden («bleibt die Meldung eine Viertelminute aus, läuft es»),
 und die Überlappung stand in derselben Tabelle schon da.

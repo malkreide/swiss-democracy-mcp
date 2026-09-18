@@ -367,10 +367,11 @@ Zeichenfolge gehört nicht in einen Kommentar, den du nicht als Aufruf meinst.
 beim Beantworten eines Befundes: Anfordern und Antworten gehen in einem. Die
 Kehrseite steht eine Zeile höher.
 
-**Den Text lesen, nicht die Uhr.** Die Antwort auf einen Aufruf ist entweder
-ein angelaufener Lauf oder die Kontingent-Sperre, und beide kommen binnen
-Sekunden. Die gemessenen Spannen überlappen — aus der Wartezeit folgt also
-nicht, welches von beidem vorliegt.
+**Den Text lesen, nicht die Uhr.** Ein angelaufener Lauf und die
+Kontingent-Sperre kommen beide binnen Sekunden, und die gemessenen Spannen
+überlappen — aus der Wartezeit folgt also nicht, welches von beidem vorliegt.
+Die zwei sind auch nicht alles: Es kann die Environment-Meldung kommen, und es
+kann gar nichts kommen. Was vorliegt, sagt einzig der Text.
 
 ### Ein befundloser Lauf ist kein Freispruch
 
