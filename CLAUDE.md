@@ -378,12 +378,20 @@ steht er aus, bis er zugestellt hat — ein früheres befundloses Ergebnis
 desselben Commits nimmt ihm das nicht ab. Auf #85 war genau der ready-Lauf
 derjenige, der den Befund brachte, 15 Sekunden nach einem befundlosen.
 
-Startet das Umschalten dagegen keinen Lauf — Kontingent- oder
-Environment-Meldung oder Schweigen —, dann steht auch keiner aus, und das
-Ergebnis des manuellen Aufrufs genügt. Der läuft in jedem Zustand an: auf
-einem Draft, auf einem offenen PR und sogar auf einem gemergten. Ohne diesen
-Zweig wäre das Tor nach einem fehlgeschlagenen Auslöser nie mehr zu
-schliessen, weil das Umschalten einmalig ist.
+Wird das Umschalten dagegen sichtbar ohne Lauf beantwortet — Kontingent- oder
+Environment-Meldung —, dann steht auch keiner aus, und das Ergebnis des
+manuellen Aufrufs genügt. Der läuft in jedem Zustand an: auf einem Draft, auf
+einem offenen PR und sogar auf einem gemergten. Ohne diesen Zweig wäre das Tor
+nach einem fehlgeschlagenen Auslöser nie mehr zu schliessen, weil das
+Umschalten einmalig ist.
+
+**Schweigen gehört nicht in diese Aufzählung.** Es belegt nicht, dass kein Lauf
+angestossen wurde — «nichts kam an» ist nicht «nichts wurde ausgelöst», und der
+Absatz «Bleibt es nach dem automatischen Auslöser still» weiter oben sagt
+dasselbe. Nach Schweigen also nicht schliessen, sondern einen Lauf von Hand
+anfordern und dessen zugestelltes Ergebnis abwarten. Dass daneben ein
+unsichtbarer Lauf liefe, lässt sich damit nicht ausschliessen; diese Grenze
+lösen die Werkzeuge nicht auf, und sie ist hier benannt statt verschwiegen.
 
 «Ausstehend» heisst dabei: angestossen und noch kein Ergebnis zugestellt. Zeigt
 ein Lauf «✅ Completed», ohne eines zu liefern, ist er zwar nicht mehr
