@@ -368,9 +368,30 @@ die Sammlung führt sie ohnehin als Nicht-Beleg.
 
 **Der Handgriff daraus ist nicht «schneller sein».** Auf #76 fielen Befund und
 Merge in dieselbe gemessene Sekunde; auf eine Reaktionszeit ist nicht zu bauen.
-Was trägt, ist die Reihenfolge: einen Lauf auf dem Stand abwarten, der gemergt
-wird — dann ist ein zweiter, der beim Merge noch läuft, eine Zugabe und kein
-Risiko.
+
+**Er ist aber auch nicht «einer reicht».** Die erste Fassung dieses Absatzes
+schloss, ein abgewarteter Lauf mache den zweiten, der beim Merge noch läuft, zu
+«einer Zugabe und keinem Risiko». Das widerspricht «Ein Ergebnis sagt etwas
+über den Lauf, nicht über den Text» im selben Dokument: Dort urteilten drei
+Läufe über denselben Defekt zweimal befundlos und einmal zutreffend P2 —
+gefunden hat ihn der Lauf, den niemand mit Absicht angestossen hat. Ein
+befundloser Erstlauf sagt über den Ausgang des Zweitlaufs nichts. Dieser
+Abschnitt räumte es selbst ein — «Hätte er einen Befund getragen, stünde der in
+`main`» — und widerrief es zwei Absätze später.
+
+Es bleiben zwei Haltungen, und die Wahl gehört benannt:
+
+- **Jeden angestossenen Lauf abwarten.** Dann ist der gemergte Stand so weit
+  geprüft, wie diese Werkzeuge es hergeben.
+- **Den offenen Ausgang wissentlich in Kauf nehmen** — dann aber
+  weiterverfolgen, bis er vorliegt, und den Nachzügler einplanen.
+
+Auf #92 ging das gut aus. Das war der Ausgang eines Laufs, dessen Urteil beim
+Merge niemand kannte, nicht das Ergebnis einer Vorkehrung. Was nicht geht, ist
+das Zweite zu tun und das Erste zu behaupten.
+
+Gefunden hat diesen Fehlschluss ein Codex-Review auf #93 — dem PR, der diesen
+Abschnitt einführte.
 
 ---
 
