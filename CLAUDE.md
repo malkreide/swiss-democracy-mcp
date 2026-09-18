@@ -369,19 +369,31 @@ Lauf denselben Commit befundlos genannt hatte. Ein Fehler in einer Regel
 pflanzt sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum
 Einzelfall.
 
-**Was das Tor öffnet, ist ein zugestelltes befundloses Ergebnis auf dem Stand,
-der gemergt wird** — gleich welcher Auslöser den Lauf angestossen hat. Nicht
-der ready-Lauf als solcher: Das Umschalten ist einmalig, und es startet nicht
-immer einen Lauf. Kommt statt dessen eine Kontingent- oder Environment-Meldung
-oder gar nichts, gibt es keinen ready-Lauf zum Abwarten, und ein Tor, das auf
-ihm bestünde, wäre nie mehr zu schliessen.
+**Das Tor hat zwei Hälften, und beide müssen stimmen:** Auf dem Stand, der
+gemergt wird, steht kein angestossener Lauf mehr aus, **und** mindestens einer
+hat ein befundloses Ergebnis zugestellt.
 
-Dann greift der manuelle Aufruf: Er läuft in jedem Zustand an — auf einem
-Draft, auf einem offenen PR und sogar auf einem gemergten —, und sein Ergebnis
-erfüllt das Tor genauso. Liefert auch er keines, etwa weil das Kontingent weg
-ist, dann wartet der Merge. Das ist kein Sonderfall, sondern was ein
-verbindliches Tor heisst; erfüllbar wird es, sobald wieder ein Lauf
-durchkommt.
+Die erste Hälfte ist die, die man vergisst. Startet das Umschalten einen Lauf,
+steht er aus, bis er zugestellt hat — ein früheres befundloses Ergebnis
+desselben Commits nimmt ihm das nicht ab. Auf #85 war genau der ready-Lauf
+derjenige, der den Befund brachte, 15 Sekunden nach einem befundlosen.
+
+Startet das Umschalten dagegen keinen Lauf — Kontingent- oder
+Environment-Meldung oder Schweigen —, dann steht auch keiner aus, und das
+Ergebnis des manuellen Aufrufs genügt. Der läuft in jedem Zustand an: auf
+einem Draft, auf einem offenen PR und sogar auf einem gemergten. Ohne diesen
+Zweig wäre das Tor nach einem fehlgeschlagenen Auslöser nie mehr zu
+schliessen, weil das Umschalten einmalig ist.
+
+«Ausstehend» heisst dabei: angestossen und noch kein Ergebnis zugestellt. Zeigt
+ein Lauf «✅ Completed», ohne eines zu liefern, ist er zwar nicht mehr
+ausstehend, sein Urteil aber unbekannt — bei einer Regeldatei genügt das nicht,
+dann einen neuen Lauf anfordern. Diese stille Form ist bisher nur nach einem
+Merge beobachtet, nicht davor.
+
+Liefert überhaupt kein Lauf ein Ergebnis, etwa bei erschöpftem Kontingent,
+wartet der Merge. Das ist kein Sonderfall, sondern was ein verbindliches Tor
+heisst; erfüllbar wird es, sobald wieder einer durchkommt.
 
 **Auf die Zustellung nach dem Merge ist dabei nicht zu bauen.** Ein Lauf, der
 erst nach dem Schliessen endet, kann sein Ergebnis auch gar nicht mehr
