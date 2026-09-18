@@ -330,13 +330,18 @@ Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr: Die
 Spanne oben sagt, wie lange es ungefähr dauert, nicht wann man aufhören darf;
 sie war schon einmal zu kurz angesetzt.
 
-Die Statuszeile taugt als Ersatz nur **mit ihrem Auslöser-Namen**. Sie springt
-von «🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
+Die Statuszeile taugt als Ersatz **nur zum Ausschliessen**. Sie springt von
+«🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
 Steht dort ein anderer Auslöser als deiner, gehört die Zeile einem späteren
 Lauf und sagt über deinen nichts — auf #79 hat ein ready-Lauf den manuellen so
-verdrängt, und beide waren danach nicht mehr auseinanderzuhalten. Und auch die
-passende Zeile belegt nur, dass der Lauf endete, nicht dass ein Ergebnis
-vorliegt.
+verdrängt, und beide waren danach nicht mehr auseinanderzuhalten.
+
+Steht dort **derselbe** Name, ist nichts gewonnen: Zwei manuelle Aufrufe
+hintereinander tragen beide «Manual request», der zweite überschreibt den
+ersten, und die Prüfung auf den Namen schlägt nicht an — auf #95 so gemessen.
+Die Commit-Spalte trennt sie auch nicht: Sie nannte dort den Commit, den der
+**erste** Lauf geprüft hatte. Und selbst die Zeile, die wirklich deinem Lauf
+gehört, belegt nur, dass er endete, nicht dass ein Ergebnis vorliegt.
 
 Die 👀 auf dem auslösenden Kommentar ist die Empfangsbestätigung, nicht das
 Ergebnis. Wer zu früh nachsieht, hält einen laufenden Review für einen
