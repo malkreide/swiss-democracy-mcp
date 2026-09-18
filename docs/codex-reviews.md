@@ -824,8 +824,8 @@ Draft, bis wieder ein Lauf durchgeht.
 
 Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
 «Vier Runden an einem kurzen Test»). Der nächste Aufruf auf demselben PR lief
-auf die Sperre, und sie hielt über alle weiteren Versuche — auch über die
-anderer PRs:
+auf die Sperre, und sie hielt über jeden weiteren Versuch — auch über die
+anderer PRs — bis sie Stunden später wieder aufging:
 
 | Zeit (UTC) | PR | Auslöser |
 |---|---|---|
@@ -851,12 +851,22 @@ Ein Zusammenhang zwischen den gelieferten Läufen und der Sperre ist **nicht
 belegt** — was sonst noch auf das Konto ging, ist von hier aus nicht zu sehen.
 Belegt ist die Reihenfolge: erst Ergebnisse, dann Fehlschläge.
 
-**Wann sie fiel, geben diese Messpunkte nicht her.** Sie belegen Zeitpunkte, an
-denen sie stand, und keinen, an dem sie fiel; eine Dauer daraus abzuleiten wäre
-erfunden. Das ist dieselbe Lage wie beim GitHub-Rate-Limit in `CLAUDE.md`, wo
-gesperrte Zeitpunkte ebenfalls keine Frist ergeben. Die Tabelle ist
-fortzuschreiben, solange die Sperre hält — Sätze daneben, die ihre Zeilen oder
-ihre Spanne zählen, veralten damit.
+**Sie ist wieder aufgegangen, und das grenzt den Zeitpunkt ein.** Um 08:51 wies
+sie noch ab. Um 09:54:12 lief ein Aufruf auf demselben PR an, und um 09:57:00
+stand die Befundlos-Meldung zu Commit `42f7517` da — das erste Ergebnis seit
+06:35. Sie fiel also zwischen diesen beiden Zeitpunkten; wo genau, geben die
+Messpunkte nicht her, weil dazwischen niemand nachfragte.
+
+Eine Frist folgt daraus trotzdem nicht. Belegt sind eine Untergrenze für die
+Dauer (06:37 bis 08:51 stand sie) und eine Obergrenze (um 09:54 stand sie nicht
+mehr). Warum sie in diesem Fenster aufging — abgelaufenes Fünf-Stunden-Fenster,
+etwas anderes —, ist von hier aus nicht zu sehen; zum Verhältnis der beiden
+Limits siehe «Wie das Kontingent funktioniert». Wer aus einer Episode eine
+Wartezeit ableitet, hat sie erfunden: Das ist dieselbe Lage wie beim
+GitHub-Rate-Limit in `CLAUDE.md`, nur mit einem Endpunkt mehr.
+
+Die Tabelle ist fortzuschreiben, solange eine Sperre hält — Sätze daneben, die
+ihre Zeilen oder ihre Spanne zählen, veralten damit.
 
 **Auch der Rückgriff auf einem gemergten PR fällt darunter.** Die beiden
 #98-Aufrufe um 06:44:08 und 07:32:49 galten dem Merge-Commit `2e80539`, dessen
