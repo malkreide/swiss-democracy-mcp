@@ -860,7 +860,7 @@ Draft, bis wieder ein Lauf durchgeht.
 Vier Läufe auf PR #97 lieferten zwischen 06:15 und 06:35 je einen Befund (siehe
 «Vier Runden an einem kurzen Test»). Der nächste Aufruf auf demselben PR lief
 auf die Sperre, und jeder weitere Versuch lief ebenso auf sie — auch die
-anderer PRs —, bis Stunden später wieder einer durchlief:
+anderer PRs und anderer Repos —, bis Stunden später wieder einer durchlief:
 
 | Zeit (UTC) | PR | Auslöser |
 |---|---|---|
@@ -872,9 +872,40 @@ anderer PRs —, bis Stunden später wieder einer durchlief:
 | 06:51 | #99 | Draft → ready |
 | 07:04 | #100 | `@codex review` |
 | 07:06 | #100 | Draft → ready |
+| 07:08:02 | `news-monitor-mcp`#85 | `@codex review` |
+| 07:08:11 | `swiss-cultural-heritage-mcp`#86 | `@codex review` |
 | 07:32:49 | #98 | `@codex review` auf dem bereits gemergten PR |
 | 07:48 | #101 | `@codex review` |
+| 08:01:15 | `news-monitor-mcp`#86 | `@codex review` |
+| 08:01:17 | `swiss-cultural-heritage-mcp`#87 | `@codex review` |
+| 08:21:14 | `news-monitor-mcp`#86 | Draft → ready |
+| 08:38:51 | `swiss-cultural-heritage-mcp`#88 | `@codex review` |
 | 08:51 | #101 | `@codex review` |
+
+**Eine nackte Nummer meint dieses Repo.** Die Zeilen aus anderen Repos tragen
+deshalb ihren Namen — die Nummernkreise überschneiden sich, und ein `#88` gibt
+es hier wie dort.
+
+**Dasselbe Konto bekam die Absage in drei Repos.** «Wie das Kontingent
+funktioniert» sagt seit dem 29.8., es hänge am Konto und nicht am Repo; die
+Zeilen aus zwei weiteren Repos sind dazu die erste Messung ausserhalb dieses
+einen. Die Zeilen 07:08:02 und 07:08:11 liegen neun Sekunden auseinander und
+gehören zwei verschiedenen Repos; um 07:32 und 07:48 wies dasselbe Konto in
+einem dritten ab.
+
+**Eine gleichzeitig stehende Sperre ist das nicht.** Der Absatz zur
+Punktmessung weiter unten gilt auch hier, und er gilt auch für neun Sekunden:
+Bei einem rollenden Fenster kann sich das Kontingent zwischen zwei Zeilen
+geöffnet und durch Aktivität, die von hier aus nicht zu sehen ist, wieder
+erschöpft haben. Für das dritte Repo liegen die Messpunkte ohnehin 24 und 40
+Minuten daneben.
+
+Belegt ist damit eine Folge von Absagen über Repo-Grenzen hinweg — nicht, dass
+die Sperre zu einem Zeitpunkt in allen dreien stand, und nicht, dass ein
+Ausweichen in ein anderes Repo nichts brächte. Wer das eine aus dem anderen
+folgert, tut dasselbe wie jemand, der aus der Tabelle eine Dauer macht.
+(Dieser Absatz stand zuerst umgekehrt da und wurde durch einen Codex-Befund
+auf PR #108 zurückgenommen.)
 
 **Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
 mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
@@ -891,6 +922,14 @@ sie noch ab. Um 09:54:12 lief ein Aufruf auf demselben PR an, und um 09:57:00
 stand die Befundlos-Meldung zu Commit `42f7517` da — das erste Ergebnis seit
 06:35. Sie fiel also zwischen diesen beiden Zeitpunkten; wo genau, geben die
 Messpunkte nicht her, weil dazwischen niemand nachfragte.
+
+Um 09:56:36 lief ein Aufruf in `swiss-cultural-heritage-mcp`#88 an und
+lieferte um 09:59:48 zwei Befunde — dasselbe Konto, ein anderes Repo,
+zweieinhalb Minuten nach dem Lauf hier. **Am Endpunkt ändert das nichts:** Er
+ist durch die letzte Absage um 08:51 und den gelungenen Aufruf um 09:54:12
+eingegrenzt, und ein weiterer Erfolg danach kann dieses Intervall nicht
+verkleinern. Der Messpunkt belegt allein, dass kurz darauf auch im anderen
+Repo ein Lauf gelang.
 
 Eine Dauer folgt daraus nicht, und auch keine Untergrenze dafür. **Die Tabelle
 ist eine Punktmessung:** Jede Zeile belegt eine Absage in ihrem Augenblick,
@@ -1415,3 +1454,120 @@ wurde, trug damit kein Ergebnis — weder ein gutes noch ein schlechtes.
 Die Befunde sagen nichts darüber, ob ein weiterer gekommen wäre. Sie sagen
 etwas anderes: dass an diesem Gegenstand Runde um Runde etwas gefunden wurde
 und keine leer ausging.
+
+---
+
+## 12. Ein Befund an der Kopie deckt das Original auf (18.9.2026)
+
+Der Abschnitt davor endet mit dem Satz, der Review liefere den Anstoss und
+nicht die Vollständigkeit — nachgewiesen an zwei Mängeln, die erst beim
+Nachmessen auffielen. Dieser Abschnitt setzt ihn fort: Auch das Nachmessen war
+nicht vollständig, und der fehlende Teil kam aus einem anderen Repo zurück.
+
+### Der Gegenstand
+
+`tests/test_ruff_pin_doku.py` ist am Vormittag des 18.9. nach
+`swiss-cultural-heritage-mcp` portiert worden, wo `CLAUDE.md` dieselbe Drift
+trug: eine ältere Version im Fliesstext, eine neuere im Pin. Die Datei ging
+unverändert mit, bis auf den Modul-Docstring.
+
+**Die alte Zahl steht hier bewusst ohne ihren Paketnamen.** Der Test prüft
+jede versionierte Markdown-Datei, dieses Dokument eingeschlossen — wer einen
+Drift-Fall mit der vollen Angabe aufschreibt, macht die Suite rot. Beim
+Schreiben dieses Abschnitts ist genau das passiert, und die Meldung nannte
+Datei und Zeile. `CLAUDE.md` löst es seit dem Vormittag genauso: Die Ziffern
+stehen dort ohne das `ruff==` davor. Eine Nebenwirkung, kein Mangel — aber
+eine, die man einmal erlebt haben muss.
+
+Auf dem PR dort kam ein Lauf mit zwei Befunden. Der eine (P3) galt dem Muster
+`_IN_DOKU`:
+
+> The boundary check still matches a different valid distribution whose name
+> ends in `.ruff`: for example, `my.ruff==0.1.0` is parsed as a Ruff pin
+> because `.` is not excluded by the lookbehind.
+
+Nachgemessen, vor jeder Änderung:
+
+```
+my.ruff==0.1.0     -> ['0.1.0']
+foo.bar.ruff==2.0  -> ['2.0']
+```
+
+PEP 508 erlaubt den Punkt im Paketnamen, PEP 503 normalisiert `.`, `-` und `_`
+auf dasselbe Zeichen. Eine versionierte Markdown-Datei, die ein fremdes Paket
+`my.ruff` nennt, hätte die CI rot gemacht — ein Falsch-Rot an einer Stelle, an
+der die dokumentierte ruff-Version stimmt.
+
+Dass der Fix greift, belegt dieser Abschnitt selbst: Die beiden Zeilen oben
+stehen in einer Datei, die der Test liest, und lösen ihn nicht aus.
+
+### Warum das hier steht
+
+Der Befund galt **beiden** Repos. Die Kopie und das Original trugen denselben
+Lookbehind; gemessen wurde er in beiden, behoben in beiden.
+
+Bemerkenswert ist, wann er kam — und hier ist genau zu zählen, welche Läufe
+den Fehler überhaupt sehen konnten. Den Lookbehind gab es vorher nicht: Er
+entstand mit `d5814c6` als Behebung des Befunds aus Runde 3, der die Datei
+erstmals PEP 503/508 lesen liess. **Unter den vier Runden war er damit genau
+einmal Gegenstand eines Laufs** — Runde 4 prüfte diesen Head und fand etwas
+anderes (nur der Versions-Präfix wurde gefangen). Übersehen hat ihn also genau
+ein Lauf, und zwar vor der Portierung; der Lauf danach, von dem dieser
+Abschnitt handelt, fand ihn.
+
+Danach überstand er das Nachmessen, bei dem `xruff` und `my-ruff` auffielen —
+dieselbe Abgrenzung, dieselbe Zeile, der Punkt blieb liegen — und die
+Portierung. Aufgefallen ist er im nächsten Lauf, der die Datei sah, und der
+lief in einem anderen Repo.
+
+Diese Zählung hat zwei Runden gebraucht. Die erste Fassung sprach von «vier
+Läufen» und überzeichnete die Evidenz, auf der der Abschnitt beruht. Die
+Korrektur sagte «genau einmal» — und war ebenfalls falsch, weil der Lauf, von
+dem dieser Abschnitt handelt, denselben Fehler ja sah und fand. Beide Male kam
+der Einwand aus einem Codex-Lauf auf PR #108, der zweite an der Korrektur des
+ersten.
+
+Das ist der Fall «Zahlen, die eine Aufzählung wiederholen», an einem Text über
+Codex-Befunde — und daneben der Fall «Der teuerste Befund war die Korrektur des
+vorigen», den «Vier Runden an einem kurzen Test» für dieselbe Datei schon
+festhält. Eine Zahl beim Kürzen richtigzustellen, heisst nicht, sie richtig
+gestellt zu haben.
+
+**Der Mechanismus ist billig und hier zum ersten Mal beobachtet:** Wer eine
+Datei portiert und am Ziel einen Review anfordert, bekommt einen weiteren Blick
+auf das Original — ohne dort etwas anzufassen. Was der Lauf am Ziel findet, ist
+an der Quelle nachzumessen, bevor man es für ein Problem der Kopie hält.
+
+Was der Fall **nicht** hergibt: dass der fünfte Lauf ihn wegen der Portierung
+fand. Ein fünfter Lauf am Original hätte ihn vielleicht genauso gefunden —
+«Ein Ergebnis sagt etwas über den Lauf, nicht über den Text» gilt auch hier.
+Der Beleg dafür ist ein **anderer, früherer** Fall: die 42 Läufe vom 23.8. in
+Abschnitt 3, die über einen anderen Text gegenteilig urteilten. Diese Datei
+ist da nicht durchgegangen — es gab sie noch nicht, sie entstand erst am
+18.9. mit `b67f091`. Der Streubereich, den jener Fall misst, reicht aber
+mühelos aus, um den Unterschied zwischen «übersehen» und «gefunden» auch ohne
+die Portierung zu erklären. Belegt ist die Reihenfolge, nicht die Ursache.
+
+### Der zweite Befund (P2) traf nur die Kopie
+
+Er galt einer Zusicherung, die es am Original nicht gibt: Der Docstring-Test
+des Kulturerbe-Repos prüfte nur, dass jede angebundene Quelle in der
+Aufzählung steht, nicht die Rückrichtung. Eine entfernte Integration hätte
+ihre Zeile im Docstring behalten, und kein Test hätte es gesehen.
+
+Er steht hier, weil er die Grenze des Mechanismus zeigt: Ein Lauf an der Kopie
+prüft die Kopie. Dass er dabei auch das Original trifft, ist der Glücksfall
+und nicht die Regel — er hängt daran, wie viel von der Datei unverändert
+mitgegangen ist.
+
+### Was die Befunde kosteten
+
+Beide kamen **um 09:59:48**. Der PR wurde **um 10:01:54** gemergt, 126 Sekunden
+später, auf dem ungefixten Head. Die Behebung brauchte damit einen zweiten PR
+im Kulturerbe-Repo und einen dritten hier — dieselbe Klasse wie die Fälle in
+«Zu schnell mergen», nur mit der Besonderheit, dass ein Befund zwei Repos
+betraf und beide nachzuziehen waren.
+
+Die beiden Nachzügler wurden ihrerseits gemergt, während ihre Läufe noch
+liefen; beide endeten auf «Completed» ohne zugestelltes Ergebnis.
+
