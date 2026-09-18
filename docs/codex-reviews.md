@@ -94,16 +94,22 @@ Zustellweg festgehalten sind:
 **Die drei Zeilen mit «Umschalten auf ready» sagen etwas, das die übrigen
 nicht hergeben.** Das Umschalten ist gar kein Kommentar — es gibt keinen
 Thread, in dem geantwortet werden könnte. Alle drei Male landete die Meldung
-unter den Issue-Kommentaren. Damit liest sich die Beobachtung schärfer als «die
-Form folgt dem Auslöser»: **Der Issue-Kommentar ist der Normalfall, und die
-Thread-Antwort ist das, was ein Aufruf aus einem Thread heraus bekommt.**
+unter den Issue-Kommentaren.
 
-**Ob die späteren Messungen die erste stützen, ist offen.** Wenn ein Auslöser
-ohne Thread gar nichts anderes bekommen *kann*, beschreiben alle drei Zeilen
-dieselbe Mechanik und nicht drei unabhängige Beobachtungen — dann ist der Satz
-oben eine Beschreibung des Zustellwegs und keine Vermutung über ihn. Entschieden
-ist das nicht; alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie
-ein Befund oder eine Befundlos-Meldung.
+**Zwei Lesarten passen darauf, und diese Zeilen trennen sie nicht.** Entweder
+ist der Issue-Kommentar der Normalfall, und die Thread-Antwort ist das, was ein
+Aufruf aus einem Thread heraus bekommt. Oder er ist bloss die Ausweichroute,
+wenn kein Antwortziel da ist — dann sagt er über einen Normalfall gar nichts.
+**Ein Auslöser ohne Thread kann nichts anderes bekommen; genau deshalb kann er
+zwischen den beiden Lesarten nicht entscheiden.** Hier stand die erste Lesart
+eine Zeit lang allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
+darunter — abgeräumt hat das ein Rückgriff-Review auf dem gemergten #113.
+
+Was die drei Zeilen hergeben, ist deshalb schmaler: Sie belegen die Zustellung,
+die sie zeigen. Beschreiben sie dieselbe erzwungene Mechanik, sind es nicht drei
+unabhängige Beobachtungen, sondern eine dreimal. Entschieden ist das nicht;
+alle drei Male war zudem eine Kontingent-Absage der Inhalt, nie ein Befund oder
+eine Befundlos-Meldung.
 
 Die Auslösezeiten dieser drei Zeilen sind die einzigen in der Tabelle, die
 nicht aus der Primärquelle stammen: Das Umschalten trägt in der API keinen
