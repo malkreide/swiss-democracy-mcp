@@ -360,6 +360,16 @@ deinen. Vor dem Merge steht deshalb eine Wahl, und beide Zweige verlangen
 etwas: ihn abwarten, oder den offenen Ausgang ausdrücklich in Kauf nehmen und
 das hinschreiben. Stillschweigend darüber hinweggehen ist keiner von beiden.
 
+**Bei Regeldateien gibt es diese Wahl nicht.** Regeldatei ist alles, wonach
+später gearbeitet wird — in diesem Repo diese Datei, die Dateien unter `docs/`
+und `CONTRIBUTING*.md`; das Kriterium gilt, nicht die Aufzählung. Dort ist der
+ready-Lauf abzuwarten, ohne Ausnahme. Der Grund steht in
+[`docs/codex-reviews.md`](docs/codex-reviews.md): Auf #85 war genau dieser
+ready-Lauf derjenige, der den Befund brachte — 15 Sekunden nachdem ein anderer
+Lauf denselben Commit befundlos genannt hatte. Ein Fehler in einer Regel
+pflanzt sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum
+Einzelfall.
+
 **Auf die Zustellung nach dem Merge ist dabei nicht zu bauen.** Ein Lauf, der
 erst nach dem Schliessen endet, kann sein Ergebnis auch gar nicht mehr
 abliefern; dann steht auf dem PR nur «Completed», und ob er etwas fand, ist

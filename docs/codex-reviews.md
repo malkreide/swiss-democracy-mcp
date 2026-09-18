@@ -349,10 +349,13 @@ trug «endet, ohne Befund» in die Tabelle und schloss daraus, es sei «gut
 ausgegangen» — beides war ein erfundenes Urteil.
 
 Der Platz hier statt dort ist trotzdem gewollt: Die Belege gehören zu dem, was
-ein Aufruf hergibt, die Lehre zu den Wegen, den Prüfer zu verlieren. In 4.1
-überholte der Merge den Lauf, bevor er anlief; in 4.2 lag der Befund vor und
-wurde übergangen. Hier lief er nachweislich — der Status stand beim Merge auf
-«🔄 Running» — und sein Urteil ist bis heute nicht zu haben.
+ein Aufruf hergibt, die Lehre zu den Wegen, den Prüfer zu verlieren. 4.1 misst
+allein den Abstand zwischen Umschalten und Merge und nennt keinen
+Startzeitpunkt — ob dort ein Lauf schon lief, ist nicht belegt, und der
+Abschnitt sagt selbst, dass er das Warum nicht hergibt. In 4.2 lag der Befund
+vor und wurde übergangen. Hier ist der Start dagegen belegt: Der Status stand
+beim Merge auf «🔄 Running», und das Urteil dieses Laufs ist bis heute nicht zu
+haben.
 
 **Was den gemergten Stand trägt, ist der andere Lauf.** Derselbe Commit hatte
 40 Sekunden vor dem Merge eine zugestellte Befundlos-Meldung des manuellen
