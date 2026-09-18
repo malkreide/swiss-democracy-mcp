@@ -60,13 +60,29 @@ Beide Male war der Aufruf selbst eine Thread-Antwort. Ob die Form dem Auslöser
 folgt, ist damit nicht belegt, sondern naheliegend — und ob die Environment-
 Meldung ebenso kann, ist gar nicht beobachtet.
 
-**Zwei weitere Fälle am selben Tag, beide gleichsinnig.** Auf #108 kamen zwei
-Befundlos-Meldungen um 11:01:23 und 11:09:16 als Thread-Antworten, und beide
-Aufrufe waren selbst Thread-Antworten. Vier gleichsinnige Beobachtungen also —
-und immer noch kein Fall, der die Vermutung widerlegen könnte: Ein befundlos
-endender Lauf, der aus einem *Issue-Kommentar* angestossen wurde, ist nie
-daraufhin nachgesehen worden, wo seine Meldung landete. Alle vier stammen
-zudem aus diesem Repo.
+**Zwei weitere Fälle am selben Tag.** Auf #108 kamen zwei Befundlos-Meldungen
+um 11:01:23 und 11:09:16 als Thread-Antworten, und beide Aufrufe waren selbst
+Thread-Antworten.
+
+**Die Gegenprobe in der anderen Richtung ist längst gemessen** — in derselben
+Sitzung auf #98, die den ersten Fall lieferte: Um 06:40:59 ging dort ein
+*Issue-Kommentar* hinaus, und die Kontingent-Meldung kam zwölf Sekunden später
+als *Issue-Kommentar*. Damit ist die Vermutung an beiden Formen geprüft statt
+nur an einer:
+
+| Aufruf (UTC) | Form des Aufrufs | Form der Meldung |
+|---|---|---|
+| #98, 06:39:50 | Thread-Antwort | Thread-Antwort (06:40:01) |
+| #98, 06:40:59 | Issue-Kommentar | Issue-Kommentar (06:41:11) |
+| #103 | Thread-Antwort | Thread-Antwort (09:58:29) |
+| #108, 10:58:56 | Thread-Antwort | Thread-Antwort (11:01:23) |
+| #108, 11:06:13 | Thread-Antwort | Thread-Antwort (11:09:16) |
+
+Belegt ist sie damit immer noch nicht: Die Zeilen stammen alle aus diesem Repo,
+und für die Environment-Meldung ist die Form gar nicht beobachtet. Zwei weitere
+Aufrufe jener Sitzung auf #98 (06:44:08 und 07:32:49, beide Issue-Kommentare)
+bekamen ebenfalls die Kontingent-Meldung — wo sie landete, ist nicht
+festgehalten. **«Naheliegend» ist nach der Gegenprobe trotzdem untertrieben.**
 
 Für die Praxis ändert das nichts — die dritte Abfrage ist ohnehin zu fahren.
 Es verschiebt nur die Erwartung: Wer aus einem Thread heraus anfordert, sucht
@@ -145,12 +161,22 @@ Vorbehalte:
 
   Zur Sackgasse von #79 und #87 wurde es trotzdem nicht — und der Unterschied
   liegt nicht am Commit: Auf #87 sassen beide Läufe ebenfalls auf einem und
-  demselben, und dort blieb die Zuordnung offen. Er liegt daran, dass die
-  beiden Läufe hier **nicht überlappten**. Der manuelle stand rund 24 Sekunden vor dem Start des
-  ready-Laufs auf «Completed», und jeder stellte sein eigenes Ergebnis zu: eine
-  Befundlos-Meldung um 11:01:23, ein Review-Objekt um 11:04:52. Was die
-  Zuordnung in jenen Fällen unmöglich machte, war die Gleichzeitigkeit, nicht
-  der geteilte Commit.
+  demselben, und dort blieb die Zuordnung offen. Er liegt daran, dass hier
+  **jeder Lauf sein eigenes Ergebnis zustellte**: eine Befundlos-Meldung um
+  11:01:23, ein Review-Objekt um 11:04:52. Für den manuellen Lauf auf #87 ist
+  überhaupt kein Ausgang festgehalten, weder ein Ergebnis noch ein
+  «Completed» — deshalb liess sich der dortige Befund keinem der beiden
+  zuordnen.
+
+  **Was daraus nicht folgt: dass die beiden Läufe auf #87 gleichzeitig
+  liefen.** Dass der manuelle beim Start des ready-Laufs noch lief, ist nicht
+  belegt; er kann ebenso geendet haben, ohne dass seine «Completed»-Fassung
+  konserviert wurde — die Zeile wird überschrieben, und «Completed ohne
+  zugestelltes Ergebnis» ist in dieser Aufzählung für mehrere PRs belegt.
+  Belegt ist dort allein, dass sich eine Trennung nicht zeigen lässt.
+
+  Der Fall führt damit nur vor, was der Abschnitt ohnehin schliesst: Die
+  Zuordnung hängt an den Ergebnissen, nicht an der Statuszeile.
 
   Wer wissen muss, was geprüft wurde, liest deshalb das Ergebnis, nicht die
   Statuszeile.
@@ -248,13 +274,20 @@ Derselbe Ausgang: Der Befund kam aus dem Lauf, den niemand mit Absicht
 angestossen hat. Mit dem Fall auf #85 unter «Zum Verfahren für Doku-PRs» sind
 das drei Paare, in denen ein Lauf einen Commit befundlos nannte und ein
 zweiter auf **demselben** Commit einen zutreffenden Befund lieferte. Die
-Abstände — 15 Sekunden, 287 und 209 — geben dabei keine Spanne her, sondern
-zeigen nur, dass der Abstand nichts erklärt.
+Abstände waren 15 Sekunden, 287 und 209 — drei Messwerte, mehr nicht. Ob der
+Abstand etwas ausmacht, ist daran nicht zu prüfen: Alle drei gingen gleich
+aus, ein Gegenfall fehlt.
 
-**Neu ist der dritte Fall in einem Punkt: Er kostete nichts.** Am 29.8. stand
-der Defekt in `main`, als der ready-Lauf ihn fand; auf #85 ebenso. Am 18.9.
-war der Lauf abgewartet worden, die Behebung ging in denselben PR, der
-Folge-PR entfiel.
+**Neu ist der dritte Fall in einem Punkt: Auf den Befund folgte kein Merge.**
+In den beiden früheren lag er rechtzeitig vor und wurde überfahren — auf #59
+um 07:04:53, 81 Sekunden vor dem Merge; auf #85 um 18:42:49, 15 Sekunden
+davor. Beide brauchten einen Folge-PR. Am 18.9. war der Lauf abgewartet, die
+Behebung ging in denselben PR.
+
+Der Unterschied liegt damit nicht am Prüfer, sondern am Umgang mit seinem
+Ergebnis. Es ist derselbe Befund wie unter «Der Review ist da, der Merge geht
+trotzdem durch», von der anderen Seite gelesen: Dort kostet die Eile den
+Befund, hier hat das Abwarten ihn eingebracht.
 
 ---
 
@@ -1268,11 +1301,13 @@ den Lauf abzuwarten.** Auf #85 war genau dieser ready-Lauf derjenige, der den
 Befund brachte — 15 Sekunden nachdem ein anderer Lauf denselben Commit
 befundlos genannt hatte.
 
-**Am 18.9. ist er zum ersten Mal befolgt und dabei gemessen worden.** Auf
+**Am 18.9. ist er befolgt worden, und der Durchgang ist festgehalten.** Auf
 #108, ebenfalls einer Regeldatei, nannte ein manueller Lauf `e3141f6` um
 11:01:23 befundlos. Statt zu mergen, wurde umgeschaltet und der ausgelöste
 Lauf abgewartet; er fand um 11:04:52 einen zutreffenden P2 auf demselben
-Commit. Die Behebung ging in denselben PR.
+Commit. Die Behebung ging in denselben PR. Ein früherer Durchgang, in dem der
+Handgriff befolgt wurde, ist hier nicht verzeichnet — ob es einen gab, sagt
+diese Datei nicht.
 
 Was der Fall **nicht** hergibt: dass der ready-Lauf gründlicher sei. Dreimal
 war er der findende, und dreimal ist «Ein Ergebnis sagt etwas über den Lauf,
