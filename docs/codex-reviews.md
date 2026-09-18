@@ -984,9 +984,10 @@ besser einmal nach.
 beiden Richtungen gelten nur, solange die Thread-Antwort die einzige
 einschlägige Bot-Aktivität am PR ist. Trägt derselbe PR schon ein
 Review-Objekt und bekommt später eine Thread-Meldung, findet ihn
-`reviewed-by:` weiterhin; verloren ist dann nicht der PR, sondern der
-Nachweis, dass der spätere Lauf scheiterte. Die Sammlung führt PRs mit
-gelungenen *und* gescheiterten Läufen — der Fall ist nicht theoretisch.
+`reviewed-by:` weiterhin — und damit ist nichts verloren: Wer den gefundenen
+PR danach mit allen drei Abfragen ansieht, sieht die Thread-Meldung. Die
+Suchen sind Vorfilter, nicht die Erhebung. Gar nichts zu sehen bekommt nur,
+wer einen PR vor sich hat, den **beide** Vorfilter nicht zurückgeben.
 
 Eine Fassung, die beides sauber trennt, steht hier nicht. Der Befund kam am
 18.9. vom Rückgriff auf dem schon gemergten #104, und die Korrekturschleife
