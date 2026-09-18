@@ -348,23 +348,30 @@ Die Fenster sind fast gleich lang; verschieden ist, was die Behebung brauchte.
 Befunde gegen zwei, und beim zweiten Mal war die Stelle schon bearbeitet),
 belegt ist es nicht.
 
-Was die zwei Zeilen trotzdem hergeben: **Ob eine Behebung ins Fenster passt,
-entscheidet sich am Aufwand des Nachprüfens, nicht am Willen.** Zwei Minuten
-reichten einmal und einmal nicht, bei Befunden an derselben Datei. Und welcher
-Fall vorliegt, weiss man erst, wenn man nachgeprüft hat — dann ist die Zeit
-schon verbraucht. Deshalb ist «schnell reagieren» kein Ersatz für «das
-Ergebnis abwarten».
+Was die zwei Zeilen trotzdem hergeben: **Bei fast gleich langem Fenster war
+die Behebung einmal rechtzeitig fertig und einmal nicht** — 61 gegen 222
+Sekunden, also mehr als das Dreifache. Der Abstand zwischen Befund und Merge
+sagt für sich genommen nichts darüber, ob eine Behebung hineinpasst; das hängt
+daran, wie lange sie dauert, und diese Dauer schwankte hier stark. Woran sie
+hing, ist nicht gemessen.
+
+Für die Praxis folgt daraus genau eines, und es ist negativ: **Auf «schnell
+reagieren» lässt sich nicht bauen, weil die benötigte Zeit vorher nicht
+bekannt ist.** Ein Ersatz für «das Ergebnis abwarten» ist es damit nicht.
 
 Was sie **nicht** hergeben: eine Dauer des Fensters. Zwei Werte sind keine
 Spanne, und beide hängen daran, wann jemand auf «Merge» drückt — das ist keine
 Eigenschaft des Prüfers, sondern eine des Vorgehens.
 
-**Ein Handgriff fällt dabei ab.** Meldet ein Push auf einen Branch, den es
-längst gibt, `* [new branch]`, ist der Branch zwischendurch gelöscht worden —
-in aller Regel, weil sein PR gemergt wurde. Auf #110 war das die erste
-sichtbare Spur davon, dass die Behebung ins Leere ging; sie hing danach an
-einem Branch ohne offenen PR. Wer die Zeile überliest, hält den Fix für
-abgeliefert.
+**Eine Beobachtung fällt dabei ab, ohne Empfehlung.** Meldet ein Push auf einen
+Branch, den es vorher gab, `* [new branch]`, dann fehlte der Ziel-Ref im
+Augenblick des Pushes — er ist zwischendurch gelöscht worden. Mehr sagt die
+Zeile nicht: Ein Merge mit automatischer Branch-Löschung erzeugt sie, eine
+Löschung von Hand ebenso, andere Automatisierung auch. Auf #110 war sie die
+erste Spur davon, dass der PR längst zu war und die Behebung an einem Branch
+ohne offenen PR hing — bemerkt wurde es aber erst, als der PR-Zustand
+abgefragt wurde. **Wer aus der Zeile auf einen Merge schliesst, rät; wer sie
+zum Anlass nimmt nachzusehen, verliert nichts.**
 
 Der Unterschied zu 4.1 ist der Punkt: Dort ging der Prüfer verloren, hier hat
 er geliefert und der Merge ging trotzdem durch. Deshalb steht die Checkliste
