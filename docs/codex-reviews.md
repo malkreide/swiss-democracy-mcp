@@ -54,9 +54,11 @@ von «🔄 Running» auf «✅ Completed» — kein zweiter Kommentar, sondern e
 `issue_comment.edited`. Wer nur auf neue Kommentare achtet, sieht das Ende des
 Laufs nicht.
 
-Seine Tabelle nennt als Einzige **beides**: den geprüften Commit *und* den
-Auslöser («Manual request», «Draft marked ready»). Die Befundlos-Meldung und
-das Review-Objekt nennen nur den Commit.
+Seine Tabelle nennt als Einzige **beides**: einen Commit *und* den Auslöser
+(«Manual request», «Draft marked ready»). Die Befundlos-Meldung und das
+Review-Objekt nennen nur den Commit — dafür den, den der Lauf geprüft hat. Der
+Wert in der Statuszeile muss das nicht sein; der Vorbehalt «Der Commit in der
+Statuszeile ist nicht unbedingt der geprüfte» hält den Fall fest.
 
 Vorbehalte:
 
