@@ -77,9 +77,20 @@ Vorbehalte:
   unterscheiden. Wer aus «Completed» auf «nichts gefunden» schliesst, erfindet
   ein Urteil.
 - **Der Commit in der Statuszeile ist nicht unbedingt der geprüfte.** Am 18.9.
-  auf dem gemergten #93 nannte die Zeile `639fce5`, den Branch-Stand; das
-  Review-Objekt desselben Laufs trägt `7755c900`, den Merge-Commit. Wer wissen
-  muss, was geprüft wurde, liest das Ergebnis, nicht die Statuszeile.
+  auf dem gemergten #93 nannte die Zeile `639fce5`, den Branch-Stand, während
+  das Review-Objekt `7755c900` trägt, den Merge-Commit.
+
+  Dass beide zum **selben** Lauf gehören, hängt an zwei Angaben: Die Zeile
+  trug zu diesem Zeitpunkt «Manual request» und «Completed 05:28:49», der
+  ready-Lauf davor dagegen «Draft marked ready» und «Completed 05:19:50»; das
+  Review-Objekt trägt 05:28:46, drei Sekunden vor der Zeile. Ohne den
+  Auslöser-Namen wäre die Zuordnung nicht zu halten — die Zeile wird an Ort
+  und Stelle überschrieben und führt immer nur den letzten Lauf. Ein
+  Codex-Review auf #94 hat den Vergleich denn auch zunächst zwei
+  verschiedenen Läufen zugeordnet.
+
+  Wer wissen muss, was geprüft wurde, liest deshalb das Ergebnis, nicht die
+  Statuszeile.
 
 ### `comments: 1` hat fünf Bedeutungen
 
