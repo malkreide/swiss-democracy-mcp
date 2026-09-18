@@ -621,13 +621,21 @@ ablesbar sein, ob geprüft wurde** — verlassen kann man sich weder darauf noch
 auf das Gegenteil. Wer es wissen muss, sieht nach, und zwar mit allen drei
 Abfragen: `get_reviews` für das Objekt, `get_comments` für die
 Befundlos-Meldung, `get_review_comments` für eine Ausfallmeldung, die als
-Antwort in einem Review-Thread steht. Die dritte gehört hierher, nicht nur der
-Vollständigkeit halber: Wer sie weglässt, sieht eine stehende Kontingent-Sperre
-nicht und setzt den Rückgriff ab, als bliebe das fehlende Ergebnis unerklärt —
-er läuft dann in dieselbe Sperre.
+Antwort in einem Review-Thread steht. Die dritte gehört hierher, weil ohne sie
+ein Teil der Antwort fehlt: Am 18.9. stand die Kontingent-Meldung auf #98 nur
+dort, und wer bloss die beiden anderen fuhr, sah das fehlende Ergebnis als
+unerklärt an.
 
-Steht wirklich nichts da, ist der Rückgriff ein neuer Aufruf von Hand — er
-läuft auf dem gemergten PR an, prüft dann aber den Merge-Commit.
+**Eine gefundene Ausfallmeldung erklärt aber nur die Vergangenheit.** Sie sagt,
+warum *damals* nichts kam, und nichts darüber, ob die Sperre jetzt noch steht —
+am 18.9. war sie um 08:42 belegt und um 09:45 weg. Wer aus einer älteren
+Meldung schliesst, ein Aufruf lohne sich nicht, lässt den Merge-Commit
+ungeprüft aus einem Grund, den er nicht gemessen hat. Gemessen wird der
+aktuelle Zustand nur durch einen Aufruf.
+
+Der Rückgriff ist deshalb in beiden Fällen derselbe: ein neuer Aufruf von Hand.
+Er läuft auf dem gemergten PR an und prüft dann den Merge-Commit. Die drei
+Abfragen sagen, was vorliegt — sie ersetzen den Versuch nicht.
 
 ### Der Vorlauf trennt «angelaufen» nicht von «abgeblockt»
 
