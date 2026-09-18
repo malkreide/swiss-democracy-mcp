@@ -101,23 +101,30 @@ ist der Issue-Kommentar der Normalfall, und die Thread-Antwort ist das, was ein
 Aufruf aus einem Thread heraus bekommt. Oder er ist bloss die Ausweichroute,
 wenn kein Antwortziel da ist — dann sagt er über einen Normalfall gar nichts.
 
-**Ausgeschlossen ist allein die Thread-Antwort**, und das aus einem Grund, der
-mit dem Zustellweg nichts zu tun hat: Sie braucht einen auslösenden Thread, und
-beim Umschalten gibt es keinen. Welche der übrigen Formen ein ready-Lauf
-annimmt, ist damit **nicht** bestimmt — ein Befund stünde im Review-Objekt, und
-«gar nichts» ist ebenfalls ein Ausgang; die Formen zählt die Überschrift dieses
-Abschnitts auf. Beobachtet sind hier drei Kontingent-Absagen, und alle drei
+**Ausgeschlossen ist allein eine Antwort im auslösenden Thread** — sie braucht
+einen solchen, und beim Umschalten gibt es keinen. Weiter reicht der Ausschluss
+nicht: «Thread-Antwort» heisst in der Tabelle *irgendein* Review-Thread, und ob
+eine Meldung sich an einen anderen, bereits offenen hängen könnte, ist nicht
+gemessen. Auch welche der übrigen Formen ein ready-Lauf annimmt, ist **nicht**
+bestimmt — ein Befund stünde im Review-Objekt, und «gar nichts» ist ebenfalls
+ein Ausgang; die Formen zählt die Überschrift dieses Abschnitts auf. Beobachtet sind hier drei Kontingent-Absagen, und alle drei
 kamen als Issue-Kommentar. Mehr trägt die Spalte nicht.
 
-**Diese Stelle hat zwei Fassungen verloren, beide an derselben Klasse.** Zuerst
+**Diese Stelle hat mehrere Fassungen an derselben Klasse verloren.** Zuerst
 stand die erste Lesart allein und fett gesetzt, mit dem Vorbehalt erst im Absatz
 darunter; das räumte ein Rückgriff-Review auf dem gemergten #113 ab. Die
 Korrektur ersetzte sie durch «ein Auslöser ohne Thread kann nichts anderes
 bekommen» — eine neue kategorische Aussage, die schon die Überschrift dieses
-Abschnitts widerlegt. Auch sie fiel erst im Review, auf #122. **Beim Korrigieren
-sitzt der Blick auf dem, was weg soll**; was an seine Stelle tritt, wird nicht
-noch einmal so geprüft wie der Satz, den es ersetzt. Wie oft das schiefgeht, ist
-nicht gemessen — hier ging es einmal schief, und zwar sofort.
+Abschnitts widerlegt; sie fiel im nächsten Review, auf #122. Deren Behebung
+schloss dann «die Thread-Antwort» schlechthin aus statt nur die Antwort im
+auslösenden Thread und fiel in der Runde darauf.
+
+**Das ist der Ablauf, und mehr ist es nicht.** Jede Fassung war enger als die
+vorige und jede noch zu weit; gefunden hat es jedes Mal erst der nächste Lauf.
+Woran es lag, steht in keinem Commit: Was beim Korrigieren geprüft wurde und
+was nicht, ist nicht festgehalten, und wie oft ein Ersatz seinerseits
+danebenfällt, ist nicht gemessen. Eine Erklärung stand hier schon und ist genau daran
+gescheitert.
 
 Beschreiben die drei Zeilen dieselbe erzwungene Mechanik, sind es nicht drei
 unabhängige Beobachtungen, sondern eine dreimal. Entschieden ist das nicht;
@@ -422,7 +429,7 @@ ein Befund vor dem Merge — und ging anders aus:
 nahm für #110 das **Autoren**datum 12:58:00 und rechnete daraus 222 statt 369
 Sekunden — der Fix-Commit `f7eb98e` war wegen eines Rebase erst um 13:00:27
 committet. Das Autorendatum sagt, wann die Änderung geschrieben wurde; im Repo
-liegt sie zu dem Zeitpunkt noch nicht. Wo eine Spalte «committet» heißt, gehört
+liegt sie zu dem Zeitpunkt noch nicht. Wo eine Spalte «committet» heisst, gehört
 das Committer-Datum hinein. Für #111 fallen beide zusammen (`ec3c4bf`, beide
 13:08:20), die Zeile bleibt also, wie sie war — gegengeprüft, nicht
 angenommen.
