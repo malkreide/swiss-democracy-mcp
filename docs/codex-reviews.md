@@ -1340,10 +1340,32 @@ Primärquelle ist also wirklich naheliegend, auch wenn die Regel danebensteht.
 Meldung kam erst um 14:01:38 — dort weichen zwei *Primärquellen* derselben
 Sache um eine Sekunde ab.
 
-Wie oft das vorkommt, ist an jedem Merge dieser Episode gemessen. Welche das
-sind, kommt aus `git log origin/main --merges` im Fenster der Sperre und nicht
-aus einer Aufzählung von Hand — eine frühere Fassung dieser Tabelle liess
-genau deshalb zwei aus:
+Wie oft das vorkommt, ist an jedem **PR-Merge** dieser Episode gemessen.
+Welche das sind, kommt nicht aus einer Aufzählung von Hand — eine frühere
+Fassung dieser Tabelle liess genau deshalb zwei aus —, sondern aus dem Repo:
+
+```
+TZ=UTC git log origin/main --merges \
+  --date=format-local:'%Y-%m-%d %H:%M:%S' --format='%h|%cd|%s' \
+  | grep 'Merge pull request'
+```
+
+Drei Bestandteile davon sind nicht Kosmetik; an allen dreien ist diese Tabelle
+schon einmal gescheitert:
+
+- **`TZ=UTC`.** Die Commits tragen verschiedene Offsets — die PR-Merges
+  +02:00, der Branch-Merge `4796052` +00:00. Wer die Uhrzeit als Zeichenkette
+  vergleicht, ohne zu normalisieren, lässt genau den still fallen, der anders
+  gestimmt ist.
+- **Das Datum in der Bedingung.** Ein Zeitfenster ohne Datum greift jeden Tag
+  der Historie ab; hier kamen drei Merges dazu, die Wochen zurückliegen.
+- **Der Filter auf `Merge pull request`.** Ohne ihn liefert die Abfrage mehr
+  als die Tabelle — siehe den Absatz gleich unten.
+
+**Ein Merge im Fenster ist keiner:** `4796052` um 14:16:23, ein `origin/main`
+in einen Arbeitszweig. Er trägt kein `merged_at` und ist deshalb nicht
+vergleichbar. Er fehlt in der Tabelle mit Grund, nicht aus Versehen — was sich
+von der früheren Fassung nicht sagen liess.
 
 | PR | `merged_at` | Committer | Abweichung |
 |---|---|---|---|
