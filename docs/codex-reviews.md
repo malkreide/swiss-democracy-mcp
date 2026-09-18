@@ -980,6 +980,23 @@ fehlt ein PR, der geprüft *ist* — und er sieht in einer Erhebung aus wie eine
 den niemand angesehen hat. Wer sich auf den Vorfilter verlässt, prüft das
 besser einmal nach.
 
+**Hier bleibt etwas offen, und es steht hier, statt behoben zu sein.** Die
+beiden Richtungen gelten nur, solange die Thread-Antwort die einzige
+einschlägige Bot-Aktivität am PR ist. Trägt derselbe PR schon ein
+Review-Objekt und bekommt später eine Thread-Meldung, findet ihn
+`reviewed-by:` weiterhin; verloren ist dann nicht der PR, sondern der
+Nachweis, dass der spätere Lauf scheiterte. Die Sammlung führt PRs mit
+gelungenen *und* gescheiterten Läufen — der Fall ist nicht theoretisch.
+
+Eine Fassung, die beides sauber trennt, steht hier nicht. Der Befund kam am
+18.9. vom Rückgriff auf dem schon gemergten #104, und die Korrekturschleife
+war da bei einer Reihe von Befunden derselben Klasse angelangt: eine Regel
+geschärft und den zusammenfassenden Satz daneben eine Stufe zu breit gefasst.
+Abgebrochen wurde sie nicht, weil der Stand sauber wäre, sondern mit einem
+Menschen — so, wie «Zum Verfahren für Doku-PRs» in `CLAUDE.md` es für diese
+Lage verlangt. Dieser Absatz ist das, was dort «schreibt hin, was offen
+blieb» heisst.
+
 ```
 search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
 ```
