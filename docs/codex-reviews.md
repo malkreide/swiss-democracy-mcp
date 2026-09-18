@@ -67,11 +67,13 @@ Vorbehalte:
   der ready-Lauf um 07:19:51 den manuellen von 07:18:38; dessen Ausgang steht
   seither nirgends mehr. Wer zwei Läufe auseinanderhalten will, braucht ihre
   Ergebnis-Kommentare — die bleiben einzeln stehen.
-- **«✅ Completed» belegt kein zugestelltes Ergebnis.** Auf #60, #79, #88, #89
-  und #92 stand die Zeile auf «Completed», ohne dass ein Review-Objekt oder
-  eine Befundlos-Meldung ankam. Ob diese Läufe nichts fanden oder ihr Ergebnis
-  nach dem Merge nicht mehr zugestellt wurde, ist von aussen nicht zu
-  unterscheiden; die Fälle stehen unter «Der manuelle Aufruf: was belegt ist».
+- **«✅ Completed» belegt kein zugestelltes Ergebnis.** Auf #60, #79, #88 und
+  #89 stand die Zeile auf «Completed», ohne dass ein Review-Objekt oder eine
+  Befundlos-Meldung ankam; sie stehen unter «Der manuelle Aufruf: was belegt
+  ist». #92 kommt hinzu und steht unter «Der Lauf läuft noch, der Merge geht
+  durch» — dort, weil es dabei um den Merge-Zeitpunkt geht und nicht darum,
+  was ein Aufruf hergibt. Ob diese Läufe nichts fanden oder ihr Ergebnis nach
+  dem Merge nicht mehr zugestellt wurde, ist von aussen nicht zu unterscheiden.
   Wer aus «Completed» auf «nichts gefunden» schliesst, erfindet ein Urteil.
 
 ### `comments: 1` hat fünf Bedeutungen
