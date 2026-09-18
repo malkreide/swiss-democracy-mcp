@@ -42,20 +42,43 @@ _GATE = _ROOT / "scripts" / "check_ruff_pin.py"
 #
 # Eine Versionsnummer endet auf einer alphanumerischen Stelle; ein Punkt am
 # Ende gehoert zum Satz, nicht zur Nummer. Das Backtracking loest das.
-_IN_DOKU = re.compile(r"ruff==([0-9][0-9a-zA-Z.]*[0-9a-zA-Z]|[0-9])")
+#
+# Der Name wird so geschrieben, wie pip ihn akzeptiert, nicht so, wie er hier
+# zufaellig steht: Gross-/Kleinschreibung ist bei Paketnamen bedeutungslos
+# (PEP 503), und PEP 508 erlaubt Leerraum um `==`. `Ruff==0.16.3` und
+# `ruff == 0.16.3` sind gueltige Schreibweisen derselben Anforderung — die
+# vorige Fassung fand sie nicht und liess eine Drift still durch. Das war die
+# gefaehrlichere Richtung: Ein Falsch-Rot faellt auf, ein Falsch-Gruen nicht.
+#
+# Der Lookbehind grenzt den Namen ab, sonst liest `xruff==0.16.3` oder
+# `my-ruff==0.16.3` als ruff und macht ein fremdes Paket zur Drift.
+_IN_DOKU = re.compile(
+    r"(?<![\w-])ruff\s*==\s*([0-9][0-9a-zA-Z.]*[0-9a-zA-Z]|[0-9])",
+    re.IGNORECASE,
+)
 
 # Schreibweisen, in denen eine Version in Markdown vorkommt, je mit dem Wert,
 # den das Muster herauslesen muss. Festgehalten, weil die erste Fassung an
 # den beiden ersten Zeilen scheiterte.
 _SCHREIBWEISEN = [
-    ("Install ruff==0.16.5.", "0.16.5"),
-    ("siehe [ruff==0.16.5](https://example.org)", "0.16.5"),
-    ("`ruff==0.16.5`", "0.16.5"),
-    ('    "ruff==0.16.5",', "0.16.5"),
-    ("ruff==0.16.5, dann weiter", "0.16.5"),
-    ("ruff==0.16.5; danach", "0.16.5"),
-    ("ruff==0.16.3 (veraltet)", "0.16.3"),
-    ("ruff==0.16.5rc1 als Vorabversion", "0.16.5rc1"),
+    ("Install ruff==0.16.5.", ["0.16.5"]),
+    ("siehe [ruff==0.16.5](https://example.org)", ["0.16.5"]),
+    ("`ruff==0.16.5`", ["0.16.5"]),
+    ('    "ruff==0.16.5",', ["0.16.5"]),
+    ("ruff==0.16.5, dann weiter", ["0.16.5"]),
+    ("ruff==0.16.5; danach", ["0.16.5"]),
+    ("ruff==0.16.3 (veraltet)", ["0.16.3"]),
+    ("ruff==0.16.5rc1 als Vorabversion", ["0.16.5rc1"]),
+    # Gueltige Schreibweisen derselben Anforderung (PEP 503/508).
+    ("Ruff==0.16.3", ["0.16.3"]),
+    ("RUFF==0.16.3", ["0.16.3"]),
+    ("ruff == 0.16.3", ["0.16.3"]),
+    ("Ruff  ==  0.16.3", ["0.16.3"]),
+    # Fremde Pakete. Ohne die Abgrenzung faende das Muster hier eine Drift,
+    # die es gar nicht gibt.
+    ("xruff==0.16.3", []),
+    ("my-ruff==0.16.3", []),
+    ("ruff-lsp==0.1.0", []),
 ]
 
 
@@ -108,10 +131,10 @@ def test_gate_liefert_den_pin() -> None:
     assert _IN_DOKU.findall(f"ruff=={pin}") == [pin]
 
 
-def test_muster_liest_die_version_ohne_satzzeichen() -> None:
-    """Der Wert endet an der Nummer, nicht am naechsten Markdown-Zeichen."""
+def test_muster_trifft_die_gueltigen_schreibweisen() -> None:
+    """Jede gueltige Schreibweise trifft, jedes fremde Paket nicht."""
     for zeile, erwartet in _SCHREIBWEISEN:
-        assert _IN_DOKU.findall(zeile) == [erwartet], zeile
+        assert _IN_DOKU.findall(zeile) == erwartet, zeile
 
 
 def test_markdown_wird_wirklich_gelesen() -> None:
