@@ -180,9 +180,22 @@ other era is refused.
 Both revisions are pinned in
 [`tests/test_protocol_version.py`](tests/test_protocol_version.py) and asserted
 against the installed SDK, so a Dependabot bump of `mcp` cannot move either one
-silently. This server builds no ASGI app to send an `initialize` through, so
-the gate asserts the SDK constants rather than a measured response — the
-weaker form, named rather than left unsaid.
+silently. Next to them,
+[`tests/test_server_identity.py`](tests/test_server_identity.py) sends real
+requests through the assembled ASGI app: a per-request envelope is answered
+with the tool list, and an `initialize` that offers the modern revision still
+gets the handshake ceiling back. The constants say which revisions the SDK
+knows; the measurement says which ones this server serves.
+
+**Server identity.** Under the handshake era `serverInfo` is named once, in the
+`initialize` reply. The modern era has no handshake and stamps the identity
+onto **every** response instead, as
+`_meta["io.modelcontextprotocol/serverInfo"]`. `Implementation.version` is a
+required schema field that the SDK pre-fills with `""` when the constructor
+omits it, so an unset version is not a gap but a value on the wire — and one
+that a green test suite will not show you. This server passes its distribution
+version explicitly; `test_server_identity.py` measures it on both wires, with a
+bare `MCPServer` as the negative control.
 
 Note that the SDK's `LATEST_PROTOCOL_VERSION` is an alias for the **modern**
 era, not for the handshake era — pinning against it alone would leave the era

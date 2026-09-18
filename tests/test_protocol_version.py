@@ -28,10 +28,20 @@ Nachgemessen statt aus Konstantennamen geschlossen: die Aushandlung steht in
 
 — sie haengt an keinem Transport, gilt also fuer stdio ebenso wie fuer HTTP.
 
-Ohne gemessenen Teil: dieses Repo baut keine ASGI-App, durch die sich ein
-`initialize` schicken liesse. Die Zusicherungen unten haengen deshalb an den
-SDK-Konstanten. Das ist die schwaechere Form, und sie steht hier benannt statt
-unausgesprochen.
+Die Zusicherungen unten haengen an den SDK-Konstanten — die schwaechere Form,
+hier benannt statt unausgesprochen. Eine fruehere Fassung begruendete das
+damit, dieses Repo baue keine ASGI-App, durch die sich ein `initialize`
+schicken liesse. Das stimmte nicht: `_build_http_app` gibt es, und
+`test_cors.py` schickt seit jeher echte Anfragen hindurch.
+
+Der gemessene Teil steht seither in `tests/test_server_identity.py`. Dort
+laeuft ein `initialize` durch den zusammengebauten Stack und belegt, dass der
+Server die Handshake-Obergrenze auch dann antwortet, wenn ein Client die
+moderne Revision anbietet — und dass eine Anfrage im Pro-Request-Envelope
+wirklich bedient wird. Die Konstanten hier bleiben daneben stehen: sie sagen,
+WELCHE Revisionen das SDK kennt, die Messung sagt, welche dieser Server
+ausliefert. Faellt nur eine der beiden Seiten, ist das die Auskunft, wo das
+Problem sitzt.
 """
 
 from __future__ import annotations
