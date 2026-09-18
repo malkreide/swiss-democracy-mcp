@@ -285,10 +285,12 @@ Regeln anzweifelt oder fortschreiben will, liest dort nach.
 
 ### Prüfen, ob geprüft wurde
 
-**Zwei Abfragen, immer beide:** `get_reviews` für das Review-**Objekt**
-(«💡 Codex Review» — nur bei Befund), `get_comments` für alles andere. Wer nur
-eine nimmt, übersieht die halbe Wahrheit; genau so ist die Kontingent-Meldung
-zuerst durchgerutscht.
+**Drei Abfragen, immer alle:** `get_reviews` für das Review-**Objekt**
+(«💡 Codex Review» — nur bei Befund), `get_comments` für die Issue-Kommentare,
+`get_review_comments` für die Antworten in Review-Threads. Wer eine weglässt,
+übersieht einen Teil; genau so ist die Kontingent-Meldung zuerst
+durchgerutscht — und am 18.9. stand sie auf #98 zuerst als Thread-Antwort da,
+also in der dritten Abfrage und in keiner der beiden anderen.
 
 **Belegt ist eine Prüfung durch ein Review-Objekt *oder* eine
 Befundlos-Meldung** («Codex Review: Didn't find any major issues.», Schlusssatz
@@ -354,8 +356,21 @@ Die 👀 auf dem auslösenden Kommentar ist die Empfangsbestätigung, nicht das
 Ergebnis. Wer zu früh nachsieht, hält einen laufenden Review für einen
 ausgefallenen.
 
-**Fussangel:** Wer `@codex review` in einem Kommentar bloss *zitiert*, löst
-damit vermutlich einen neuen Lauf aus.
+**Fussangel:** Wer die Auslöser-Zeichenfolge in einem Kommentar bloss
+*zitiert*, löst damit vermutlich einen Versuch aus — Backticks schützen nicht.
+Zwei Fälle, zuletzt am 18.9. auf #98, wo kein anderer Kandidat im Text stand.
+«Vermutlich» bleibt es, weil die Gegenprobe fehlt: Ein Kommentar ganz ohne die
+Zeichenfolge wurde nie gemessen. Für die Praxis genügt es trotzdem — die
+Zeichenfolge gehört nicht in einen Kommentar, den du nicht als Aufruf meinst.
+
+**Der Aufruf wirkt auch aus einer Antwort in einem Review-Thread.** Praktisch
+beim Beantworten eines Befundes: Anfordern und Antworten gehen in einem. Die
+Kehrseite steht eine Zeile höher.
+
+**Den Text lesen, nicht die Uhr.** Die Antwort auf einen Aufruf ist entweder
+ein angelaufener Lauf oder die Kontingent-Sperre, und beide kommen binnen
+Sekunden. Die gemessenen Spannen überlappen — aus der Wartezeit folgt also
+nicht, welches von beidem vorliegt.
 
 ### Ein befundloser Lauf ist kein Freispruch
 
