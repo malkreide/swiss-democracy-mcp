@@ -82,18 +82,28 @@ Zustellweg festgehalten sind:
 | #112, 13:19:45 | Thread-Antwort | Thread-Antwort (13:19:55) |
 | #112, ≈13:45:14 | **Umschalten auf ready** | **Issue-Kommentar (13:45:17)** |
 | #112, 13:47:01 | Issue-Kommentar | Issue-Kommentar (13:47:10) |
+| #113, 13:50:56 | Issue-Kommentar | Issue-Kommentar (13:51:08) |
+| #113, ≈13:51:46 | **Umschalten auf ready** | **Issue-Kommentar (13:51:48)** |
 
-**Die vorletzte Zeile ist die einzige, die etwas Neues sagt.** Das Umschalten
-auf ready ist gar kein Kommentar — es gibt keinen Thread, in dem geantwortet
-werden könnte. Die Meldung landete unter den Issue-Kommentaren. Damit liest
-sich die Beobachtung schärfer als «die Form folgt dem Auslöser»: **Der
-Issue-Kommentar ist der Normalfall, und die Thread-Antwort ist das, was ein
-Aufruf aus einem Thread heraus bekommt.**
+**Die beiden Zeilen mit «Umschalten auf ready» sagen etwas, das die übrigen
+nicht hergeben.** Das Umschalten ist gar kein Kommentar — es gibt keinen
+Thread, in dem geantwortet werden könnte. Beide Male landete die Meldung unter
+den Issue-Kommentaren. Damit liest sich die Beobachtung schärfer als «die Form
+folgt dem Auslöser»: **Der Issue-Kommentar ist der Normalfall, und die
+Thread-Antwort ist das, was ein Aufruf aus einem Thread heraus bekommt.**
 
-Ihr Zeitpunkt ist der einzige in der Tabelle, der nicht aus der Primärquelle
-stammt: Das Umschalten trägt in der API keinen Zeitstempel am PR, die ≈13:45:14
-kommen aus dem Webhook-Ereignis. Die Meldung daneben ist mit 13:45:17 belegt;
-alle übrigen Zeiten sind `created_at`-Werte der Kommentare.
+**Ob die zweite Messung die erste stützt, ist offen.** Wenn ein Auslöser ohne
+Thread gar nichts anderes bekommen *kann*, beschreiben beide Zeilen dieselbe
+Mechanik und nicht zwei unabhängige Beobachtungen — dann ist der Satz oben
+eine Beschreibung des Zustellwegs und keine Vermutung über ihn. Entschieden
+ist das nicht; beide Male war zudem eine Kontingent-Absage der Inhalt, nie ein
+Befund oder eine Befundlos-Meldung.
+
+Die Auslösezeiten dieser beiden Zeilen sind die einzigen in der Tabelle, die
+nicht aus der Primärquelle stammen: Das Umschalten trägt in der API keinen
+Zeitstempel am PR, die ≈-Werte kommen aus den Webhook-Ereignissen. Die
+Meldungen daneben sind mit 13:45:17 und 13:51:48 belegt; alle übrigen Zeiten
+sind `created_at`-Werte der Kommentare.
 
 Belegt ist die Regel damit immer noch nicht: Alle Zeilen stammen aus diesem
 Repo, für die Environment-Meldung ist die Form gar nicht beobachtet, und ein
@@ -1153,6 +1163,47 @@ Ergebnis vorlag. Beide Male hat ein Mensch entschieden, und beide Male stand die
 Lage vorher als Kommentar auf dem PR. Festgehalten wird es, weil die Regel damit
 zum zweiten Mal an ihrer eigenen Anwendung gescheitert ist: Der erste Einsatz
 des Verfahrens verfehlte sie beim Umschalten, dieser hier beim Merge.
+
+### Die Nachmittagssperre desselben Tages (18.9.2026)
+
+Der Abschnitt davor, «Die Episode vom 18.9.2026», beschreibt den Vormittag.
+Am Nachmittag ging die Sperre ein zweites Mal zu. Dazwischen lag ein offenes
+Fenster: Von 12:50 bis 13:18 liefen fünf
+Läufe an drei PRs an (12:50:48 auf #110, 13:01:52, 13:04:40 und 13:09:07 auf
+#111, 13:15:13 auf #112), und der letzte lieferte um 13:18:22 zwei Befunde.
+Der nächste Aufruf, 93 Sekunden später, lief auf die Sperre:
+
+| Zeit (UTC) | PR | Auslöser |
+|---|---|---|
+| 13:19:55 | #112 | Aufruf als Antwort im Review-Thread |
+| 13:45:17 | #112 | Draft → ready |
+| 13:47:10 | #112 | `@codex review` auf dem bereits gemergten PR |
+| 13:51:08 | #113 | `@codex review` |
+| 13:51:48 | #113 | Draft → ready |
+
+**Das Zugehen ist hier auf 93 Sekunden eingegrenzt** — 13:18:22 lieferte noch
+ein Ergebnis, 13:19:55 kam die Absage. Die Vormittagsepisode gibt das nicht
+her: Dort sind die Randzeiten nur minutengenau festgehalten. Wann die Sperre
+*fällt*, sagt auch diese Episode nicht; gemessen ist nur, wann sie zuging.
+
+**Zwei Läufe hatten unmittelbar zuvor Befunde geliefert, die eingearbeitet
+werden mussten.** Das ist dasselbe Muster wie unter «Die Korrekturschleife
+verbraucht das Kontingent»: Jede Korrekturrunde kostet einen Lauf, und die
+Runden häufen sich dort, wo ein Text viele Befunde trägt.
+
+**Auch hier traf die Sperre den automatischen Auslöser** — zweimal, auf beiden
+PRs. Umschalten ist kein Weg an ihr vorbei; die Vormittagsepisode zeigt es
+einmal, diese zweimal.
+
+**Und auch hier wurde gemergt, statt zu warten.** #112 um 13:45:50 und #113 um
+13:52:24, beide mit einem Head, für den kein Ergebnis vorlag. Wie am Vormittag
+hat ein Mensch entschieden, und wie dort stand die Lage vorher als Kommentar
+auf dem PR. Was es gekostet hat, ist offen und bleibt es, solange kein Lauf
+durchgeht: Nicht ein schlechtes Ergebnis liegt vor, sondern keines.
+
+Bemerkenswert ist der Gegenstand: #113 trägt eine Aussage über das
+Zustellverhalten des Prüfers — und ist der Stand, den dieser Prüfer nicht
+gelesen hat.
 
 ### Wie das Kontingent funktioniert
 
