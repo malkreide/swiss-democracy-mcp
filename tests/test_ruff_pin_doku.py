@@ -31,7 +31,32 @@ _GATE = _ROOT / "scripts" / "check_ruff_pin.py"
 
 # Dieselbe Form, die das Gate in pyproject.toml sucht, hier ohne die
 # Anfuehrungszeichen: In Fliesstext steht `ruff==0.16.5` in Backticks.
-_IN_DOKU = re.compile(r"ruff==([0-9][^\s`'\"),;]*)")
+#
+# Die Version wird positiv gefasst, nicht negativ abgegrenzt. Eine Liste
+# verbotener Folgezeichen ist dieselbe handgeschriebene Aufzaehlung wie die
+# Verzeichnisliste weiter unten und war ebenso unvollstaendig: Sie schloss
+# `)` und `;` aus, aber weder den Satzpunkt noch `]`, und las aus
+# `Install ruff==0.16.5.` den Wert `0.16.5.` und aus
+# `[ruff==0.16.5](…)` den Wert `0.16.5](…`. Beides haette die Suite rot
+# gemacht, obwohl die dokumentierte Version stimmt.
+#
+# Eine Versionsnummer endet auf einer alphanumerischen Stelle; ein Punkt am
+# Ende gehoert zum Satz, nicht zur Nummer. Das Backtracking loest das.
+_IN_DOKU = re.compile(r"ruff==([0-9][0-9a-zA-Z.]*[0-9a-zA-Z]|[0-9])")
+
+# Schreibweisen, in denen eine Version in Markdown vorkommt, je mit dem Wert,
+# den das Muster herauslesen muss. Festgehalten, weil die erste Fassung an
+# den beiden ersten Zeilen scheiterte.
+_SCHREIBWEISEN = [
+    ("Install ruff==0.16.5.", "0.16.5"),
+    ("siehe [ruff==0.16.5](https://example.org)", "0.16.5"),
+    ("`ruff==0.16.5`", "0.16.5"),
+    ('    "ruff==0.16.5",', "0.16.5"),
+    ("ruff==0.16.5, dann weiter", "0.16.5"),
+    ("ruff==0.16.5; danach", "0.16.5"),
+    ("ruff==0.16.3 (veraltet)", "0.16.3"),
+    ("ruff==0.16.5rc1 als Vorabversion", "0.16.5rc1"),
+]
 
 
 def _pin() -> str:
@@ -69,9 +94,24 @@ def _markdown() -> list[pathlib.Path]:
 
 
 def test_gate_liefert_den_pin() -> None:
-    """Positivkontrolle: Ohne sie misst der Test unten seine eigene Stille."""
+    """Positivkontrolle: Ohne sie misst der Test unten seine eigene Stille.
+
+    Geprueft wird nicht eine eigene Vorstellung von der Form — `X.Y.Z` waere
+    enger als das, was `pinned_version()` zulaesst, und ein Vorabversions-Pin
+    wie `0.16.5rc1` faellt dann hier, ohne dass etwas falsch ist. Geprueft
+    wird die Bedingung, auf die es ankommt: dass das Doku-Muster genau den
+    Wert wiedererkennt, den das Gate liest. Laufen die beiden auseinander,
+    geht der Abgleich unten ins Leere oder auf einen abgeschnittenen Wert.
+    """
     pin = _pin()
-    assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", pin), pin
+    assert pin, "Kein Pin gelesen."
+    assert _IN_DOKU.findall(f"ruff=={pin}") == [pin]
+
+
+def test_muster_liest_die_version_ohne_satzzeichen() -> None:
+    """Der Wert endet an der Nummer, nicht am naechsten Markdown-Zeichen."""
+    for zeile, erwartet in _SCHREIBWEISEN:
+        assert _IN_DOKU.findall(zeile) == [erwartet], zeile
 
 
 def test_markdown_wird_wirklich_gelesen() -> None:
