@@ -653,12 +653,22 @@ Geliefert hat er in dieser Spanne:
 | #93 (gemergt!) | 3 min 25 s |
 | #95, erster Aufruf | 2 min 34 s |
 | #95, zweiter Aufruf (gemergt!) | 2 min 16 s |
+| #109, erster Aufruf (Draft!) | 1 min 49 s |
+| #109, zweiter Aufruf (gemergt!) | 1 min 22 s |
 
-**Die Spanne ist keine Zusage.** Sie reicht von 2 min 14 s bis 3 min 25 s; wer
+**Die Spanne ist keine Zusage.** Sie reicht von 1 min 22 s bis 3 min 25 s; wer
 bei drei Minuten aufhört nachzusehen, verpasst den längsten gemessenen Lauf.
 Eine frühere Fassung nannte die Werte «erstaunlich gleichmässig» und CLAUDE.md
 sprach von «zwei bis drei Minuten» — beides stammte aus der Zeit, als die
 Tabelle vier Zeilen hatte.
+
+**Am 18.9.2026 ist sie nach unten gewandert.** Beide Läufe auf #109 blieben
+unter dem bisherigen Kleinstwert von 2 min 14 s, der eine auf einem Draft, der
+andere auf dem gemergten PR. CLAUDE.md nannte zu diesem Zeitpunkt «zwischen
+2 min 14 s und 3 min 25 s» — die zweite dortige Fassung, die eine Messung
+überholt hat, nach «zwei bis drei Minuten» die erste. Deshalb steht dort
+jetzt keine Spanne mehr, sondern der Verweis hierher: Die Tabelle ist die
+Quelle, und eine Kopie in einer Regeldatei ist mit jedem Eintrag erneut fällig.
 
 **Eine verlässliche Endmarke gibt es nicht.** Die Uhr taugt nicht dafür, und
 die Statuszeile auch nicht. Eine frühere Fassung hat sie dafür ausgegeben,
@@ -1302,11 +1312,11 @@ Merge:
 | #86 | 03:41:18 | 03:41:21 | 3 s | 03:42:50, 89 s danach |
 
 Die Ergebniszeiten stammen aus der Statuszeile des jeweiligen Laufs mit
-Auslöser «Draft marked ready». **Nicht mit den zwei bis drei Minuten der
-manuellen Aufrufe verrechnen:** Diese ready-Läufe brauchten **63 bis 100
-Sekunden ab dem Umschalten** — die Zahlen in der Tabelle sind die Abstände zum
-Merge und ein bis zwei Sekunden kleiner. Der Abstand von ein bis drei
-Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
+Auslöser «Draft marked ready». **Nicht mit den Vorläufen der manuellen Aufrufe
+verrechnen** — sie stehen unter «Der manuelle Aufruf: was belegt ist»: Diese
+ready-Läufe brauchten **63 bis 100 Sekunden ab dem Umschalten** — die Zahlen in
+der Tabelle sind die Abstände zum Merge und ein bis zwei Sekunden kleiner. Der
+Abstand von ein bis drei Sekunden liegt weit darunter — mehr sagt die Tabelle nicht, und für andere
 Fälle ist die Reihenfolge damit nicht behauptet. **Die Spanne ist auch kein
 Deckel:** Der ready-Lauf auf #88 stand am 31.8. um 04:43:50 auf «Running» und
 um 04:46:12 auf «Completed», also 142 Sekunden reine Laufzeit. Das ist aus der
@@ -1316,6 +1326,13 @@ In beiden Bezugsrahmen liegt der Wert über der Spanne. **Was das kostet,
 ist an #83 gemessen:** Dort lag seit 18:05:51 ein P1 offen — die Löschregel
 löschte ungemergte Branches, an einem Bare-Repo nachgestellt —, und der Merge
 um 18:13:33 nahm ihn mit nach `main`. Behoben erst in #84.
+
+**Die Wertebereiche überlappen inzwischen.** Der manuelle Aufruf auf #109
+lieferte am 18.9.2026 nach 82 Sekunden und liegt damit mitten im Bereich der
+63 bis 100 Sekunden dieser ready-Läufe; beide Werte laufen vom Auslöser bis
+zum zugestellten Ergebnis. Aus einer Dauer ist also nicht zu lesen, welcher
+Auslöser dahinterstand. Getrennt zu halten sind die beiden Bezugsrahmen
+trotzdem — nur nicht mehr deshalb, weil sie weit auseinanderlägen.
 
 **Der Rückweg fehlt.** Ein Umschalten lässt sich nicht zurücknehmen:
 `update_pull_request` mit `draft: true` scheitert mit «does not have permission
