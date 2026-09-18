@@ -762,12 +762,13 @@ sie hielt über alle weiteren Versuche:
 | 06:46 | #99 | `@codex review` |
 | 06:51 | #99 | Draft → ready |
 | 07:04 | #100 | `@codex review` |
+| 07:06 | #100 | Draft → ready |
 
-**Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Der dritte
-Eintrag ist der Lauf, den das Umschalten auf ready selbst anstösst — dieselbe
-Meldung, kein Ergebnis. Umschalten ist also kein Weg an einer stehenden Sperre
-vorbei. Für die übrigen Auslöser (PR-Eröffnung, `@codex security review`) ist
-das nicht gemessen.
+**Neu daran: Die Sperre trifft auch den automatischen Auslöser.** Die Zeilen
+mit «Draft → ready» gehören zu Läufen, die niemand von Hand angestossen hat —
+dieselbe Meldung, kein Ergebnis. Umschalten ist also kein Weg an einer
+stehenden Sperre vorbei. Für die übrigen Auslöser (PR-Eröffnung,
+`@codex security review`) ist das nicht gemessen.
 
 Ein Zusammenhang zwischen den gelieferten Läufen und der Sperre ist **nicht
 belegt** — was sonst noch auf das Konto ging, ist von hier aus nicht zu sehen.
