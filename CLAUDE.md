@@ -80,10 +80,6 @@ ob die Änderung sie trifft. Ein Abschnitt hinter dem verwiesenen lässt dessen
 Nummer stehen, einer davor verschiebt sie. Wo ein Titel eindeutig ist, nimm ihn
 statt der Nummer.
 
-Die Fälle, an denen das gelernt wurde, stehen in
-[`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Zahlen, die eine
-Aufzählung wiederholen».
-
 ## Wenn etwas rot ist
 
 Roter Live-Test: erst die Quelle abfragen, dann einordnen. Nicht aus der
@@ -169,8 +165,7 @@ geantwortet hat.
   nachdem eine Abfrage der Checks eines PR sauber durchlief, meldete die
   Label-Abfrage weiter die Sperre. Von einem blockierten Werkzeug also nicht
   auf «GitHub ist zu» schliessen — und umgekehrt eine gelungene Abfrage nicht
-  als Entwarnung für die gesperrte nehmen. Das ist dieselbe Asymmetrie wie
-  bei der verschwundenen Codex-Meldung weiter unten.
+  als Entwarnung für die gesperrte nehmen.
 
 Wann die Sperre fällt, geben diese Beobachtungen nicht her. Die Meldung nennt
 keinen Zeitpunkt, und die `X-RateLimit`-Kopfzeilen sind hinter dem Proxy nicht
@@ -270,185 +265,6 @@ zeigt, wird auch ausschliesslich dort bemerkt: zwischen dem ersten roten Lauf
 
 PR ohne jeden Check ist selten ein Repo ohne CI, meistens ein
 Merge-Konflikt: GitHub berechnet dafür keinen Merge-Commit und startet nichts.
-
-Ein Codex-Review auf einem PR wird beantwortet oder behoben, nie ignoriert.
-
-## Wenn Codex gar nicht erst hinsieht
-
-Die Zeile oben unterstellt, dass es einen Befund geben *kann*. Das ist nicht
-immer so, und man sieht es dem PR nicht an. Am 21./22.8.2026 sind 75 PRs mit
-formal erfülltem Häkchen gemergt worden, ohne dass jemand hineingesehen hat.
-
-**Die Belege zu allem hier — Zeitstempel, Einzelfälle, widerlegte Fassungen —
-stehen in [`docs/codex-reviews.md`](docs/codex-reviews.md).** Wer eine der
-Regeln anzweifelt oder fortschreiben will, liest dort nach.
-
-### Prüfen, ob geprüft wurde
-
-**Drei Abfragen, immer alle:** `get_reviews` für das Review-**Objekt**
-(«💡 Codex Review» — nur bei Befund), `get_comments` für die Issue-Kommentare,
-`get_review_comments` für die Antworten in Review-Threads. Wer eine weglässt,
-übersieht einen Teil; genau so ist die Kontingent-Meldung zuerst
-durchgerutscht — und am 18.9. stand sie auf #98 zuerst als Thread-Antwort da,
-also in der dritten Abfrage und in keiner der beiden anderen.
-
-**Belegt ist eine Prüfung durch ein Review-Objekt *oder* eine
-Befundlos-Meldung** («Codex Review: Didn't find any major issues.», Schlusssatz
-wechselt). Alles andere belegt nichts.
-
-**Den Text lesen, nicht die Zahl.** `comments: 1` hat fünf Bedeutungen — auch
-einen abgeschlossenen Lauf *mit* Befund, denn der steht im Objekt und nicht
-unter den Kommentaren. Einen unbekannten Text wörtlich zitieren, statt ihn in
-eine bekannte Schublade zu zwingen.
-
-**Die Reaktionen (👀, 👍) belegen nichts** — in keine Richtung.
-
-### Fünf Gründe fürs Schweigen, einer davon harmlos
-
-| Grund | Erkennbar an |
-|---|---|
-| Kein Befund | Befundlos-Meldung — als Issue-Kommentar oder als Antwort im Review-Thread |
-| PR ist Draft | meist gar nichts; am 29.8. kam auf *eine* Draft-Eröffnung doch eine Ausfallmeldung, auf die nächste wieder nicht — worauf ein Draft antwortet, ist offen |
-| Kontingent weg | «You have reached your Codex usage limits for code reviews.» — am 18.9. auch ohne das «for code reviews»; auf den Anfang prüfen, nicht auf den ganzen Satz |
-| Environment fehlt | «To use Codex here, create an environment for this repo.» |
-| Environment-Meldung trotz Prüfbarkeit | dieselbe Meldung, aber der nächste Aufruf läuft durch |
-
-**Eine verschwundene Limit-Meldung ist keine Entwarnung** — die Prüfungen
-liegen hintereinander, es kann jetzt etwas anderes im Weg sein.
-
-**Bleibt es nach dem automatischen Auslöser still, sagt das nichts über die
-Ursache** — und schon gar nicht «der Text ist sauber». Belegt ist allein, dass
-kein Review angekommen ist.
-
-### Der Hebel: `@codex review` von Hand
-
-Der Vorlauf ist gemessen; die Einzelwerte stehen in
-[`docs/codex-reviews.md`](docs/codex-reviews.md) unter «Der manuelle Aufruf:
-was belegt ist». Eine Spanne steht hier bewusst nicht: Sie war zweimal zu eng
-angesetzt — erst als «zwei bis drei Minuten», dann als Grenzwertpaar, das am
-18.9.2026 von zwei Läufen unterboten wurde. Der Aufruf läuft **auch auf einem
-Draft** und **auf einem bereits gemergten PR** an (dort wird der
-Merge-Commit geprüft). Nach einer Environment-Meldung lohnt der zweite Versuch.
-
-Wer den Aufruf absetzt, wartet ihn ab — und nimmt dafür nicht die Uhr. Eine
-Zahl hülfe dabei auch nicht: Abgewartet wird, bis ein Ergebnis da ist, nicht
-bis eine Frist abläuft.
-
-Die Statuszeile taugt als Ersatz **nur zum Ausschliessen**. Sie springt von
-«🔄 Running» auf «✅ Completed», aber sie führt immer nur den letzten Lauf:
-Steht dort ein anderer Auslöser als deiner, gehört die Zeile einem anderen Lauf
-und sagt über deinen nichts. Welchem, sagt sie nicht — einem späteren, der
-deinen verdrängt hat (so auf #79, danach waren beide nicht mehr
-auseinanderzuhalten), oder einem früheren, der noch steht, weil deiner noch
-nicht angefangen hat (auf #98 vierzehn Sekunden zwischen Aufruf und Start).
-Aus dem fremden Namen keine Reihenfolge lesen.
-
-Steht dort **derselbe** Name, ist nichts gewonnen: Zwei manuelle Aufrufe
-hintereinander tragen beide «Manual request», der zweite überschreibt den
-ersten, und die Prüfung auf den Namen schlägt nicht an — auf #95 so gemessen.
-Die Commit-Spalte trennt sie auch nicht: Sie nannte dort den Commit, den der
-**erste** Lauf geprüft hatte. Und selbst die Zeile, die wirklich deinem Lauf
-gehört, belegt nur, dass er endete, nicht dass ein Ergebnis vorliegt.
-
-Eine positive Endmarke hat die Zeile damit nicht: Abgewartet wird das
-Ergebnis — Review-Objekt oder Befundlos-Meldung —, nicht der Status. Bleibt es
-aus, ist der Ausgang offen und nicht «nichts gefunden».
-
-Die 👀 auf dem auslösenden Kommentar ist die Empfangsbestätigung, nicht das
-Ergebnis. Wer zu früh nachsieht, hält einen laufenden Review für einen
-ausgefallenen.
-
-**Fussangel:** Wer die Auslöser-Zeichenfolge in einem Kommentar bloss
-*zitiert*, löst damit vermutlich einen Versuch aus — Backticks schützen nicht.
-Mehrere Fälle, zuletzt am 18.9. auf #114, wo als einziger dokumentierter
-Auslöser das Zitat in Frage kam — acht Sekunden bis zur Antwort.
-«Vermutlich» bleibt es, weil die Gegenprobe fehlt: Ein Kommentar ganz ohne die
-Zeichenfolge wurde nie gemessen. Eine Bearbeitung, die die Zeichenfolge
-entfernt, ist keine: Ob eine Bearbeitung überhaupt auslöst, ist ungemessen. Für die Praxis genügt es trotzdem — die
-Zeichenfolge gehört nicht in einen Kommentar, den du nicht als Aufruf meinst.
-
-**Der Aufruf wirkt auch aus einer Antwort in einem Review-Thread.** Praktisch
-beim Beantworten eines Befundes: Anfordern und Antworten gehen in einem. Die
-Kehrseite steht eine Zeile höher.
-
-**Kommt eine Meldung, lies sie — nicht die Uhr.** Ein angelaufener Lauf und die
-Kontingent-Sperre kommen beide binnen Sekunden, und die gemessenen Spannen
-überlappen; aus der Wartezeit folgt also nicht, welche von beiden vorliegt. Die
-Environment-Meldung kommt als dritte dazu. Welche es ist, sagt nur ihr Text.
-
-**Kommt keine, ist das kein vierter Ausgang, sondern gar keiner.** Schweigen
-trennt einen laufenden oder verzögerten Review nicht von einem, der nie
-antwortet, und eine Frist, nach der es das eine hiesse und nicht das andere,
-gibt es nicht — deshalb steht oben, den Aufruf abzuwarten statt die Uhr zu
-befragen.
-
-### Ein befundloser Lauf ist kein Freispruch
-
-Am 23.8. lief derselbe Text durch 42 Reviews: 36 mit Befund, 6 ohne — gleiche
-Eingabe, gegenteiliges Urteil, in denselben neun Minuten. Ein Ergebnis sagt
-etwas über den Lauf, nicht über den Text.
-
-### Portfolio-weit
-
-```
-search_pull_requests: user:malkreide commenter:chatgpt-codex-connector[bot] updated:>=<Datum>
-search_pull_requests: user:malkreide type:pr reviewed-by:chatgpt-codex-connector[bot] updated:>=<Datum>
-```
-
-Beide nötig, **dasselbe `updated:`-Fenster an beiden**, und beide bleiben
-Vorfilter: `updated:` datiert den PR, nicht die Prüfung.
-
-### Verfahren für Doku-PRs
-
-Als Draft öffnen, den Review von Hand anfordern, Befunde einarbeiten — und
-**nach jeder Korrekturrunde erneut anfordern**, auf dem neuen Head. Auf ready
-geht es, wenn ein Lauf auf dem aktuellen Head nichts mehr findet.
-
-**Das Umschalten löst selbst einen Lauf aus.** Er prüft denselben Head und kann
-anders urteilen als der, den du abgewartet hast; ein befundloser Lauf ist kein
-Freispruch, auch der eigene nicht. Bei Regeldateien — alles, wonach später
-gearbeitet wird — ist er abzuwarten: Auf #85 brachte genau dieser Lauf den
-Befund, 15 Sekunden nach einem befundlosen. Ein Fehler in einer Regel pflanzt
-sich in jede Arbeit fort, die ihr folgt; das ist der Unterschied zum Einzelfall.
-
-**Ein vollständiges Entscheidungsverfahren steht hier bewusst nicht.** Der
-Auslöser kann sichtbar ohne Lauf beantwortet werden, er kann schweigen, und ein
-Lauf kann «✅ Completed» zeigen, ohne ein Ergebnis zu liefern — was davon
-vorliegt und was sich daraus **nicht** schliessen lässt, steht in
-[`docs/codex-reviews.md`](docs/codex-reviews.md). Aus keinem dieser Fälle folgt
-«nichts gefunden».
-
-Warum hier kein Verfahren steht, ist gemessen und nicht behauptet: Auf PR #93
-sind neun Review-Runden über neun Fassungen eines solchen Verfahrens gelaufen,
-und jede trug einen Befund — zuletzt den, dass sich ein unsichtbar
-angestossener Lauf grundsätzlich nicht ausschliessen lässt und ein Tor, das ihn
-verlangt, deshalb weder zu erfüllen noch zu widerlegen ist. Wer vor dieser Lage
-steht, entscheidet sie nicht über eine Regel, sondern mit einem Menschen — und
-schreibt hin, was offen blieb.
-
-Das ist ein Abbruchkriterium, kein Gütesiegel: Derselbe Text kann in der
-nächsten Runde wieder einen Befund tragen, und irgendwo muss die Schleife
-enden. Sie endet aus praktischen Gründen, nicht weil der Stand bewiesen sauber
-wäre.
-
-Die Schleife ergänzt die Reihenfolge, sie ersetzt sie nicht. Wer nach dem
-Einarbeiten umschaltet, statt erneut anzufordern, hat genau den Stand
-ungeprüft, den er mergt — der Review lief auf der Fassung davor, im
-Draft-Zustand läuft kein automatischer nach, und nach dem Umschalten bleiben
-erfahrungsgemäss Sekunden. Am 28.8. sind so zwei Fassungen ungeprüft in `main`
-gelandet, **beide die Korrektur einer geprüften Fassung.**
-
-Der Grund für den ganzen Aufwand hat mit der Trefferquote nichts zu tun:
-**Bei einer ungeprüften Fassung liegt überhaupt kein Ergebnis vor.** Nicht ein
-schlechtes, sondern keines.
-
-Der Reihenfolge wegen: Der Review gehört vor den Merge, weil ein Befund danach
-einen zweiten PR braucht. Am 28.8. kam einer 28 Sekunden vor dem Merge — die
-Behebung landete in einem Nachzügler. Und am 29.8. lagen auf #59 zwischen
-Befund und Merge 81 Sekunden; der Defekt stand damit in `main`. Auf #76 fielen
-beide in dieselbe gemessene Sekunde — auf eine nutzbare Reaktionszeit ist also
-nicht zu bauen. Wer den Review anfordert und weiterarbeitet, statt ihn
-abzuwarten, verlässt sich auf eine Frist, die er nicht kennt.
 
 ## Wenn zwei Agenten dasselbe tun
 
