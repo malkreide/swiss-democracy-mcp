@@ -4,7 +4,7 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.0] - 2026-09-26
 
 ### Fixed
 
@@ -357,6 +357,9 @@ version bump. No code changed.
   read-only tools.
 
 ## MCP Protocol Version
-This server targets the MCP protocol version negotiated by `mcp[cli]>=1.6.0`
-(FastMCP). SDK updates are tracked monthly via Dependabot; protocol-version
-bumps are noted here.
+This server declares `mcp[cli]>=2.0.0,<3` and imports `mcp.server.mcpserver`;
+`fastmcp` is not a dependency. The SDK serves two spec eras through the same
+server: the `initialize` handshake caps at `2025-11-25`, while the per-request
+envelope reaches `2026-07-28`. Both are pinned individually and asserted in
+`tests/test_protocol_version.py`, so a Dependabot bump of `mcp` cannot move
+either one silently.
